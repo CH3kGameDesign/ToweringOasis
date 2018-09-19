@@ -2,16 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeleteMe : MonoBehaviour {
-
-	public GameObject g_player1;
-
-	public float f_counter;
-	private float f_timeSpent;
-
-	private int int_enemyCount;
-
-	public string str_gameOverText;
+public class deleteme6 : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
