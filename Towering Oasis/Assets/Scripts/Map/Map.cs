@@ -99,7 +99,7 @@ public class Map : MonoBehaviour
             for (int y = 0; y < m_nGridSizeY; y++)
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * m_nodeDiameter + m_nodeRadius) + Vector3.forward * (y * m_nodeDiameter + m_nodeRadius);
-                bool walkable = Physics.CheckSphere(worldPoint, m_nodeRadius, m_WalkableMask);
+                bool walkable = Physics.CheckSphere(worldPoint, m_nodeRadius - 0.1f, m_WalkableMask);
 
                 if (walkable)
                 {
