@@ -8,8 +8,8 @@ public class Map : MonoBehaviour
     public LayerMask m_WalkableMask;
     public int m_nGridWorldSize;
     public int m_nGridSizeX, m_nGridSizeY;
-    public Transform player;
     public Transform m_NonWalkablePrefab;
+    public UnitManager m_unitManager;
 
     private float m_nodeRadius;
     private float m_nodeDiameter;
@@ -37,60 +37,8 @@ public class Map : MonoBehaviour
         CreateGrid();
 	}
 
-    //	public void GenerateMap()
-    //	{
-    //        int i = 0;
-    //		for(int x = 0; x < m_Map.Length; x++)
-    //		{
-    //			for (int y = 0; y < m_Map.Length; y++)
-    //			{
-    //				int nTileType = 0;
-    //				bool bIsWall = false;
-    //				string szTileTag = "Tile";
-
-    //				if (m_Map.)
-    //				{
-    //					nTileType = 1;
-    //					bIsWall = true;
-    //					szTileTag = "Obstacle";
-
-    //					if (v2RandomCoords.Count - 1 != i)
-    //						i++;
-    //				}
-    //				else
-    //				{
-    //					nTileType = 0;
-    //					bIsWall = false;
-    //					szTileTag = "Tile";
-    //				}
-
-    //				Vector3 v3TempPosition = Vector3.zero;
-    //				v3TempPosition.x = (-m_v2MapSize.x / 2 + x) + 0.5f;
-    //				v3TempPosition.y = -6.0f;
-    //				v3TempPosition.z = (-m_v2MapSize.y / 2 + y) + 0.5f;
-
-    //				m_Grid[x, y] = new Node(Instantiate(
-    //											m_Tiles[nTileType].m_TilePrefab,
-    //											v3TempPosition,
-    //											Quaternion.Euler(Vector3.zero)),
-    //										m_Tiles[nTileType].m_TileMaterial,
-    //										x,
-    //										y,
-    //										v3TempPosition.x,
-    //										v3TempPosition.y,
-    //										v3TempPosition.z,
-    //										bIsWall);
-
-    //				m_Grid[x, y].m_TilePrefab.parent = MapHolder.transform;
-
-    //				m_Grid[x, y].m_TilePrefab.localScale = new Vector3(1 * (1 - m_fOutline), m_Grid[x, y].m_TilePrefab.transform.localScale.y, 1 * (1 - m_fOutline));
-    //				m_Grid[x, y].m_TilePrefab.tag = szTileTag;
-    //			}
-    //		}
-    //	}
-
-    public void CreateGrid()
-    {
+   public void CreateGrid()
+   {
         m_Grid = new Node[m_nGridSizeX, m_nGridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * m_nGridWorldSize / 2 - Vector3.forward * m_nGridWorldSize / 2;
         int i = 0;
@@ -120,7 +68,7 @@ public class Map : MonoBehaviour
                 }
             }
         }
-    }
+   }
 
     public Node GetNodeFromPosition(Vector3 worldPosition)
     {
@@ -178,33 +126,6 @@ public class Map : MonoBehaviour
         }
     }
 
-    //	private List<Vector2> GetRandomCoords()
-    //	{
-    //		List<Vector2> RandomCoords = new List<Vector2>();
-
-    //		for(int i = 0; i < obstacleNumber;)
-    //		{
-    //			Vector2 RandomCoordinate = m_v2ShuffledCoordinates.Dequeue();
-    //			m_v2ShuffledCoordinates.Enqueue(RandomCoordinate);
-    //			if (RandomCoordinate.y > 1 && RandomCoordinate.y < 13)
-    //			{
-    //				RandomCoords.Add(RandomCoordinate);
-    //				i++;
-    //			}
-    //		}
-
-    //		// Delegate sorts the Vectors
-    //			// found on this link: https://stackoverflow.com/questions/289010/c-sharp-list-sort-by-x-then-y
-    //		RandomCoords.Sort(delegate (Vector2 a, Vector2 b)
-    //		{
-    //			int xdiff = a.x.CompareTo(b.x);
-    //			if (xdiff != 0) return xdiff;
-    //			else return a.y.CompareTo(b.y);
-    //		});
-
-    //		return RandomCoords;
-    //	}
-
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(m_nGridWorldSize, 1, m_nGridWorldSize));
@@ -212,11 +133,15 @@ public class Map : MonoBehaviour
 
         if (m_Grid != null)
         {
-            Node PlayerNode = GetNodeFromPosition(player.position);
+            List<Node> ObjectNode = new List<Node>();
+            for (int i = 0; i < m_unitManager.m_Objects.Count; i++)
+            {
+                ObjectNode.Add(GetNodeFromPosition(m_unitManager.m_Objects[i].position));
+            }
             foreach (Node n in m_Grid)
             {
                 Gizmos.color = (n.m_bWalkable) ? Color.white : Color.red;
-                if(n == PlayerNode)
+                if(ObjectNode.Contains(n))
                 {
                     Gizmos.color = Color.blue;
                 }
