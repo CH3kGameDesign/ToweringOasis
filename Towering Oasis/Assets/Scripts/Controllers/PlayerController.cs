@@ -111,6 +111,7 @@ public class PlayerController : Controller
 				{
 					Destroy(m_Player.transform.GetChild(i).gameObject);
 				}
+                m_Player.m_whoWasAttacked.Clear();
 
 				// Set player mode to idle and m_nLeftClick back to 0 
 				m_playerMode = PLAYERMODE.IDLE;
