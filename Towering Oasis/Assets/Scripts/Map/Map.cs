@@ -73,6 +73,7 @@ public class Map : MonoBehaviour
     {
         float percentX = (worldPosition.x + m_nGridSizeX / 2) / m_nGridSizeX;
         float percentY = (worldPosition.z + m_nGridSizeY / 2) / m_nGridSizeY;
+
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
