@@ -17,6 +17,11 @@ public class AIMelee : MonoBehaviour {
     public bool hasMoved;
     public bool hasAttacked;
 
+    private List<int> distanceToPlayers;
+    public int closestPlayer;
+    private int distanceToExit;
+    private int enemyDistanceToExit;
+    
 
 
 
@@ -35,6 +40,10 @@ public class AIMelee : MonoBehaviour {
     // Use this for initialization
     void Start () {
         health = healthMax;
+        for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
+        {
+            distanceToPlayers.Add(100);
+        }
 	}
 
     private void Update()
@@ -46,16 +55,36 @@ public class AIMelee : MonoBehaviour {
     {
         for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
         {
+            distanceToPlayers[i] = 100;
+        }
+
+            for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
+        {
             Debug.Log("try " + i);
             Transform playerChar = GameObject.Find("PlayerCharacters").transform.GetChild(i).transform;
-            FindPath(transform.position, playerChar.position);
-            Debug.Log("Self = " + transform.position);
-            Debug.Log(playerChar.name + " = " + playerChar.position);
-            Debug.Log(path.Count);
-            
+
+            Vector3 thisPos = transform.position;
+            Vector3 thatPos = playerChar.position;
+
+            FindPath(thisPos, thatPos);
+            distanceToPlayers[i] = path.Count;
+
+            if (i == 0)
+            {
+                closestPlayer = i;
+            } else
+            if (distanceToPlayers[i] > distanceToPlayers[i - 1])
+            {
+                closestPlayer = i;
+            }
         }
-        //if (Is Enemy within 5 blocks)
+
+        if (distanceToPlayers[closestPlayer] <= 5)
         {
+            //for (int i = 0; i < length; i++)
+            //{
+            //    Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).transform.position))
+            //}
             //if (Is It Possible To Hit Multiple People)
             {
                 //if (Enemies Hit > Allies Hit)
@@ -67,7 +96,7 @@ public class AIMelee : MonoBehaviour {
                     }
                 }
             }
-            //if (Will Kicking Them Kill Them)
+            if (GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).GetComponent<Melee>().m_nHealth < kickAttackMinDamage)
             {
                 //Kick Them
                 return;
@@ -122,7 +151,7 @@ public class AIMelee : MonoBehaviour {
                 }
             }
         }
-        //if (Is Enemy Further Than 10 Blocks Away)
+        if (distanceToPlayers[closestPlayer] >= 10)
         {
             if (health < healthMax/2)
             {
@@ -144,9 +173,6 @@ public class AIMelee : MonoBehaviour {
 
     public void FindPath(Vector3 startPos, Vector3 endPos)
     {
-        if (path.Count > 0)
-            path.Clear();
-
         Node startNode = Map.Instance.GetNodeFromPosition(startPos);
         Node endNode = Map.Instance.GetNodeFromPosition(endPos);
 
@@ -161,6 +187,9 @@ public class AIMelee : MonoBehaviour {
 
             if (currentNode == endNode)
             {
+                if (path.Count > 0)
+                    path.Clear();
+
                 RetracePath(startNode, endNode);
                 return;
             }
@@ -168,7 +197,7 @@ public class AIMelee : MonoBehaviour {
 
             foreach (Node neighbour in Neighbours)
             {
-                if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
+                if (!neighbour.m_bWalkable /*|| neighbour.m_bIsUnitOnTop*/ || closedList.Contains(neighbour))
                     continue;
 
                 int newMovementCostToNeighbour = currentNode.m_nGCost + GetDistance(currentNode, neighbour);

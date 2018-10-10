@@ -104,7 +104,7 @@ public class Map : MonoBehaviour
 
                 if (checkX >= 0 && checkX < m_nGridSizeX && checkY >= 0 && checkY < m_nGridSizeY)
                 {
-                    if (!m_Grid[checkX, checkY].m_bWalkable || m_Grid[checkX, checkY].m_bIsUnitOnTop)
+                    if (!m_Grid[checkX, checkY].m_bWalkable /*|| m_Grid[checkX, checkY].m_bIsUnitOnTop*/)
                         continue;
 
                     Neighbours.Add(m_Grid[checkX, checkY]);
