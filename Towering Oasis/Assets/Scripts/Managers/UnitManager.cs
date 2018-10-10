@@ -4,26 +4,35 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-   public List<Transform> m_Objects;
+	public static UnitManager Instance = null;
+	public List<Transform> m_Parent;
+	public List<Transform> m_Objects;
 
     private void Awake()
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform m_Parent = transform.GetChild(i);
-            for (int j = 0; j < m_Parent.childCount; j++)
-            {
-                m_Objects.Add(m_Parent.GetChild(j));
-                if(m_Parent.GetChild(j).childCount > 0 && m_Parent.name == "Obstacles")
-                {
-                    int objectCount = m_Objects.Count - 1;
-                    for (int x = 0; x < m_Objects[objectCount].childCount; x++)
-                    {
-                        m_Objects.Add(m_Parent.GetChild(j).GetChild(x));
-                    }
-                }
-            }
-        }
+	{
+		if (Instance == null)
+			Instance = this;
+		else if (Instance != this)
+			Destroy(gameObject);
+	}
 
-    }
+	public void UpdateObjectTile()
+	{
+		m_Objects = new List<Transform>();
+		for (int i = 0; i < m_Parent.Count; i++)
+		{
+			for (int j = 0; j < m_Parent[i].childCount; j++)
+			{
+				m_Objects.Add(m_Parent[i].GetChild(j));
+				if (m_Parent[i].GetChild(j).childCount > 0 && m_Parent[i].name == "Obstacles")
+				{
+					int objectCount = m_Objects.Count - 1;
+					for (int x = 0; x < m_Objects[objectCount].childCount; x++)
+					{
+						m_Objects.Add(m_Parent[i].GetChild(j).GetChild(x));
+					}
+				}
+			}
+		}
+	}
 }

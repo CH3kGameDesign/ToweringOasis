@@ -22,9 +22,11 @@ GameObject:
   - component: {fileID: 33840550240176322}
   - component: {fileID: 136580813940057292}
   - component: {fileID: 23819945716819726}
-  m_Layer: 0
+  - component: {fileID: 54307893798197480}
+  - component: {fileID: 114505117677285770}
+  m_Layer: 10
   m_Name: E_Support (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,7 +44,7 @@ GameObject:
   - component: {fileID: 33770391391253734}
   - component: {fileID: 114004486835062778}
   - component: {fileID: 64242473215705326}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cylinder (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1478519478811690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 1, z: -7.5}
+  m_LocalPosition: {x: -3.49, y: 1, z: -7.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4767288629414728}
@@ -158,6 +160,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1478519478811690}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54307893798197480
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1478519478811690}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &64242473215705326
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -1138,6 +1155,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityType: 0
+--- !u!114 &114505117677285770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1478519478811690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487b0ec9a84763f4aa09b02304544de9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HealthDropPrefab: {fileID: 4524260214706570, guid: b950536ef59bbfa4fb40e852dfea0497,
+    type: 2}
+  m_ActorPrefab: {fileID: 0}
+  m_ActorRenderer: {fileID: 0}
+  m_ActorPos: {x: 0, y: 0, z: 0}
+  m_nSpeed: 0
+  m_nHowManyTiles: 0
+  m_IsAttacked: 0
 --- !u!136 &136580813940057292
 CapsuleCollider:
   m_ObjectHideFlags: 1

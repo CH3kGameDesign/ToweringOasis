@@ -4,24 +4,27 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    public Map m_Map;
+	public static Pathfinding Instance;
     public List<Node> path = new List<Node>();
-    public bool DebugPath;
+    public bool m_DebugPath;
 
-    void Awake()
-    {
-        m_Map = GetComponentInParent<Map>();
-    }
+	private void Awake()
+	{
+		if (Instance == null)
+			Instance = this;
+		else if (Instance != this)
+			Destroy(gameObject);
+	}
 
-    public void FindPath(Vector3 startPos, Vector3 endPos)
+	public void FindPath(Vector3 startPos, Vector3 endPos)
     {
         if (path.Count > 0)
-            path = new List<Node>();
+            path.Clear();
 
-        Node startNode = m_Map.GetNodeFromPosition(startPos);
-        Node endNode = m_Map.GetNodeFromPosition(endPos);
+        Node startNode = Map.Instance.GetNodeFromPosition(startPos);
+        Node endNode = Map.Instance.GetNodeFromPosition(endPos);
 
-        Heap<Node> openList = new Heap<Node>((int)m_Map.m_nGridSizeX * (int)m_Map.m_nGridSizeY);
+        Heap<Node> openList = new Heap<Node>((int)Map.Instance.m_nGridSizeX * (int)Map.Instance.m_nGridSizeY);
         HashSet<Node> closedList = new HashSet<Node>();
         openList.Add(startNode);
 
@@ -35,11 +38,11 @@ public class Pathfinding : MonoBehaviour
                 RetracePath(startNode, endNode);
                 return;
             }
-            List<Node> Neighbours = m_Map.GetNeighbours(currentNode);
+            List<Node> Neighbours = Map.Instance.GetNeighbours(currentNode);
 
             foreach (Node neighbour in Neighbours)
             {
-                if (neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
+                if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
                     continue;
 
                 int newMovementCostToNeighbour = currentNode.m_nGCost + GetDistance(currentNode, neighbour);
