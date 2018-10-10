@@ -10,7 +10,7 @@ public class Level : MonoBehaviour
 		Map.Instance.CreateGrid();
 
 		// Gets all players, enemies and obstacles in scene
-		UnitManager.Instance.UpdateObjectTile();
+		UnitManager.Instance.UpdateObject();
 
 		// Updates where on the grid player, enemies and obstacles are on
 		Map.Instance.UpdateUnitOnTop();

@@ -20,11 +20,8 @@ public class Actor : MonoBehaviour
 
 	// Character that this character is attacked by
 	[HideInInspector]
-	public Actor m_attackedBy;
-	// is this actor performing an attack
-	[HideInInspector]
-	public bool m_IsAttacked;
-	
+	public Actor m_whoWasAttacked;
+
 	public int m_nHealth { get; set; }	
 	public int m_nDamage { get; set; }
 
@@ -39,18 +36,6 @@ public class Actor : MonoBehaviour
 
 	public virtual void Update()
 	{
-		// Checks if mouse button is clicked and if someone is attacking it
-		if (Input.GetMouseButtonDown(0) && m_IsAttacked)
-		{
-			// Deduct health by the damage of the attacker
-			this.m_nHealth -= m_attackedBy.m_nDamage;
-
-			// Create Health popup and set text which is equal to this actor's health
-			Transform HealthDrop = Instantiate(m_HealthDropPrefab, transform.position, Quaternion.Euler(40, 140, 0), transform);
-			HealthDrop.GetComponent<TextMesh>().text = m_nHealth.ToString();
-			m_IsAttacked = false;
-		}
-
 		// if health is 0 destroy the gameobject
 		if (m_nHealth <= 0)
 		{
@@ -59,8 +44,19 @@ public class Actor : MonoBehaviour
 		}
 	}
 
-	public virtual void Attack(Transform specialTile)
+	public virtual void Attack()
 	{
+		// Deduct health by the damage of the attacker
+		m_whoWasAttacked.m_nHealth -= this.m_nDamage;
 
+		// Create Health popup and set text which is equal to this actor's health
+		Transform HealthDrop = Instantiate(m_HealthDropPrefab, m_whoWasAttacked.transform.position, Quaternion.Euler(40, 140, 0), m_whoWasAttacked.transform);
+		HealthDrop.GetComponent<TextMesh>().text = m_whoWasAttacked.m_nHealth.ToString();
+	}
+
+
+	public virtual void SpawnAttackTiles(Transform attackPrefab)
+	{
+		
 	}
 }

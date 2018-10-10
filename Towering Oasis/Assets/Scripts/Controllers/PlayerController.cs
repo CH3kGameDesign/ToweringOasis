@@ -103,6 +103,9 @@ public class PlayerController : Controller
 			// If player is in attack mode and we left click while m_nLeftClick is 1
 			if (m_playerMode == PLAYERMODE.ATTACK && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
 			{
+				if (m_Player.m_whoWasAttacked != null)
+					m_Player.Attack();
+
 				// We Destroy every attack tile in scene child to this player
 				for (int i = 0; i < m_Player.transform.childCount; i++)
 				{
@@ -140,9 +143,8 @@ public class PlayerController : Controller
 					{
 						Destroy(m_Player.transform.GetChild(i).gameObject);
 					}
-
-					// and create new ones according to player's front
-					m_Player.Attack(m_attackprefab);
+					m_Player.m_whoWasAttacked = null;
+					m_Player.SpawnAttackTiles(m_attackprefab);
 				}
 			}
 		}
@@ -178,10 +180,11 @@ public class PlayerController : Controller
 			}
 			if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 40, 100, 35), "Attack"))
 			{
+				m_Player.SpawnAttackTiles(m_attackprefab);
+
 				// Set mode to attack and turn of the UI and m_nLeftCLick to 1
-					// Also calls the players attack
+				// Also calls the players attack
 				m_playerMode = PLAYERMODE.ATTACK;
-				m_Player.Attack(m_attackprefab);
 				m_bshowUI = false;
 				m_nLeftClick++;
 			}
