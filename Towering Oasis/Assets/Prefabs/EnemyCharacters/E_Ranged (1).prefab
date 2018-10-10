@@ -1166,14 +1166,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5dadffdb37b084292cb4a7822edd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HealthDropPrefab: {fileID: 4524260214706570, guid: c11825da1e72c32428d48ecfb410fb8e,
+  m_HealthDropPrefab: {fileID: 4524260214706570, guid: b950536ef59bbfa4fb40e852dfea0497,
     type: 2}
   m_ActorPrefab: {fileID: 0}
   m_ActorRenderer: {fileID: 0}
   m_ActorPos: {x: 0, y: 0, z: 0}
   m_nHowManyTiles: 0
-  m_attackedBy: {fileID: 0}
-  m_IsAttacked: 0
+  m_whoWasAttacked: {fileID: 0}
 --- !u!136 &136667104516064026
 CapsuleCollider:
   m_ObjectHideFlags: 1

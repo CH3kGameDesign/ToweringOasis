@@ -20,7 +20,7 @@ public class Actor : MonoBehaviour
 
 	// Character that this character is attacked by
 	[HideInInspector]
-	public Actor m_whoWasAttacked;
+	public List<Actor> m_whoWasAttacked = new List<Actor>();
 
 	public int m_nHealth { get; set; }	
 	public int m_nDamage { get; set; }
@@ -46,12 +46,15 @@ public class Actor : MonoBehaviour
 
 	public virtual void Attack()
 	{
-		// Deduct health by the damage of the attacker
-		m_whoWasAttacked.m_nHealth -= this.m_nDamage;
+		foreach (Actor actor in m_whoWasAttacked)
+		{
+			// Deduct health by the damage of the attacker
+			actor.m_nHealth -= this.m_nDamage;
 
-		// Create Health popup and set text which is equal to this actor's health
-		Transform HealthDrop = Instantiate(m_HealthDropPrefab, m_whoWasAttacked.transform.position, Quaternion.Euler(40, 140, 0), m_whoWasAttacked.transform);
-		HealthDrop.GetComponent<TextMesh>().text = m_whoWasAttacked.m_nHealth.ToString();
+			// Create Health popup and set text which is equal to this actor's health
+			Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
+			HealthDrop.GetComponent<TextMesh>().text = actor.m_nHealth.ToString();
+		}
 	}
 
 

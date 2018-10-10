@@ -143,7 +143,7 @@ public class PlayerController : Controller
 					{
 						Destroy(m_Player.transform.GetChild(i).gameObject);
 					}
-					m_Player.m_whoWasAttacked = null;
+					m_Player.m_whoWasAttacked.Clear();
 					m_Player.SpawnAttackTiles(m_attackprefab);
 				}
 			}

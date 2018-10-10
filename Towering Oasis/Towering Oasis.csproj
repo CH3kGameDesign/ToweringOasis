@@ -304,8 +304,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Animations\deleteme1.cs" />
-    <Compile Include="Assets\Particles\deleteme3.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -361,6 +359,10 @@
     <Compile Include="Assets\Scripts\Actor\Units\Melee.cs" />
     <Compile Include="Assets\Scripts\Actor\Units\Ranged.cs" />
     <Compile Include="Assets\Scripts\Actor\Units\Support.cs" />
+    <Compile Include="Assets\Scripts\AI\AIManager.cs" />
+    <Compile Include="Assets\Scripts\AI\AIMelee.cs" />
+    <Compile Include="Assets\Scripts\AI\AIRanged.cs" />
+    <Compile Include="Assets\Scripts\AI\AISupport.cs" />
     <Compile Include="Assets\Scripts\Animations\PopupHealth.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Controllers\Controller.cs" />
