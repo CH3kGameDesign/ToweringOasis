@@ -87,7 +87,7 @@ public class AIMelee : MonoBehaviour {
 
             FindPath(thisPos, thatPos);
             distanceToPlayers[i] = path.Count;
-
+			Debug.Log ("Player " + i + ": Closest Neighbour = " + Neighbours[closestNeighbour].m_v3WorldPosition);
             if (i == 0)
             {
                 closestPlayer = i;
@@ -112,21 +112,32 @@ public class AIMelee : MonoBehaviour {
                     Node player2 = Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(i).transform.position);
 
                     Vector3 thisPos = transform.position;
-                    Vector3 thatPos = new Vector3(thisPos.x + 10, 0, thisPos.z + 10);
+                    Vector3 thatPos = new Vector3(thisPos.x + 2, 0, thisPos.z + 2);
                     FindPath(thisPos, thatPos);
-                    List<Node> DestinationList = new List<Node>();
+					List<Node> DestinationList = new List<Node>();
+					for (int j = 0; j < 10; j++) {
+						DestinationList.Add (path [0]);
+					}
 
                     if (player1.m_v2GridCoordinate.x == player2.m_v2GridCoordinate.x || player1.m_v2GridCoordinate.y == player2.m_v2GridCoordinate.y)
                     {
                         for (int j = 0; j < Neighbours1.Count; j++)
                         {
+							Debug.Log ("1 " + j);
                             for (int k = 0; k < Neighbours2.Count; k++)
                             {
+								Debug.Log ("2 " + k);
                                 if (Neighbours1[j] == Neighbours2[k])
                                 {
-                                    FindPath(thisPos, Neighbours1[j].m_v3WorldPosition);
-                                    if (path.Count < DestinationList.Count)
+									FindPath(thisPos, Neighbours1[j].m_v3WorldPosition);
+									Debug.Log ("3 " + j + " " + k + " Path.Count = " + path.Count + " < " + DestinationList.Count);
+
+                                    if (path.Count <= DestinationList.Count)
                                     {
+										for (int m= 0; m < path.Count; m++) {
+											Debug.Log("path[" + m + "] = " + path[m].m_v3WorldPosition);
+										}
+										Debug.Log ("Destination " + Neighbours1[j].m_v3WorldPosition);
                                         thatPos = Neighbours1[j].m_v3WorldPosition;
                                         DestinationList = path;
                                     }

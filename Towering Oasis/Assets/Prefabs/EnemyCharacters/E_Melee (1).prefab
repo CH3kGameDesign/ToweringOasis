@@ -29,7 +29,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 127
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1633910000477394
 GameObject:
@@ -1177,6 +1177,9 @@ MonoBehaviour:
   hasMoved: 0
   hasAttacked: 0
   closestPlayer: 0
+  ChainsawAttackRange: {fileID: 0}
+  Destination: {x: 0, y: 0, z: 0}
+  movementSpeed: 0.3
   m_DebugPath: 0
 --- !u!114 &114954807814902460
 MonoBehaviour:
