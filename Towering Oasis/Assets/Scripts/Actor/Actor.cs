@@ -15,7 +15,6 @@ public class Actor : MonoBehaviour
 	public Vector3 m_ActorPos;
 
 	// How many tiles is this actor allowed to move
-	[HideInInspector]
 	public int m_nHowManyTiles;
 
 	// Character that this character is attacked by
