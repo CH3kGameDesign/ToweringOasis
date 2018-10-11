@@ -17,12 +17,16 @@ public class AIMelee : MonoBehaviour {
     public bool hasMoved;
     public bool hasAttacked;
 
-    private List<int> distanceToPlayers;
+    private List<int> distanceToPlayers = new List<int>();
     public int closestPlayer;
     private int distanceToExit;
     private int enemyDistanceToExit;
-    
 
+    public GameObject ChainsawAttackRange;
+
+    public Vector3 Destination;
+
+    public float movementSpeed = 0.3f;
 
 
 
@@ -58,13 +62,28 @@ public class AIMelee : MonoBehaviour {
             distanceToPlayers[i] = 100;
         }
 
-            for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
+        for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
         {
-            Debug.Log("try " + i);
             Transform playerChar = GameObject.Find("PlayerCharacters").transform.GetChild(i).transform;
 
             Vector3 thisPos = transform.position;
             Vector3 thatPos = playerChar.position;
+
+            int closestNeighbour = 0;
+            int howCloseNeighbour = 100;
+            List<Node> Neighbours = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(thatPos));
+            for (int j = 0; j < Neighbours.Count; j++)
+            {
+                FindPath(thisPos, Neighbours[j].m_v3WorldPosition);
+                Debug.Log(path.Count + " < " + howCloseNeighbour);
+                 if (path.Count < howCloseNeighbour)
+                 {
+                    Debug.Log(path.Count + " < " + howCloseNeighbour + " won");
+                    closestNeighbour = j;
+                    howCloseNeighbour = path.Count;
+                 }
+            }
+            thatPos = Neighbours[closestNeighbour].m_v3WorldPosition;
 
             FindPath(thisPos, thatPos);
             distanceToPlayers[i] = path.Count;
@@ -73,41 +92,89 @@ public class AIMelee : MonoBehaviour {
             {
                 closestPlayer = i;
             } else
-            if (distanceToPlayers[i] > distanceToPlayers[i - 1])
+            if (distanceToPlayers[i] < distanceToPlayers[closestPlayer])
             {
                 closestPlayer = i;
             }
         }
+        //Check Each AI's Closest Player
+        Debug.Log(gameObject.name + " = " + closestPlayer + " (Closest Player) " + distanceToPlayers[closestPlayer] + " (Distance)");
 
-        if (distanceToPlayers[closestPlayer] <= 5)
+        if (distanceToPlayers[closestPlayer] <= 4)
         {
-            //for (int i = 0; i < length; i++)
-            //{
-            //    Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).transform.position))
-            //}
-            //if (Is It Possible To Hit Multiple People)
+            List<Node> Neighbours1 = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).transform.position));
+            for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
             {
-                //if (Enemies Hit > Allies Hit)
+                if (i != closestPlayer)
                 {
-                    //if (Enemies Killed >= Allies Killed)
+                    List<Node> Neighbours2 = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(i).transform.position));
+                    Node player1 = Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).transform.position);
+                    Node player2 = Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(i).transform.position);
+
+                    Vector3 thisPos = transform.position;
+                    Vector3 thatPos = new Vector3(thisPos.x + 10, 0, thisPos.z + 10);
+                    FindPath(thisPos, thatPos);
+                    List<Node> DestinationList = new List<Node>();
+
+                    if (player1.m_v2GridCoordinate.x == player2.m_v2GridCoordinate.x || player1.m_v2GridCoordinate.y == player2.m_v2GridCoordinate.y)
                     {
-                        //Hit Most Possible enemies with chainsaw
-                        return;
+                        for (int j = 0; j < Neighbours1.Count; j++)
+                        {
+                            for (int k = 0; k < Neighbours2.Count; k++)
+                            {
+                                if (Neighbours1[j] == Neighbours2[k])
+                                {
+                                    FindPath(thisPos, Neighbours1[j].m_v3WorldPosition);
+                                    if (path.Count < DestinationList.Count)
+                                    {
+                                        thatPos = Neighbours1[j].m_v3WorldPosition;
+                                        DestinationList = path;
+                                    }
+                                }
+                            }
+                        }
+                        if (DestinationList.Count < 7)
+                        {
+                            Debug.Log("New Destination");
+                            FindPath(thisPos, thatPos);
+                            if (path.Count <= 4)
+                            {
+                                Destination = thatPos;
+                                Debug.Log(gameObject.name + " = " + Destination + " (Destination)");
+                                ChainsawAttack();
+                                return;
+                            }
+                        }
                     }
                 }
             }
-            if (GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).GetComponent<Melee>().m_nHealth < kickAttackMinDamage)
+            if (GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).GetComponent<Actor>().m_nHealth < kickAttackMinDamage)
             {
                 //Kick Them
                 return;
             }
             //if (How Far Away From The Objective Can You Kick Them (> Current Distance = true))
+            //{
+            //Kick Them
+            //return;
+            //}
+
+            List<Node> Neighbours = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).transform.position));
+
+            int closestNeighbour = 0;
+            int howCloseNeighbour = 100;
+            for (int j = 0; j < Neighbours.Count; j++)
             {
-                //Kick Them
-                return;
+                FindPath(transform.position, Neighbours[j].m_v3WorldPosition);
+                if (path.Count < howCloseNeighbour)
+                {
+                    closestNeighbour = j;
+                    howCloseNeighbour = path.Count;
+                }
             }
-            //Chainsaw Them
-            return;
+            Destination = Neighbours[closestNeighbour].m_v3WorldPosition;
+
+            ChainsawAttack();
         }
         //if (Can You Kick Ally Within 1 Block Of Them)
         {
@@ -122,10 +189,7 @@ public class AIMelee : MonoBehaviour {
                         {
                             if (other.GetComponent<AIMelee>().hasMoved == false)
                             {
-                                //if (!Is Ally Already Within 1 Block Of Them)
-                                {
-                                    //Kick Ally Closer
-                                }
+                                //Kick Ally Closer
                             }
                         }
                     }
@@ -141,10 +205,7 @@ public class AIMelee : MonoBehaviour {
                         {
                             if (other.GetComponent<AIRanged>().hasMoved == false)
                             {
-                                //if (!Is Ally Already Within 1 Block Of Them)
-                                {
-                                    //Kick Ally Closer
-                                }
+                                //Kick Ally Closer
                             }
                         }
                     }
@@ -155,21 +216,84 @@ public class AIMelee : MonoBehaviour {
         {
             if (health < healthMax/2)
             {
-                //if (Is Healing Area Within 4 Blocks)
+                for (int i = 0; i < GameObject.Find("HealthTiles").transform.childCount; i++)
                 {
-                    //Move Towards Closest Healing Area
+                    Transform healthTile = GameObject.Find("PlayerCharacters").transform.GetChild(i).transform;
+
+                    Vector3 thisPos = transform.position;
+                    Vector3 thatPos = healthTile.position;
+                    
+                    FindPath(thisPos, thatPos);
+                    if (path.Count < 4 && hasMoved == false)
+                    {
+                        //Move Towards HealthTile
+                        return;
+                    }
                 }
             }
         }
         //Move Towards Enemy Closest To Exit
     }
 
+    private void ChainsawAttack ()
+    {
+        FindPath(transform.position, Destination);
+
+        transform.position = new Vector3 (Destination.x, 1, Destination.z);
+
+        /*
+        for (int i = 0; i < path.Count; i++)
+        {
+            Debug.Log("path Variable " + i + " = " + path[i].m_v2GridCoordinate);
+            StartCoroutine(FollowPath(path));
+        }
+        */
+        
+        ChainsawAttackRange.SetActive(true);
+        int howManyHit = 0;
+        int bestRotation = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            ChainsawAttackRange.GetComponent<AIAttackRange>().m_whoWasAttacked.Clear();
+            ChainsawAttackRange.transform.localRotation = Quaternion.Euler(ChainsawAttackRange.transform.localRotation.x, 90 * i, ChainsawAttackRange.transform.localRotation.z);
+            if (ChainsawAttackRange.GetComponent<AIAttackRange>().howManyHit > howManyHit)
+            {
+                howManyHit = ChainsawAttackRange.GetComponent<AIAttackRange>().howManyHit;
+                bestRotation = i;
+            }
+        }
+        if (bestRotation != 3)
+        {
+            ChainsawAttackRange.GetComponent<AIAttackRange>().m_whoWasAttacked.Clear();
+        }
+        ChainsawAttackRange.transform.localRotation = Quaternion.Euler(ChainsawAttackRange.transform.localRotation.x, 90 * bestRotation, ChainsawAttackRange.transform.localRotation.z);
+        ChainsawAttackRange.GetComponent<AIAttackRange>().StartAttack();
+        Invoke("TurnOffAttack", 1f);
+        
+        return;
+    }
+
+    public void TurnOffAttack ()
+    {
+        ChainsawAttackRange.GetComponent<AIAttackRange>().EndAttack();
+        ChainsawAttackRange.SetActive(false);
+    }
 
 
 
 
 
-
+    IEnumerator FollowPath(List<Node> path)
+    {
+        foreach (Node waypoint in path)
+        {
+            Vector3 pathNodePos = waypoint.m_v3WorldPosition;
+            pathNodePos.y = 1.0f;
+            transform.position = pathNodePos;
+            GetComponent<Actor>().m_ActorPos = pathNodePos;
+            yield return new WaitForSeconds(movementSpeed); // skips frames
+        }
+    }
 
     public void FindPath(Vector3 startPos, Vector3 endPos)
     {
@@ -197,7 +321,8 @@ public class AIMelee : MonoBehaviour {
 
             foreach (Node neighbour in Neighbours)
             {
-                if (!neighbour.m_bWalkable /*|| neighbour.m_bIsUnitOnTop*/ || closedList.Contains(neighbour))
+
+                if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
                     continue;
 
                 int newMovementCostToNeighbour = currentNode.m_nGCost + GetDistance(currentNode, neighbour);
