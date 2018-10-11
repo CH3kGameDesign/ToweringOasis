@@ -100,8 +100,11 @@ MonoBehaviour:
   m_ActorPrefab: {fileID: 4337840711319410}
   m_ActorRenderer: {fileID: 23472392310981066}
   m_ActorPos: {x: 1.5700002, y: 1, z: -0.53999996}
+  m_nHealth: 100
   m_nHowManyTiles: 1
-  m_whoWasAttacked: {fileID: 0}
+  m_nDamage: 0
+  m_whoWasAttacked:
+  - {fileID: 0}
 --- !u!136 &136433092191796616
 CapsuleCollider:
   m_ObjectHideFlags: 1

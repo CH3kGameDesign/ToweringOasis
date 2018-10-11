@@ -7,8 +7,6 @@ public class Ranged : Actor
 	public override void Start()
 	{
 		base.Start();
-		m_nHowManyTiles = 2;
-		m_nDamage = 20;
 	}
 
 	public override void Update()

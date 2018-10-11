@@ -14,15 +14,15 @@ public class Actor : MonoBehaviour
 	[HideInInspector]
 	public Vector3 m_ActorPos;
 
-	// How many tiles is this actor allowed to move
-	public int m_nHowManyTiles;
+    // How many tiles is this actor allowed to move
+    public int m_nHealth;
+    public int m_nHowManyTiles;
+    public int m_nDamage;
 
-	// Character that this character is attacked by
-	[HideInInspector]
+    // Character that this character is attacked by
+    [HideInInspector]
 	public List<Actor> m_whoWasAttacked = new List<Actor>();
 
-	public int m_nHealth { get; set; }	
-	public int m_nDamage { get; set; }
 
 	public virtual void Start()
 	{
@@ -30,7 +30,6 @@ public class Actor : MonoBehaviour
 		m_ActorPrefab = this.transform;
 		m_ActorRenderer = GetComponent<Renderer>();
 		m_ActorPos = m_ActorPrefab.position;
-		m_nHealth = 100;
 	}
 
 	public virtual void Update()

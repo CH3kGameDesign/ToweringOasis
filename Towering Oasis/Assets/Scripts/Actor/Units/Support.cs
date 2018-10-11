@@ -7,8 +7,6 @@ public class Support : Actor
 	public override void Start()
 	{
 		base.Start();
-		m_nHowManyTiles = 1;
-		m_nDamage = 30;
 	}
 
 	public override void Update()

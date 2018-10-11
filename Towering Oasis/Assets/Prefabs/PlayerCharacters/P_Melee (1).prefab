@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1354407967531964}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.48, y: 1, z: -1.44}
+  m_LocalPosition: {x: 2.48, y: 1, z: -4.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -101,7 +101,10 @@ MonoBehaviour:
   m_ActorRenderer: {fileID: 0}
   m_ActorPos: {x: 0, y: 0, z: 0}
   m_nHowManyTiles: 0
-  m_whoWasAttacked: {fileID: 0}
+  m_nHealth: 100
+  m_nDamage: 0
+  m_whoWasAttacked:
+  - {fileID: 0}
 --- !u!136 &136571689241265132
 CapsuleCollider:
   m_ObjectHideFlags: 1

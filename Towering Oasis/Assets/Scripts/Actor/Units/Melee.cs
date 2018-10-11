@@ -7,8 +7,6 @@ public class Melee : Actor
 	public override void Start()
 	{
 		base.Start();
-		m_nHowManyTiles = 3;
-		m_nDamage = 10;
 	}
 
 	public override void Update()
