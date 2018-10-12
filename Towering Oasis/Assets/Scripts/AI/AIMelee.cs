@@ -28,6 +28,8 @@ public class AIMelee : MonoBehaviour {
 
     public float movementSpeed = 0.3f;
 
+    public bool DebugTrue = false;
+
 
 
 
@@ -40,7 +42,7 @@ public class AIMelee : MonoBehaviour {
 
 
 
-
+    
     // Use this for initialization
     void Start () {
         health = healthMax;
@@ -75,10 +77,12 @@ public class AIMelee : MonoBehaviour {
             for (int j = 0; j < Neighbours.Count; j++)
             {
                 FindPath(thisPos, Neighbours[j].m_v3WorldPosition);
-                Debug.Log(path.Count + " < " + howCloseNeighbour);
+                if (DebugTrue)
+                    Debug.Log(path.Count + " < " + howCloseNeighbour);
                  if (path.Count < howCloseNeighbour)
                  {
-                    Debug.Log(path.Count + " < " + howCloseNeighbour + " won");
+                    if (DebugTrue)
+                        Debug.Log(path.Count + " < " + howCloseNeighbour + " won");
                     closestNeighbour = j;
                     howCloseNeighbour = path.Count;
                  }
@@ -87,7 +91,8 @@ public class AIMelee : MonoBehaviour {
 
             FindPath(thisPos, thatPos);
             distanceToPlayers[i] = path.Count;
-			Debug.Log ("Player " + i + ": Closest Neighbour = " + Neighbours[closestNeighbour].m_v3WorldPosition);
+            if (DebugTrue)
+                Debug.Log ("Player " + i + ": Closest Neighbour = " + Neighbours[closestNeighbour].m_v3WorldPosition);
             if (i == 0)
             {
                 closestPlayer = i;
@@ -123,21 +128,26 @@ public class AIMelee : MonoBehaviour {
                     {
                         for (int j = 0; j < Neighbours1.Count; j++)
                         {
-							Debug.Log ("1 " + j);
+                            if (DebugTrue)
+                                Debug.Log ("1 " + j);
                             for (int k = 0; k < Neighbours2.Count; k++)
                             {
-								Debug.Log ("2 " + k);
+                                if (DebugTrue)
+                                    Debug.Log ("2 " + k);
                                 if (Neighbours1[j] == Neighbours2[k])
                                 {
 									FindPath(thisPos, Neighbours1[j].m_v3WorldPosition);
-									Debug.Log ("3 " + j + " " + k + " Path.Count = " + path.Count + " < " + DestinationList.Count);
+                                    if (DebugTrue)
+                                        Debug.Log ("3 " + j + " " + k + " Path.Count = " + path.Count + " < " + DestinationList.Count);
 
                                     if (path.Count <= DestinationList.Count)
                                     {
 										for (int m= 0; m < path.Count; m++) {
-											Debug.Log("path[" + m + "] = " + path[m].m_v3WorldPosition);
+                                            if (DebugTrue)
+                                                Debug.Log("path[" + m + "] = " + path[m].m_v3WorldPosition);
 										}
-										Debug.Log ("Destination " + Neighbours1[j].m_v3WorldPosition);
+                                        if (DebugTrue)
+                                            Debug.Log ("Destination " + Neighbours1[j].m_v3WorldPosition);
                                         thatPos = Neighbours1[j].m_v3WorldPosition;
                                         DestinationList = path;
                                     }
@@ -146,12 +156,14 @@ public class AIMelee : MonoBehaviour {
                         }
                         if (DestinationList.Count < 7)
                         {
-                            Debug.Log("New Destination");
+                            if (DebugTrue)
+                                Debug.Log("New Destination");
                             FindPath(thisPos, thatPos);
                             if (path.Count <= 4)
                             {
                                 Destination = thatPos;
-                                Debug.Log(gameObject.name + " = " + Destination + " (Destination)");
+                                if (DebugTrue)
+                                    Debug.Log(gameObject.name + " = " + Destination + " (Destination)");
                                 ChainsawAttack();
                                 return;
                             }
@@ -251,7 +263,7 @@ public class AIMelee : MonoBehaviour {
         FindPath(transform.position, Destination);
 
         transform.position = new Vector3 (Destination.x, 1, Destination.z);
-
+        
         /*
         for (int i = 0; i < path.Count; i++)
         {
@@ -261,27 +273,12 @@ public class AIMelee : MonoBehaviour {
         */
         
         ChainsawAttackRange.SetActive(true);
-        int howManyHit = 0;
-        int bestRotation = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            ChainsawAttackRange.GetComponent<AIAttackRange>().m_whoWasAttacked.Clear();
-            ChainsawAttackRange.transform.localRotation = Quaternion.Euler(ChainsawAttackRange.transform.localRotation.x, 90 * i, ChainsawAttackRange.transform.localRotation.z);
-            if (ChainsawAttackRange.GetComponent<AIAttackRange>().howManyHit > howManyHit)
-            {
-                howManyHit = ChainsawAttackRange.GetComponent<AIAttackRange>().howManyHit;
-                bestRotation = i;
-            }
-        }
-        if (bestRotation != 3)
-        {
-            ChainsawAttackRange.GetComponent<AIAttackRange>().m_whoWasAttacked.Clear();
-        }
-        ChainsawAttackRange.transform.localRotation = Quaternion.Euler(ChainsawAttackRange.transform.localRotation.x, 90 * bestRotation, ChainsawAttackRange.transform.localRotation.z);
-        ChainsawAttackRange.GetComponent<AIAttackRange>().StartAttack();
-        Invoke("TurnOffAttack", 1f);
-        
+        ChainsawAttackRange.GetComponent<AIAttackRange>().CheckAttack();
+
+        //Invoke("TurnOffAttack", 1f);
+
         return;
+
     }
 
     public void TurnOffAttack ()
@@ -290,6 +287,8 @@ public class AIMelee : MonoBehaviour {
         ChainsawAttackRange.SetActive(false);
     }
 
+
+    
 
 
 
@@ -375,5 +374,5 @@ public class AIMelee : MonoBehaviour {
         //Link: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#S7
         return 10 * (dstX + dstY) + (14 - 2 * 10) * Mathf.Min(dstX, dstY);
     }
-
+    
 }
