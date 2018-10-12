@@ -54,7 +54,7 @@ public class AIMelee : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.anyKeyDown) DecideMove();
+        //if (Input.anyKeyDown) DecideMove();
     }
 
     public void DecideMove ()
