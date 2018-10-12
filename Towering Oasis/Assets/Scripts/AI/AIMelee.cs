@@ -54,7 +54,7 @@ public class AIMelee : MonoBehaviour {
 
     private void Update()
     {
-        //if (Input.anyKeyDown) DecideMove();
+        if (Input.anyKeyDown) DecideMove();
     }
 
     public void DecideMove ()
@@ -105,7 +105,7 @@ public class AIMelee : MonoBehaviour {
         //Check Each AI's Closest Player
         Debug.Log(gameObject.name + " = " + closestPlayer + " (Closest Player) " + distanceToPlayers[closestPlayer] + " (Distance)");
 
-        if (distanceToPlayers[closestPlayer] <= 4)
+        if (distanceToPlayers[closestPlayer] <= movementSpaces)
         {
             List<Node> Neighbours1 = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(GameObject.Find("PlayerCharacters").transform.GetChild(closestPlayer).transform.position));
             for (int i = 0; i < GameObject.Find("PlayerCharacters").transform.childCount; i++)
@@ -154,7 +154,7 @@ public class AIMelee : MonoBehaviour {
                                 }
                             }
                         }
-                        if (DestinationList.Count < 7)
+                        if (DestinationList.Count < 9)
                         {
                             if (DebugTrue)
                                 Debug.Log("New Destination");
