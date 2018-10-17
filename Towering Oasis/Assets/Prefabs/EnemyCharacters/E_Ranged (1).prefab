@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 23093187612180694}
   - component: {fileID: 54866283147592186}
   - component: {fileID: 114903507252042442}
-  - component: {fileID: 114398316192151984}
   m_Layer: 10
   m_Name: E_Ranged (1)
   m_TagString: Enemy
@@ -845,32 +844,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityType: 0
---- !u!114 &114398316192151984
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1589291378986992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1607ad2d177252489153249ebfda061, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flameAttackMinDamage: 0
-  flameAttackDamageRange: 0
-  grenadeAttackMinDamage: 0
-  grenadeAttackDamageRange: 0
-  movementSpaces: 4
-  health: 0
-  healthMax: 0
-  hasMoved: 0
-  hasAttacked: 0
-  closestPlayer: 0
-  FlameAttackRange: {fileID: 1513821827566976}
-  Destination: {x: 0, y: 0, z: 0}
-  movementSpeed: 0.3
-  DebugTrue: 0
-  m_DebugPath: 0
 --- !u!114 &114491522903991528
 MonoBehaviour:
   m_ObjectHideFlags: 1

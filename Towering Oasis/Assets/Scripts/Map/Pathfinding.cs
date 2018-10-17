@@ -17,7 +17,7 @@ public class Pathfinding : MonoBehaviour
 			Destroy(gameObject);
 	}
 
-	public void FindPath(Vector3 startPos, Vector3 endPos)
+	public void FindPath(Vector3 startPos, Vector3 endPos, bool isGettingDistance = true, bool isAStar = true)
     {
 		// If there is already a path clear it
         if (path.Count > 0)
@@ -60,14 +60,14 @@ public class Pathfinding : MonoBehaviour
 				// to another node
             foreach (Node neighbour in Neighbours)
             {
-                if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
+                if (!neighbour.m_bWalkable || (neighbour.m_bIsUnitOnTop && isGettingDistance) || closedList.Contains(neighbour))
                     continue;
 
-                int newMovementCostToNeighbour = currentNode.m_nGCost + GetDistance(currentNode, neighbour);
+                int newMovementCostToNeighbour = currentNode.m_nGCost + GetDistance(currentNode, neighbour, isAStar);
                 if (newMovementCostToNeighbour < neighbour.m_nGCost || !openList.Contains(neighbour))
                 {
                     neighbour.m_nGCost = newMovementCostToNeighbour;
-                    neighbour.m_nHCost = GetDistance(currentNode, endNode);
+                    neighbour.m_nHCost = GetDistance(currentNode, endNode, isAStar);
                     neighbour.m_parent = currentNode;
 
                     if (!openList.Contains(neighbour))
@@ -94,13 +94,20 @@ public class Pathfinding : MonoBehaviour
         path.Reverse();
     }
 
-    private int GetDistance(Node nodeA, Node nodeB)
+    public int GetDistance(Node nodeA, Node nodeB, bool isAStar)
     {
-        int dstX = (int)Mathf.Abs(nodeA.m_v2GridCoordinate.x - nodeB.m_v2GridCoordinate.x);
-        int dstY = (int)Mathf.Abs(nodeA.m_v2GridCoordinate.y - nodeB.m_v2GridCoordinate.y);
+		if (isAStar)
+		{
+			int dstX = (int)Mathf.Abs(nodeA.m_v2GridCoordinate.x - nodeB.m_v2GridCoordinate.x);
+			int dstY = (int)Mathf.Abs(nodeA.m_v2GridCoordinate.y - nodeB.m_v2GridCoordinate.y);
 
-        //Heuristic seen from redblobgames Diagonal distance
+			//Heuristic seen from redblobgames Diagonal distance
 			//Link: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#S7
-        return 10 * (dstX + dstY) + (14 - 2 * 10) * Mathf.Min(dstX, dstY);
+			return 10 * (dstX + dstY) + (14 - 2 * 10) * Mathf.Min(dstX, dstY);
+		}
+		else
+		{
+			return 0;
+		}
     }
 }

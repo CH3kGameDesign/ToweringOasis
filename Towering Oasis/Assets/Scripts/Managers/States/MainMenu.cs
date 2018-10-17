@@ -6,22 +6,31 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : BaseState
 {
-    //Get Panels for Switching
-    public GameObject m_MainMenuPanel;
-    public GameObject m_SettingPanel;
+	private void Start()
+	{
+		m_stateName = GameStates.MAINMENU;
+	}
 
-    //Load Scene "MainScene" when button is pressed
-    public void PlayGameButtonOnClick()
-    {
-        SceneManager.LoadScene(1);
+	private void FixedUpdate()
+	{
+		
+	}
+	
+	//Load Scene "MainScene" when button is pressed
+	public void PlayGameButtonOnClick()
+	{
+		int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+		GameManager.Instance.m_nLevelsLoaded.Add(level);
+		SceneManager.LoadScene(level);
     }
 
     //Switch Panel to Settings Panel
     public void SettingsButtonOnClick()
-    {
-        m_MainMenuPanel.SetActive(false);
-        m_SettingPanel.SetActive(true);
-    }
+	{
+		GameManager.Instance.m_PrevMenu = GameManager.Instance.m_MainMenuPanel;
+		GameManager.Instance.m_MainMenuPanel.SetActive(false);
+		GameManager.Instance.m_SettingPanel.SetActive(true);
+	}
         
     //Quit Game when button is pressed
     public void QuitGameOnClick()

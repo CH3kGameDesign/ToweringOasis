@@ -1,54 +1,67 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public enum EnumGameState
+public enum GameStates
 {
-    MAINMENU,
-    PAUSEMENU,
-    GAME,
-    GAMEOVER,
+	MAINMENU,
+	SETTINGS,
+	PAUSED,
+	GAME,
+	GAMEOVER,
 
-    COUNT
+	COUNT
 }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+	public GameStates m_currentState;
 
-    public BaseState m_currentState;
-    public bool m_bchangeStateOccured;
+	public List<int> m_nLevelsLoaded;
+	public int m_nPlayerMoves;
+    public bool m_bcontrolsAvailable;
+	public bool m_isGameOver;
 
-    private void Start()
+	public GameObject m_MainMenuPanel;
+	public GameObject m_PauseMenuPanel;
+	public GameObject m_SettingPanel;
+	public GameObject m_GameOverPanel;
+	public GameObject m_PrevMenu;
+
+	private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
 
-        m_bchangeStateOccured = false;
-        DontDestroyOnLoad(gameObject);
-    }
+		m_nLevelsLoaded = new List<int>();
+		m_bcontrolsAvailable = true;
 
-    private void Update()
-    {
-        if (m_currentState == null)
-            m_currentState = MainMenu.Instance;
+		if (SceneManager.GetActiveScene().buildIndex != 0)
+			DontDestroyOnLoad(transform.gameObject);
+	}
 
-        if (m_bchangeStateOccured)
-        {
-            m_currentState.StartState();   
-            m_bchangeStateOccured = false;
-        }
-        
-        m_currentState.UpdateState();
+	private void Update()
+	{
+		if(m_nPlayerMoves >= 4)
+		{
+			m_bcontrolsAvailable = false;
+			Transform Player = UnitManager.Instance.m_Parent[0];
 
+			for (int i = 0; i < Player.childCount; i++)
+			{
+				Actor p = Player.GetChild(i).GetComponent<Actor>();
+				p.m_bAttack = false;
+				p.m_bMoved = false;
+			}
+		}
+	}
 
-    }
-    public void ChangeState(BaseState state)
-    {
-        m_currentState.EndState();
-        m_currentState = state;
-        m_bchangeStateOccured = true;
-    }
+	public void OnApplicationQuit()
+	{
+		Instance = null;
+	}
 }

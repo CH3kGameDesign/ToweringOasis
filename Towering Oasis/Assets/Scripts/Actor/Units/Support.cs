@@ -7,6 +7,7 @@ public class Support : Actor
 	public override void Start()
 	{
 		base.Start();
+		m_classType = "support";
 	}
 
 	public override void Update()
@@ -28,7 +29,7 @@ public class Support : Actor
 		Vector3 pos = transform.position + transform.forward;
 		Node attackNode = Map.Instance.GetNodeFromPosition(pos);
 
-		List<Node> attackNodes = Map.Instance.GetAttackTiles(attackNode, Map.Instance.GetNodeFromPosition(transform.position));
+		List<Node> attackNodes = GetAttackTiles(attackNode, Map.Instance.GetNodeFromPosition(transform.position));
 
 		// Goes thru each node getting its position
 		// and spawn a attacktile

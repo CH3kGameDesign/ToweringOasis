@@ -30,122 +30,157 @@ public class PlayerController : Controller
 		// Initalise defaults
 		MoveableTileHolder = new GameObject("MoveableTileHolder").transform;
 		m_playerMode = PLAYERMODE.IDLE;
+
+		// Assign tiles actors and obstacles are on
+		Map.Instance.UpdateUnitOnTop();
+
 	}
 
 	private void Update()
 	{
-		// Assign tiles actors and obstacles are on
-		Map.Instance.UpdateUnitOnTop();
-
-		// Cast a ray and assign a hit variable
-		RaycastHit hit;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-		// If ray hits something
-		if (Physics.Raycast(ray, out hit))
+		if (Input.GetKeyDown(KeyCode.O))
 		{
-			// If its a player and leftclick is performed while m_nleftclick is 0
-			if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0)
+			Actor[] players = GetComponentsInChildren<Actor>();
+			foreach (Actor p in players)
 			{
-				// Get its actor component, initialise its actorpos
-				m_Player = hit.transform.GetComponent<Actor>();
-				m_v3PlayerTilePos = m_Player.m_ActorPos;
-				m_v3PlayerTilePos.y = 0.1f;
-
-				// Get the Player Pos
-				m_v2UiPosition = Vector2.zero;
-				m_v2UiPosition.x = Input.mousePosition.x;
-				m_v2UiPosition.y = Screen.height - Input.mousePosition.y;
-
-				// Show UI(attack/move buttons)
-				if (m_Player != null)
-					m_bshowUI = true;
+				p.m_nHealth = -10;
+				UnitManager.Instance.m_nPlayersAlive--;
 			}
+		}
 
-			// If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
-			if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
+		if (GameManager.Instance.m_bcontrolsAvailable)
+		{
+			// Cast a ray and assign a hit variable
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			// If ray hits something
+			if (Physics.Raycast(ray, out hit) && !m_bshowUI)
 			{
-				// Find the path from player to the tile that is clicked
-				Pathfinding.Instance.FindPath(m_v3PlayerTilePos, hit.transform.position);
-
-				// Move to next node after seconds assigned as m_fPlayerMovementSpeed
-				for (int i = 0; i < Pathfinding.Instance.path.Count; i++)
+				// If its a player and leftclick is performed while m_nleftclick is 0
+				if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0)
 				{
-					StartCoroutine(FollowPath(Pathfinding.Instance.path));
+					// Get its actor component, initialise its actorpos
+					m_Player = hit.transform.GetComponent<Actor>();
+					m_v3PlayerTilePos = m_Player.m_ActorPos;
+					m_v3PlayerTilePos.y = 0.1f;
+
+					// Get the Player Pos
+					m_v2UiPosition = Vector2.zero;
+					m_v2UiPosition.x = Input.mousePosition.x;
+					m_v2UiPosition.y = Screen.height - Input.mousePosition.y;
+
+					// Show UI(attack/move buttons)
+					if (m_Player != null)
+						m_bshowUI = true;
 				}
 
-				// After we have reached the endTile destroy all moveable tiles
-				for (int i = 0; i < MoveableTileHolder.transform.childCount; i++)
+				// If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
+				if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
 				{
-					Destroy(MoveableTileHolder.transform.GetChild(i).gameObject);
-				}
+					// Find the path from player to the tile that is clicked
+					Pathfinding.Instance.FindPath(m_v3PlayerTilePos, hit.transform.position);
 
-				// If we wanna debug the path taken we draw it again after destroying every moveable tile
-				if (Pathfinding.Instance.m_DebugPath)
-				{
-					foreach (Node n in Pathfinding.Instance.path)
+					// Move to next node after seconds assigned as m_fPlayerMovementSpeed
+					for (int i = 0; i < Pathfinding.Instance.path.Count; i++)
 					{
-						Vector3 tempPos = n.m_v3WorldPosition;
-						tempPos.y = 0.1f;
-						Transform tempWalkableTile = Instantiate(
-							m_walkableprefab,
-							tempPos,
-							Quaternion.Euler(Vector3.zero));
-						tempWalkableTile.parent = MoveableTileHolder.transform;
+						StartCoroutine(FollowPath(Pathfinding.Instance.path));
 					}
+
+					// After we have reached the endTile destroy all moveable tiles
+					for (int i = 0; i < MoveableTileHolder.transform.childCount; i++)
+					{
+						Destroy(MoveableTileHolder.transform.GetChild(i).gameObject);
+					}
+
+					// If we wanna debug the path taken we draw it again after destroying every moveable tile
+					if (Pathfinding.Instance.m_DebugPath)
+					{
+						foreach (Node n in Pathfinding.Instance.path)
+						{
+							Vector3 tempPos = n.m_v3WorldPosition;
+							tempPos.y = 0.1f;
+							Transform tempWalkableTile = Instantiate(
+								m_walkableprefab,
+								tempPos,
+								Quaternion.Euler(Vector3.zero));
+							tempWalkableTile.parent = MoveableTileHolder.transform;
+						}
+					}
+					m_Player.m_bMoved = true;
+					if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
+					{
+						GameManager.Instance.m_nPlayerMoves++;
+					}
+
+					// Assign tiles actors and obstacles are on
+					Map.Instance.UpdateUnitOnTop();
+
+					// Set player mode to idle and m_nLeftClick back to 0 
+					m_playerMode = PLAYERMODE.IDLE;
+					m_nLeftClick--;
 				}
 
-				// Set player mode to idle and m_nLeftClick back to 0 
-				m_playerMode = PLAYERMODE.IDLE;
-				m_nLeftClick--;
-			}
-
-			// If player is in attack mode and we left click while m_nLeftClick is 1
-			if (m_playerMode == PLAYERMODE.ATTACK && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
-			{
-				if (m_Player.m_whoWasAttacked != null)
-					m_Player.Attack();
-
-				// We Destroy every attack tile in scene child to this player
-				for (int i = 0; i < m_Player.transform.childCount; i++)
+				// If player is in attack mode and we left click while m_nLeftClick is 1
+				if (m_playerMode == PLAYERMODE.ATTACK && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
 				{
-					Destroy(m_Player.transform.GetChild(i).gameObject);
-				}
-                m_Player.m_whoWasAttacked.Clear();
+					if (m_Player.m_whoWasAttacked != null)
+						m_Player.Attack();
 
-				// Set player mode to idle and m_nLeftClick back to 0 
-				m_playerMode = PLAYERMODE.IDLE;
-				m_nLeftClick--;
-			}
-
-			// If hold down the right click and m_player is not null
-			if (Input.GetMouseButton(1) && m_Player != null)
-			{
-				// Get the player position from screen
-				Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(m_Player.gameObject.transform.position);
-
-				// and the mose position on the screen
-				Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
-
-				// We calculate the angle between mouse position and player position
-				float angle = Mathf.Atan2(positionOnScreen.y - mouseOnScreen.y, positionOnScreen.x - mouseOnScreen.x) * Mathf.Rad2Deg;
-
-				// Set players rotation to that angle
-				m_Player.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
-
-				// Draw a line to debug player front
-				Debug.DrawRay(m_Player.gameObject.transform.position, m_Player.gameObject.transform.forward * 5, Color.red);
-
-				// If player is in attack mode
-				if (m_playerMode == PLAYERMODE.ATTACK)
-				{
-					// we want to destroy previous spawned attack tiles
+					// We Destroy every attack tile in scene child to this player
 					for (int i = 0; i < m_Player.transform.childCount; i++)
 					{
 						Destroy(m_Player.transform.GetChild(i).gameObject);
 					}
+
 					m_Player.m_whoWasAttacked.Clear();
-					m_Player.SpawnAttackTiles(m_attackprefab);
+					m_Player.m_bAttack = true;
+
+					if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
+					{
+						GameManager.Instance.m_nPlayerMoves++;
+					}
+
+					// Assign tiles actors and obstacles are on
+					Map.Instance.UpdateUnitOnTop();
+
+					// Set player mode to idle and m_nLeftClick back to 0 
+					m_playerMode = PLAYERMODE.IDLE;
+					m_nLeftClick--;
+				}
+
+				// If hold down the right click and m_player is not null
+				if (m_Player != null)
+				{
+					// Get the player position from screen
+					Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(m_Player.gameObject.transform.position);
+
+					// and the mose position on the screen
+					Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+
+					// We calculate the angle between mouse position and player position
+					float angle = Mathf.Atan2(positionOnScreen.y - mouseOnScreen.y, positionOnScreen.x - mouseOnScreen.x) * Mathf.Rad2Deg;
+
+					// Set players rotation to that angle
+					m_Player.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
+
+					// Draw a line to debug player front
+					Debug.DrawRay(m_Player.gameObject.transform.position, m_Player.gameObject.transform.forward * 5, Color.red);
+
+					// If player is in attack mode
+					if (m_playerMode == PLAYERMODE.ATTACK && !m_Player.m_bLookingDiaganol)
+					{
+						GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
+
+						// we want to destroy previous spawned attack tiles
+						for (int i = 0; i < temp.Length; i++)
+						{
+							Destroy(temp[i]);
+						}
+
+						m_Player.m_whoWasAttacked.Clear();
+						m_Player.SpawnAttackTiles(m_attackprefab);
+					}
 				}
 			}
 		}
@@ -156,38 +191,45 @@ public class PlayerController : Controller
 		// If showUI is true
 		if (m_bshowUI)
 		{
-			// Creates button and waits for input
-			if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y, 100, 35), "Move"))
+			if (!m_Player.m_bMoved)
 			{
-				// Get the neighbours out player can move on
-				List<Node> tiles = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(m_v3PlayerTilePos), m_Player.m_nHowManyTiles);
-
-				// Spawn a moveable tile on each node
-				foreach (Node n in tiles)
+				// Creates button and waits for input
+				if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y, 100, 35), "Move"))
 				{
-					Vector3 tempPos = n.m_v3WorldPosition;
-					tempPos.y = 0.1f;
-					Transform tempWalkableTile = Instantiate(
-						m_walkableprefab,
-						tempPos,
-						Quaternion.Euler(Vector3.zero));
-					tempWalkableTile.parent = MoveableTileHolder.transform;
+					// Get the neighbours out player can move on
+					List<Node> tiles = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(m_v3PlayerTilePos), m_Player.m_nHowManyTiles);
+
+					// Spawn a moveable tile on each node
+					foreach (Node n in tiles)
+					{
+						Vector3 tempPos = n.m_v3WorldPosition;
+						tempPos.y = 0.1f;
+						Transform tempWalkableTile = Instantiate(
+							m_walkableprefab,
+							tempPos,
+							Quaternion.Euler(Vector3.zero));
+						tempWalkableTile.parent = MoveableTileHolder.transform;
+					}
+
+					// Set mode to move and turn of the UI and m_nLeftCLick to 1
+					m_playerMode = PLAYERMODE.MOVE;
+					m_bshowUI = false;
+					m_nLeftClick++;
 				}
-
-				// Set mode to move and turn of the UI and m_nLeftCLick to 1
-				m_playerMode = PLAYERMODE.MOVE;
-				m_bshowUI = false;
-				m_nLeftClick++;
 			}
-			if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 40, 100, 35), "Attack"))
-			{
-				m_Player.SpawnAttackTiles(m_attackprefab);
 
-				// Set mode to attack and turn of the UI and m_nLeftCLick to 1
-				// Also calls the players attack
-				m_playerMode = PLAYERMODE.ATTACK;
-				m_bshowUI = false;
-				m_nLeftClick++;
+			if (!m_Player.m_bAttack)
+			{
+				if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 40, 100, 35), "Attack"))
+				{
+					m_Player.SpawnAttackTiles(m_attackprefab);
+
+					// Set mode to attack and turn of the UI and m_nLeftCLick to 1
+					// Also calls the players attack
+					m_playerMode = PLAYERMODE.ATTACK;
+					m_bshowUI = false;
+					m_nLeftClick++;
+				}
 			}
 		}
 	}

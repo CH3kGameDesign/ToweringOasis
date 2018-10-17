@@ -5,23 +5,46 @@ using UnityEngine.SceneManagement;
 
 public class GameState : BaseState
 {
-    public override void StartState()
-    {
+	bool islevelLoaded = false;
 
-    }
-    public override void UpdateState()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Debug.Log("hello");
-    }
+	private void Start()
+	{
+		m_stateName = GameStates.GAME;
+		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
+		GameManager.Instance.m_SettingPanel.SetActive(false);
+		GameManager.Instance.m_GameOverPanel.SetActive(false);
+	}
 
-    public override void EndState()
-    {
+	private void FixedUpdate()
+	{
+		if (!GameManager.Instance.m_isGameOver)
+		{
+			if (UnitManager.Instance.m_nPlayersAtExit == 4)
+			{
+				while (!islevelLoaded)
+				{
+					int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+					if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
+					{
+						GameManager.Instance.m_nLevelsLoaded.Add(level);
+						SceneManager.LoadScene(level);
+						islevelLoaded = true;
+						continue;
+					}
+					islevelLoaded = false;
+				}
+			}
+			else if (UnitManager.Instance.m_nPlayersAlive <= 0)
+			{
+				GameManager.Instance.m_GameOverPanel.SetActive(true);
+				GameManager.Instance.m_isGameOver = true;
+			}
 
-    }
-    public void StartClicked()
-    {
-        SceneManager.LoadScene(1);
-        GameManager.Instance.ChangeState(GameState.Instance);
-    }
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				GameManager.Instance.m_PauseMenuPanel.SetActive(true);
+				GameManager.Instance.m_bcontrolsAvailable = false;
+			}
+		}
+	}
 }

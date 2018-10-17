@@ -9,8 +9,10 @@ public class UnitManager : MonoBehaviour
 	public static UnitManager Instance = null;
 	public List<Transform> m_Parent; // Player, Enemy and obstacle parent objects
 	public List<Transform> m_Objects; // Player, Enemies and obstacles themselves
+	public int m_nPlayersAtExit;
+	public int m_nPlayersAlive = 4;
 
-    private void Awake()
+	private void Awake()
 	{
 		// Creating an instance of this class
 			// if its not already declared
