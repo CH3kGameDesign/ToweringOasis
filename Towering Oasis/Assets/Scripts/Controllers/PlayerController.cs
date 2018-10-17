@@ -55,7 +55,7 @@ public class PlayerController : Controller
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 			// If ray hits something
-			if (Physics.Raycast(ray, out hit) && !m_bshowUI)
+			if (Physics.Raycast(ray, out hit))
 			{
 				// If its a player and leftclick is performed while m_nleftclick is 0
 				if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0)
@@ -127,13 +127,14 @@ public class PlayerController : Controller
 					if (m_Player.m_whoWasAttacked != null)
 						m_Player.Attack();
 
-					// We Destroy every attack tile in scene child to this player
-					for (int i = 0; i < m_Player.transform.childCount; i++)
-					{
-						Destroy(m_Player.transform.GetChild(i).gameObject);
-					}
+                    GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
 
-					m_Player.m_whoWasAttacked.Clear();
+                    // we want to destroy previous spawned attack tiles
+                    for (int i = 0; i < temp.Length; i++)
+                    {
+                        Destroy(temp[i]);
+                    }
+
 					m_Player.m_bAttack = true;
 
 					if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
@@ -144,8 +145,10 @@ public class PlayerController : Controller
 					// Assign tiles actors and obstacles are on
 					Map.Instance.UpdateUnitOnTop();
 
-					// Set player mode to idle and m_nLeftClick back to 0 
-					m_playerMode = PLAYERMODE.IDLE;
+                    m_Player.m_whoWasAttacked.Clear();
+
+                    // Set player mode to idle and m_nLeftClick back to 0 
+                    m_playerMode = PLAYERMODE.IDLE;
 					m_nLeftClick--;
 				}
 
@@ -168,7 +171,7 @@ public class PlayerController : Controller
 					Debug.DrawRay(m_Player.gameObject.transform.position, m_Player.gameObject.transform.forward * 5, Color.red);
 
 					// If player is in attack mode
-					if (m_playerMode == PLAYERMODE.ATTACK && !m_Player.m_bLookingDiaganol)
+					if (m_playerMode == PLAYERMODE.ATTACK)
 					{
 						GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
 

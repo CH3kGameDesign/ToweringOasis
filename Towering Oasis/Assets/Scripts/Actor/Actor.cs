@@ -106,7 +106,6 @@ public class Actor : MonoBehaviour
 					}
 				}
 			}
-			m_bLookingDiaganol = false;
 		}
 
 		/// O equals the player, . equals the nodes, - equals the direction this part handles
@@ -136,14 +135,7 @@ public class Actor : MonoBehaviour
 					}
 				}
 			}
-			m_bLookingDiaganol = false;
 		}
-
-		else
-		{
-			m_bLookingDiaganol = false;
-		}
-
 		return AttackTiles;
 	}
 }

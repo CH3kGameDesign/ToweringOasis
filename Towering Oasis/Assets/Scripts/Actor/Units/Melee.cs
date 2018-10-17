@@ -46,7 +46,7 @@ public class Melee : Actor
 								tempPos,
 								Quaternion.Euler(Vector3.zero));
 
-				//tempWalkableTile.parent = transform;
+				tempWalkableTile.parent = transform;
 			}
 		}
 	}
