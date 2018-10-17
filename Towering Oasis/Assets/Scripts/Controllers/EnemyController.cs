@@ -22,8 +22,6 @@ public class Distance
 
 public class EnemyController : Controller
 {
-	public Map m_Map;
-	public Pathfinding m_AStar;
 	public List<Actor> m_Players;
 	public List<Actor> m_Enemies;
 	public List<Distance> m_distance;

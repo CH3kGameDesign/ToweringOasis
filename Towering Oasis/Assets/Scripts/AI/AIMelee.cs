@@ -101,6 +101,7 @@ public class AIMelee : MonoBehaviour {
             {
                 closestPlayer = i;
             }
+			
         }
         //Check Each AI's Closest Player
         Debug.Log(gameObject.name + " = " + closestPlayer + " (Closest Player) " + distanceToPlayers[closestPlayer] + " (Distance)");
