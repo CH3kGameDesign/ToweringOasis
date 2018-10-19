@@ -107,9 +107,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4345783362018700}
   - component: {fileID: 65544297153837888}
+  - component: {fileID: 114840054640639300}
   m_Layer: 0
   m_Name: P_SelectableAttack (1)
-  m_TagString: MovableTile
+  m_TagString: AttackTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,6 +269,17 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1821716784291312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: debc92dc11395ea4a9148db72c42d117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114840054640639300
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1921638538559112}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: debc92dc11395ea4a9148db72c42d117, type: 3}

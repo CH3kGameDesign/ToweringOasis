@@ -26,6 +26,7 @@ public class Actor : MonoBehaviour
 	// Character that this character is attacked by
 	[HideInInspector]
 	public List<Actor> m_whoWasAttacked = new List<Actor>();
+    public List<Node> individualPath = new List<Node>();
 
 
 	public virtual void Start()
@@ -48,19 +49,24 @@ public class Actor : MonoBehaviour
 
 	public virtual void Attack()
 	{
-		foreach (Actor actor in m_whoWasAttacked)
-		{
-			// Deduct health by the damage of the attacker
-			actor.m_nHealth -= this.m_nDamage;
+        Debug.Log("A Step 1");
+        foreach (Actor actor in m_whoWasAttacked)
+        {
+            Debug.Log("A Step 2");
 
-			// Create Health popup and set text which is equal to this actor's health
-			Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
-			HealthDrop.GetComponent<TextMesh>().text = actor.m_nHealth.ToString();
-		}
-	}
+            // Deduct health by the damage of the attacker
+            actor.m_nHealth -= this.m_nDamage;
+
+            Debug.Log("A Step 3");
+            // Create Health popup and set text which is equal to this actor's health
+            Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
+            HealthDrop.GetComponent<TextMesh>().text = actor.m_nHealth.ToString();
+            Debug.Log("A Step 4");
+        }
+    }
 
 
-	public virtual void SpawnAttackTiles(Transform attackPrefab)
+    public virtual void SpawnAttackTiles(Transform attackPrefab)
 	{
 		
 	}
@@ -138,4 +144,23 @@ public class Actor : MonoBehaviour
 		}
 		return AttackTiles;
 	}
+
+    public void Move(List<Node> path)
+    {
+        StartCoroutine(FollowPath(path, this));
+    }
+
+    // Is used to move the Actor tile by tile
+    IEnumerator FollowPath(List<Node> path, Actor a)
+    {
+        for (int i = 0; i < path.Count - 1 && i < a.m_nHowManyTiles; i++)
+        {
+            Vector3 pathNodePos = path[i].m_v3WorldPosition;
+            pathNodePos.y = 1.0f;
+            a.transform.position = pathNodePos;
+            a.m_ActorPos = pathNodePos;
+            yield return new WaitForSeconds(1.0f); // skips frames
+            m_bMoved = true;
+        }
+    }
 }

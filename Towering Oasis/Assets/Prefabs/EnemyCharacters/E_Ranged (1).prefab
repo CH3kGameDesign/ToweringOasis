@@ -61,7 +61,6 @@ GameObject:
   - component: {fileID: 23106416358062338}
   - component: {fileID: 33407297355325166}
   - component: {fileID: 114050592381994986}
-  - component: {fileID: 114491522903991528}
   - component: {fileID: 65842782596027510}
   m_Layer: 0
   m_Name: T_FlameAttackRange
@@ -844,20 +843,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityType: 0
---- !u!114 &114491522903991528
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1513821827566976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26a79a5414adb724b964593d7342a042, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  howManyHit: []
-  m_whoWasAttacked: []
-  DebugTrue: 0
 --- !u!114 &114550115252106780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1862,9 +1847,13 @@ MonoBehaviour:
   m_ActorPrefab: {fileID: 0}
   m_ActorRenderer: {fileID: 0}
   m_ActorPos: {x: 0, y: 0, z: 0}
+  m_classType: 
   m_nHealth: 100
   m_nHowManyTiles: 0
   m_nDamage: 0
+  m_bMoved: 0
+  m_bAttack: 0
+  m_bLookingDiaganol: 0
   m_whoWasAttacked:
   - {fileID: 0}
 --- !u!136 &136667104516064026

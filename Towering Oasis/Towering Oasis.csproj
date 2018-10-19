@@ -373,11 +373,6 @@
     <Compile Include="Assets\Scripts\Actor\Units\Melee.cs" />
     <Compile Include="Assets\Scripts\Actor\Units\Ranged.cs" />
     <Compile Include="Assets\Scripts\Actor\Units\Support.cs" />
-    <Compile Include="Assets\Scripts\AI\AIAttackRange.cs" />
-    <Compile Include="Assets\Scripts\AI\AIManager.cs" />
-    <Compile Include="Assets\Scripts\AI\AIMelee.cs" />
-    <Compile Include="Assets\Scripts\AI\AIRanged.cs" />
-    <Compile Include="Assets\Scripts\AI\AISupport.cs" />
     <Compile Include="Assets\Scripts\Animations\PopupHealth.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Controllers\Controller.cs" />
@@ -400,6 +395,7 @@
     <Compile Include="Assets\Scripts\Map\Node.cs" />
     <Compile Include="Assets\Scripts\Map\Pathfinding.cs" />
     <Compile Include="Assets\Scripts\Sprites\Billboardsprites.cs" />
+    <Compile Include="Assets\Scripts\tempPathScript.cs" />
     <Compile Include="Assets\Scripts\Tiles\AttackTiles.cs" />
     <Compile Include="Assets\Scripts\Utilities\Dijkstra.cs" />
     <Compile Include="Assets\Scripts\Utilities\Heap.cs" />
@@ -667,6 +663,7 @@
     <None Include="Assets\ShaderForge\Example Assets\Shaders\VertexAnimation.shader" />
     <None Include="Assets\ShaderForge\Example Assets\Shaders\VertexColorRounding.shader" />
     <None Include="Assets\ShaderForge\Readme.txt" />
+    <None Include="Assets\Shaders\FrameAnimTest2Normalised.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

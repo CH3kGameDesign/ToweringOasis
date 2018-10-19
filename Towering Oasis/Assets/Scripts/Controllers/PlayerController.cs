@@ -48,8 +48,8 @@ public class PlayerController : Controller
 			}
 		}
 
-		if (GameManager.Instance.m_bcontrolsAvailable)
-		{
+        if (GameManager.Instance.m_bcontrolsAvailable)
+		{            
 			// Cast a ray and assign a hit variable
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -69,9 +69,9 @@ public class PlayerController : Controller
 					m_v2UiPosition = Vector2.zero;
 					m_v2UiPosition.x = Input.mousePosition.x;
 					m_v2UiPosition.y = Screen.height - Input.mousePosition.y;
-
-					// Show UI(attack/move buttons)
-					if (m_Player != null)
+                    
+                    // Show UI(attack/move buttons)
+                    if (m_Player != null)
 						m_bshowUI = true;
 				}
 
@@ -104,6 +104,7 @@ public class PlayerController : Controller
 								m_walkableprefab,
 								tempPos,
 								Quaternion.Euler(Vector3.zero));
+
 							tempWalkableTile.parent = MoveableTileHolder.transform;
 						}
 					}

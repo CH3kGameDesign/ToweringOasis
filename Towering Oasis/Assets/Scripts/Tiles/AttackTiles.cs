@@ -10,7 +10,8 @@ public class AttackTiles : MonoBehaviour
 		{
 			Actor Player = GetComponentInParent<Actor>();
 			Actor ObjectToDamage = other.GetComponent<Actor>();
-			Player.m_whoWasAttacked.Add(ObjectToDamage);
+            
+		    Player.m_whoWasAttacked.Add(ObjectToDamage);
 		}
 	}
 }
