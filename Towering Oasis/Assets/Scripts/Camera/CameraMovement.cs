@@ -5,15 +5,12 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
 
-    public int m_nPanSlow = 20;
-    public int m_nZoomSpeed = 10;
+    public int m_nPanSpeed = 1;
     private Camera c_Cam;
-    public int m_nZoomMax = 25;
-    public int m_nZoomMin = 10;
-    public float m_fCameraYmax = 6;
-    public float m_fCameraYmin = -6;
-    public float m_fCameraXmax = 10;
-    public float m_fCameraXmin = -10;
+    public float m_fCameraYmax = 2;
+    public float m_fCameraYmin = -2;
+    public float m_fCameraXmax = 2;
+    public float m_fCameraXmin = -2;
 
 	// Use this for initialization
 	void Start ()
@@ -35,17 +32,11 @@ public class CameraMovement : MonoBehaviour
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 float mouseInputX = Input.GetAxis("Mouse X");
-                transform.localPosition = new Vector3(transform.localPosition.x - mouseInputX * c_Cam.orthographicSize / m_nPanSlow, transform.localPosition.y);
+                transform.localPosition = new Vector3(transform.localPosition.x - mouseInputX * m_nPanSpeed, transform.localPosition.y);
                 float mouseInputY = Input.GetAxis("Mouse Y");
-                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - mouseInputY * c_Cam.orthographicSize / m_nPanSlow);
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - mouseInputY * m_nPanSpeed);
             }
         }
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        c_Cam.orthographicSize -= scroll * m_nZoomSpeed;
-        if (c_Cam.orthographicSize < m_nZoomMin)
-            c_Cam.orthographicSize = m_nZoomMin;
-        else if (c_Cam.orthographicSize > m_nZoomMax)
-            c_Cam.orthographicSize = m_nZoomMax;
         SetCameraBounds();
     }
 
