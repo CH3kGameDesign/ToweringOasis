@@ -1171,11 +1171,14 @@ MonoBehaviour:
   m_ActorPrefab: {fileID: 0}
   m_ActorRenderer: {fileID: 0}
   m_ActorPos: {x: 0, y: 0, z: 0}
+  m_classType: 
   m_nHealth: 100
   m_nHowManyTiles: 0
   m_nDamage: 0
-  m_whoWasAttacked:
-  - {fileID: 0}
+  m_bMoved: 0
+  m_bAttack: 0
+  m_bLookingDiaganol: 0
+  m_whoWasAttacked: []
 --- !u!136 &136580813940057292
 CapsuleCollider:
   m_ObjectHideFlags: 1

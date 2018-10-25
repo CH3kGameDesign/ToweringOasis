@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 23835336069855126}
   - component: {fileID: 65263653625858552}
   - component: {fileID: 54404259200062704}
+  - component: {fileID: 114695880876815992}
   m_Layer: 0
-  m_Name: AttackTile
+  m_Name: EnemyAttackTile
   m_TagString: AttackTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +50,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1989814350221864}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -111,3 +112,14 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 18.797432, z: 1}
   m_Center: {x: 0, y: 8.898719, z: 0}
+--- !u!114 &114695880876815992
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989814350221864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: debc92dc11395ea4a9148db72c42d117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

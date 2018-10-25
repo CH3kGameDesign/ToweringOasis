@@ -73,7 +73,6 @@ GameObject:
   - component: {fileID: 33657138807218842}
   - component: {fileID: 23888841777115390}
   - component: {fileID: 65838029454653128}
-  - component: {fileID: 114065451514145990}
   m_Layer: 0
   m_Name: AttackTile
   m_TagString: AttackTile
@@ -263,17 +262,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 18.797432, z: 1}
   m_Center: {x: 0, y: 8.898719, z: 0}
---- !u!114 &114065451514145990
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1821716784291312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: debc92dc11395ea4a9148db72c42d117, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114840054640639300
 MonoBehaviour:
   m_ObjectHideFlags: 1

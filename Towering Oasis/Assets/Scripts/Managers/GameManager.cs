@@ -18,11 +18,16 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 	public GameStates m_currentState;
+	public Transform MoveableTileHolder; // Empty object to hold moveable tiles
+	public Transform AttackTileHolder; // Empty object to hold attack tiles
 
 	public List<int> m_nLevelsLoaded;
 	public int m_nPlayerMoves;
-    public bool m_bcontrolsAvailable;
+	public int m_nEnemiesMoves;
+	public bool m_nEnemiesAttacked;
+	public bool m_bcontrolsAvailable;
 	public bool m_isGameOver;
+	public bool m_isMoving;
 
 	public GameObject m_MainMenuPanel;
 	public GameObject m_PauseMenuPanel;
@@ -37,6 +42,10 @@ public class GameManager : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
+		// Initalise defaults
+		MoveableTileHolder = new GameObject("MoveableTileHolder").transform;
+		AttackTileHolder = new GameObject("AttackTileHolder").transform;
+
 		m_nLevelsLoaded = new List<int>();
 		m_bcontrolsAvailable = true;
 
@@ -44,11 +53,10 @@ public class GameManager : MonoBehaviour
 			DontDestroyOnLoad(transform.gameObject);
 	}
 
-	private void Update()
+	private void LateUpdate()
 	{
-		if(m_nPlayerMoves >= 4)
+		if (m_nPlayerMoves == UnitManager.Instance.m_Parent[0].childCount && !m_isMoving && m_bcontrolsAvailable)
 		{
-			m_bcontrolsAvailable = false;
 			Transform Player = UnitManager.Instance.m_Parent[0];
 
 			for (int i = 0; i < Player.childCount; i++)
@@ -57,11 +65,38 @@ public class GameManager : MonoBehaviour
 				p.m_bAttack = false;
 				p.m_bMoved = false;
 			}
+
+			m_bcontrolsAvailable = false;
+			m_nEnemiesAttacked = false;
+			m_nPlayerMoves = 0;
+			m_nEnemiesMoves = 0;
+		}
+		// this happens before attacktile trigger enter
+		if (m_nEnemiesMoves == UnitManager.Instance.m_Parent[1].childCount && m_nEnemiesAttacked && !m_bcontrolsAvailable)
+		{
+			Transform Enemies = UnitManager.Instance.m_Parent[1];
+			for (int i = 0; i < Enemies.childCount; i++)
+			{
+				Actor e = Enemies.GetChild(i).GetComponent<Actor>();
+
+				e.m_bAttack = false;
+				e.m_bMoved = false;
+			}
+
+			m_bcontrolsAvailable = true;
+			m_nEnemiesAttacked = false;
+			m_nPlayerMoves = 0;
+			m_nEnemiesMoves = 0;
 		}
 	}
 
 	public void OnApplicationQuit()
 	{
 		Instance = null;
+	}
+
+	IEnumerator Wait()
+	{
+		yield return new WaitForSeconds(3.0f);
 	}
 }

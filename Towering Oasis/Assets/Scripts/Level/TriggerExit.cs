@@ -8,6 +8,7 @@ public class TriggerExit : MonoBehaviour
 	{
 		if (other.CompareTag("Player") && GameManager.Instance.m_bcontrolsAvailable)
 		{
+			other.enabled = false;
 			UnitManager.Instance.m_nPlayersAtExit++;
 			other.transform.parent = transform;
 			UnitManager.Instance.m_Objects.Remove(other.transform);

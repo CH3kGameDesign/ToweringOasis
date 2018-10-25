@@ -15,11 +15,10 @@ public class PlayerController : Controller
 {
 	public Transform m_walkableprefab; // Surface that actors are allowed to walk on
 	public Transform m_attackprefab; // Attack Tile
-	private Transform MoveableTileHolder; // Empty object to hold moveable tiles
 	public PLAYERMODE m_playerMode; // Current player state
 	public float m_fPlayerMovementSpeed; // Speed at which player moves
 
-	private Actor m_Player; // current Player
+	public Actor m_Player; // current Player
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
 	private int m_nLeftClick = 0; // To keep track of button inputs
 	private bool m_bshowUI; // Show and hide move/attack buttons
@@ -27,8 +26,6 @@ public class PlayerController : Controller
 
 	private void Start()
 	{
-		// Initalise defaults
-		MoveableTileHolder = new GameObject("MoveableTileHolder").transform;
 		m_playerMode = PLAYERMODE.IDLE;
 
 		// Assign tiles actors and obstacles are on
@@ -58,7 +55,7 @@ public class PlayerController : Controller
 			if (Physics.Raycast(ray, out hit))
 			{
 				// If its a player and leftclick is performed while m_nleftclick is 0
-				if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0)
+				if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0 && !GameManager.Instance.m_isMoving)
 				{
 					// Get its actor component, initialise its actorpos
 					m_Player = hit.transform.GetComponent<Actor>();
@@ -84,13 +81,13 @@ public class PlayerController : Controller
 					// Move to next node after seconds assigned as m_fPlayerMovementSpeed
 					for (int i = 0; i < Pathfinding.Instance.path.Count; i++)
 					{
-						StartCoroutine(FollowPath(Pathfinding.Instance.path));
+						m_Player.Move(Pathfinding.Instance.path);
 					}
 
 					// After we have reached the endTile destroy all moveable tiles
-					for (int i = 0; i < MoveableTileHolder.transform.childCount; i++)
+					for (int i = 0; i < GameManager.Instance.MoveableTileHolder.transform.childCount; i++)
 					{
-						Destroy(MoveableTileHolder.transform.GetChild(i).gameObject);
+						Destroy(GameManager.Instance.MoveableTileHolder.transform.GetChild(i).gameObject);
 					}
 
 					// If we wanna debug the path taken we draw it again after destroying every moveable tile
@@ -105,10 +102,12 @@ public class PlayerController : Controller
 								tempPos,
 								Quaternion.Euler(Vector3.zero));
 
-							tempWalkableTile.parent = MoveableTileHolder.transform;
+							tempWalkableTile.parent = GameManager.Instance.MoveableTileHolder.transform;
 						}
 					}
+					
 					m_Player.m_bMoved = true;
+
 					if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
 					{
 						GameManager.Instance.m_nPlayerMoves++;
@@ -138,7 +137,7 @@ public class PlayerController : Controller
 
 					m_Player.m_bAttack = true;
 
-					if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
+					if (m_Player.m_bMoved && m_Player.m_bAttack)
 					{
 						GameManager.Instance.m_nPlayerMoves++;
 					}
@@ -171,19 +170,16 @@ public class PlayerController : Controller
 					// Draw a line to debug player front
 					Debug.DrawRay(m_Player.gameObject.transform.position, m_Player.gameObject.transform.forward * 5, Color.red);
 
+					m_Player.GetAttackTiles(
+						Map.Instance.GetNodeFromPosition(m_Player.transform.position + m_Player.transform.forward),
+						Map.Instance.GetNodeFromPosition(m_Player.m_ActorPos),
+						true);
+
 					// If player is in attack mode
-					if (m_playerMode == PLAYERMODE.ATTACK)
+					if (m_playerMode == PLAYERMODE.ATTACK && m_Player.m_prevDirec != m_Player.m_lookingDirec)
 					{
-						GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
-
-						// we want to destroy previous spawned attack tiles
-						for (int i = 0; i < temp.Length; i++)
-						{
-							Destroy(temp[i]);
-						}
-
 						m_Player.m_whoWasAttacked.Clear();
-						m_Player.SpawnAttackTiles(m_attackprefab);
+						m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
 					}
 				}
 			}
@@ -212,7 +208,7 @@ public class PlayerController : Controller
 							m_walkableprefab,
 							tempPos,
 							Quaternion.Euler(Vector3.zero));
-						tempWalkableTile.parent = MoveableTileHolder.transform;
+						tempWalkableTile.parent = GameManager.Instance.MoveableTileHolder.transform;
 					}
 
 					// Set mode to move and turn of the UI and m_nLeftCLick to 1
@@ -226,7 +222,7 @@ public class PlayerController : Controller
 			{
 				if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 40, 100, 35), "Attack"))
 				{
-					m_Player.SpawnAttackTiles(m_attackprefab);
+					m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
 
 					// Set mode to attack and turn of the UI and m_nLeftCLick to 1
 					// Also calls the players attack
@@ -247,7 +243,9 @@ public class PlayerController : Controller
 			pathNodePos.y = 1.0f;
 			m_Player.transform.position = pathNodePos;
 			m_Player.m_ActorPos = pathNodePos;
+
 			yield return new WaitForSeconds(m_fPlayerMovementSpeed); // skips frames
+
 		}
 	}
 }

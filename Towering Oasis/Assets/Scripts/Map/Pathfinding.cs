@@ -7,6 +7,7 @@ public class Pathfinding : MonoBehaviour
     public static Pathfinding Instance; // Static instace of the class
     public List<Node> path = new List<Node>(); // The path we will calculated
     public bool m_DebugPath; // If we want to debug out path
+	public bool m_bunitOnTopChanged = false;
 
     private void Awake()
     {
@@ -29,8 +30,14 @@ public class Pathfinding : MonoBehaviour
         // The end point
         Node endNode = Map.Instance.GetNodeFromPosition(endPos);
 
-        // Creating a binary tree for paths that can be taken from the currentnode
-        Heap<Node> openList = new Heap<Node>((int)Map.Instance.m_nGridSizeX * (int)Map.Instance.m_nGridSizeY);
+		if (endNode.m_bIsUnitOnTop == true)
+		{
+			endNode.m_bIsUnitOnTop = false;
+			m_bunitOnTopChanged = true;
+		}
+
+		// Creating a binary tree for paths that can be taken from the currentnode
+		Heap<Node> openList = new Heap<Node>((int)Map.Instance.m_nGridSizeX * (int)Map.Instance.m_nGridSizeY);
 
         // Nodes we have already searched
         HashSet<Node> closedList = new HashSet<Node>();
@@ -49,8 +56,15 @@ public class Pathfinding : MonoBehaviour
             // If the currentNode is equals to the endNode 
             // we've found our path
             if (currentNode == endNode)
-            {
-                RetracePath(startNode, endNode);
+			{
+				RetracePath(startNode, endNode);
+
+				if (m_bunitOnTopChanged == true)
+				{
+					endNode.m_bIsUnitOnTop = true;
+					m_bunitOnTopChanged = false;
+				}
+
                 return;
             }
 
@@ -84,9 +98,14 @@ public class Pathfinding : MonoBehaviour
     {
         endNode.m_bIsUnitOnTop = true;
         startNode.m_bIsUnitOnTop = false;
-        Node currentNode = endNode;
+		Node currentNode = null;
 
-        while (currentNode != startNode)
+		if (m_bunitOnTopChanged == true)
+			currentNode = endNode.m_parent;
+		else
+			currentNode = endNode;
+
+		while (currentNode != startNode)
         {
             path.Add(currentNode);
             currentNode = currentNode.m_parent;

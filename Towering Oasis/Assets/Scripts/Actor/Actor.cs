@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Direction
+{
+	UPDOWN,
+	RIGHTLEFT,
+	DIAGNOL
+}
+
 public class Actor : MonoBehaviour
 {
 	// Health popup text and animation
@@ -19,12 +26,16 @@ public class Actor : MonoBehaviour
     public int m_nHealth;
     public int m_nHowManyTiles;
     public int m_nDamage;
+	public List<Node> m_currentPath;
 	public bool m_bMoved;
 	public bool m_bAttack;
+	public Direction m_lookingDirec;
+	public Direction m_prevDirec;
 	public bool m_bLookingDiaganol = false;
 
+
 	// Character that this character is attacked by
-	[HideInInspector]
+	//[HideInInspector]
 	public List<Actor> m_whoWasAttacked = new List<Actor>();
     public List<Node> individualPath = new List<Node>();
 
@@ -49,32 +60,59 @@ public class Actor : MonoBehaviour
 
 	public virtual void Attack()
 	{
-        Debug.Log("A Step 1");
-        foreach (Actor actor in m_whoWasAttacked)
-        {
-            Debug.Log("A Step 2");
+		if (m_whoWasAttacked.Count > 0)
+		{
+			Debug.Log("A Step 1");
+			
+			foreach (Actor actor in m_whoWasAttacked)
+			{
+				Debug.Log("A Step 2");
 
-            // Deduct health by the damage of the attacker
-            actor.m_nHealth -= this.m_nDamage;
+				// Deduct health by the damage of the attacker
+				actor.m_nHealth -= this.m_nDamage;
 
-            Debug.Log("A Step 3");
-            // Create Health popup and set text which is equal to this actor's health
-            Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
-            HealthDrop.GetComponent<TextMesh>().text = actor.m_nHealth.ToString();
-            Debug.Log("A Step 4");
-        }
+				Debug.Log("A Step 3");
+				// Create Health popup and set text which is equal to this actor's health
+				Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
+				HealthDrop.GetComponent<TextMesh>().text = actor.m_nHealth.ToString();
+				Debug.Log("A Step 4");
+			}
+		}
     }
 
 
-    public virtual void SpawnAttackTiles(Transform attackPrefab)
+    public virtual void SpawnAttackTiles(Transform attackPrefab, Transform holder)
 	{
-		
+		// Gets the tile infront of the actor and get its attack tiles relevant to class(will be added)
+		Vector3 pos = transform.position + transform.forward;
+		Node attackNode = Map.Instance.GetNodeFromPosition(pos);
+
+		List<Node> attackNodes = GetAttackTiles(attackNode, Map.Instance.GetNodeFromPosition(transform.position));
+
+		// Goes thru each node getting its position
+		// and spawn a attacktile
+		foreach (Node node in attackNodes)
+		{
+			// checks if its walkable or not 
+			if (node.m_bWalkable)
+			{
+				Vector3 tempPos = node.m_v3WorldPosition;
+				tempPos.y = 0.1f;
+
+				Transform tempWalkableTile = Instantiate(
+								attackPrefab,
+								tempPos,
+								Quaternion.Euler(Vector3.zero));
+
+				tempWalkableTile.parent = holder;
+			}
+		}
 	}
 
 
 	//TODO Move this to there respective classes
 	// Returns the attack tiles
-	public List<Node> GetAttackTiles(Node node, Node playerNode, int nHowManyIterations = 1, int nHowManyTiles = 1)
+	public List<Node> GetAttackTiles(Node node, Node playerNode, bool getDirection = false, int nHowManyIterations = 1, int nHowManyTiles = 1)
 	{
 		List<Node> AttackTiles = new List<Node>();
 
@@ -92,22 +130,27 @@ public class Actor : MonoBehaviour
 		///	.	.	.
 		if ((attackCoord.y == playerCoord.y + 1 || attackCoord.y == playerCoord.y - 1) && attackCoord.x == playerCoord.x)
 		{
-			for (int x = -nHowManyIterations; x <= nHowManyIterations; x++)
+			m_lookingDirec = Direction.UPDOWN;
+			m_bLookingDiaganol = false;
+			if (!getDirection)
 			{
-				for (int y = -nHowManyIterations; y <= nHowManyIterations; y++)
+				for (int x = -nHowManyIterations; x <= nHowManyIterations; x++)
 				{
-
-					if (x == 0 && y == 0 || x == 1 && y == 0 || x == -1 && y == 0)
+					for (int y = -nHowManyIterations; y <= nHowManyIterations; y++)
 					{
-						int checkX = (int)node.m_v2GridCoordinate.x + x;
-						int checkY = (int)node.m_v2GridCoordinate.y + y;
 
-						if (checkX >= 0 && checkX < Map.Instance.m_nGridSizeX && checkY >= 0 && checkY < Map.Instance.m_nGridSizeY)
+						if (x == 0 && y == 0 || x == 1 && y == 0 || x == -1 && y == 0)
 						{
-							if (!Map.Instance.m_Grid[checkX, checkY].m_bWalkable)
-								continue;
+							int checkX = (int)node.m_v2GridCoordinate.x + x;
+							int checkY = (int)node.m_v2GridCoordinate.y + y;
 
-							AttackTiles.Add(Map.Instance.m_Grid[checkX, checkY]);
+							if (checkX >= 0 && checkX < Map.Instance.m_nGridSizeX && checkY >= 0 && checkY < Map.Instance.m_nGridSizeY)
+							{
+								if (!Map.Instance.m_Grid[checkX, checkY].m_bWalkable)
+									continue;
+
+								AttackTiles.Add(Map.Instance.m_Grid[checkX, checkY]);
+							}
 						}
 					}
 				}
@@ -122,27 +165,65 @@ public class Actor : MonoBehaviour
 		///	.	.	.
 		else if ((attackCoord.x == playerCoord.x + 1 || attackCoord.x == playerCoord.x - 1) && attackCoord.y == playerCoord.y)
 		{
-			for (int x = -nHowManyIterations; x <= nHowManyIterations; x++)
+			m_lookingDirec = Direction.RIGHTLEFT;
+			m_bLookingDiaganol = false;
+			if (!getDirection)
 			{
-				for (int y = -nHowManyIterations; y <= nHowManyIterations; y++)
+				for (int x = -nHowManyIterations; x <= nHowManyIterations; x++)
 				{
-					if (x == 0 && y == 0 || x == 0 && y == 1 || x == 0 && y == -1)
+					for (int y = -nHowManyIterations; y <= nHowManyIterations; y++)
 					{
-						int checkX = (int)node.m_v2GridCoordinate.x + x;
-						int checkY = (int)node.m_v2GridCoordinate.y + y;
-
-						if (checkX >= 0 && checkX < Map.Instance.m_nGridSizeX && checkY >= 0 && checkY < Map.Instance.m_nGridSizeY)
+						if (x == 0 && y == 0 || x == 0 && y == 1 || x == 0 && y == -1)
 						{
-							if (!Map.Instance.m_Grid[checkX, checkY].m_bWalkable)
-								continue;
+							int checkX = (int)node.m_v2GridCoordinate.x + x;
+							int checkY = (int)node.m_v2GridCoordinate.y + y;
 
-							AttackTiles.Add(Map.Instance.m_Grid[checkX, checkY]);
+							if (checkX >= 0 && checkX < Map.Instance.m_nGridSizeX && checkY >= 0 && checkY < Map.Instance.m_nGridSizeY)
+							{
+								if (!Map.Instance.m_Grid[checkX, checkY].m_bWalkable)
+									continue;
+
+								AttackTiles.Add(Map.Instance.m_Grid[checkX, checkY]);
+							}
 						}
 					}
 				}
 			}
 		}
+
+		/// O equals the player, . equals the nodes, | equals the direction this part handles
+		/// .	.	.
+		///	  \   /
+		///	.	O	.
+		///	  /	  \
+		///	.	.	.
+		else if ((attackCoord.y == playerCoord.y + 1 && attackCoord.x == playerCoord.x + 1) ||
+					(attackCoord.y == playerCoord.y + 1 && attackCoord.x == playerCoord.x - 1) ||
+					(attackCoord.y == playerCoord.y - 1 && attackCoord.x == playerCoord.x + 1) ||
+					(attackCoord.y == playerCoord.y - 1 && attackCoord.x == playerCoord.x - 1))
+		{
+			m_lookingDirec = Direction.DIAGNOL;
+			m_bLookingDiaganol = true;
+		}
+
+
+		if (m_prevDirec != m_lookingDirec && !getDirection)
+		{
+			GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
+			m_prevDirec = m_lookingDirec;
+			// we want to destroy previous spawned attack tiles
+			for (int i = 0; i < temp.Length; i++)
+			{
+				Destroy(temp[i]);
+			}
+		}
+
 		return AttackTiles;
+	}
+
+	public void GetDirection()
+	{
+
 	}
 
     public void Move(List<Node> path)
@@ -151,16 +232,22 @@ public class Actor : MonoBehaviour
     }
 
     // Is used to move the Actor tile by tile
-    IEnumerator FollowPath(List<Node> path, Actor a)
+    public IEnumerator FollowPath(List<Node> path, Actor a)
     {
-        for (int i = 0; i < path.Count - 1 && i < a.m_nHowManyTiles; i++)
+		m_currentPath = path;
+
+		for (int i = 0; i < m_currentPath.Count /*&& i < a.m_nHowManyTiles*/; i++)
         {
-            Vector3 pathNodePos = path[i].m_v3WorldPosition;
+			GameManager.Instance.m_isMoving = true;
+
+			m_bAttack = false;
+            Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
             pathNodePos.y = 1.0f;
             a.transform.position = pathNodePos;
             a.m_ActorPos = pathNodePos;
             yield return new WaitForSeconds(1.0f); // skips frames
-            m_bMoved = true;
-        }
-    }
+
+			GameManager.Instance.m_isMoving = false;
+		}
+	}
 }
