@@ -23,103 +23,112 @@ public class EnemyController : Controller
 {
     public List<Actor> m_Players;
     public List<Actor> m_Enemies;
+    public Actor m_currentEnemy;
     public List<Distance> m_distance;
-    public List<Actor> m_closestEnemies;
     public Transform m_attackPrefab;
-    public bool inFirst = false;
+    public GameManager m_gameManager;
+    public int m_nhasAttacked;
 
     private void Start()
     {
-        for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
-        {
-            m_Players.Add(UnitManager.Instance.m_Parent[0].GetChild(i).GetComponent<Actor>());
-        }
-
-        for (int i = 0; i < UnitManager.Instance.m_Parent[1].childCount; i++)
-        {
-            m_Enemies.Add(UnitManager.Instance.m_Parent[1].GetChild(i).GetComponent<Actor>());
-        }
-        int nlength = m_Players.Count * m_Enemies.Count;
-        m_distance = new List<Distance>(nlength);
+        m_Players = new List<Actor>();
+        m_Enemies = new List<Actor>();
+        m_distance = new List<Distance>();
+        m_gameManager = GameManager.Instance;
     }
 
-    private void Update()
+    public override void myUpdate()
     {
-        //TODO change condition after testing
-        if (!GameManager.Instance.m_bcontrolsAvailable)
+        if(!m_gameManager.m_bcontrolsAvailable && !m_gameManager.m_isMoving && !m_gameManager.m_isAttacking)
         {
-            int i = 0;
-            for (int e = 0; e < m_Enemies.Count; e++)
-            {
-                for (int p = 0; p < m_Players.Count; p++)
-                {
-                    Pathfinding.Instance.FindPath(m_Enemies[e].m_ActorPos, m_Players[p].m_ActorPos, true);
+            m_nhasAttacked = 0;
+            m_Players.Clear();
+            m_Enemies.Clear();
 
-                    Distance temp = new Distance(
-                                    p,
-                                    e,
-                                    Pathfinding.Instance.path.Count - 1);
-                    m_distance.Add(temp);
-                    i++;
-                }
+            for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
+            {
+                m_Players.Add(UnitManager.Instance.m_Parent[0].GetChild(i).GetComponent<Actor>());
+            }
+
+            for (int i = 0; i < UnitManager.Instance.m_Parent[1].childCount; i++)
+            {
+                m_Enemies.Add(UnitManager.Instance.m_Parent[1].GetChild(i).GetComponent<Actor>());
+            }
+
+            m_currentEnemy = m_Enemies[m_gameManager.m_nEnemiesMoves];
+
+            {
+                // Get the player position from screen
+                Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.position);
+
+                // Draw a line to debug player front
+                Debug.DrawRay(m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.position, m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.forward * 5, Color.red);
+            }
+
+            m_distance.Clear();
+
+            for (int p = 0; p < m_Players.Count; p++)
+            {
+                Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[p].m_ActorPos, true);
+
+                m_distance.Add(new Distance(
+                                        p,
+                                        m_gameManager.m_nEnemiesMoves,
+                                        Pathfinding.Instance.path.Count - 1));
             }
 
             m_distance = m_distance.OrderBy(o => o.m_tileCount).ToList<Distance>();
 
-            int nlowestDistance = m_distance[0].m_tileCount;
-            bool benemiesWithLowestDistFound = false;
-            int[] distanceClosest = new int[m_distance.Count];
+            Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[m_distance[0].m_playerNumber].m_ActorPos, false);
+            
+            m_Enemies[m_gameManager.m_nEnemiesMoves].Move(Pathfinding.Instance.path);
 
-            for (int j = 0; j < m_distance.Count && !benemiesWithLowestDistFound; j++)
-            {
-                int x = 0;
-                if (m_distance[j].m_tileCount > nlowestDistance)
-                {
-                    benemiesWithLowestDistFound = true;
-                }
+            Map.Instance.UpdateUnitOnTop();
+        }
 
-                if (!m_closestEnemies.Contains(m_Enemies[m_distance[j].m_enemyNumber]))
-                {
-                    m_closestEnemies.Add(m_Enemies[m_distance[j].m_enemyNumber]);
-                    distanceClosest[x] = j;
-                }
-                x++;
-            }
+        if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
+        {
+            m_nhasAttacked++;
+            StartCoroutine(EnemyAttack());
+            m_currentEnemy.m_bStartAttack = false;
+        }
 
-            for (int x = 0; x < m_closestEnemies.Count; x++)
-            {
-                Debug.Log(m_closestEnemies[x].name);
-            }
-
-            for (int j = 0; j < m_closestEnemies.Count; j++)
-            {
-                Pathfinding.Instance.FindPath(m_closestEnemies[j].m_ActorPos, m_Players[m_distance[j].m_playerNumber].m_ActorPos, true);
-
-                for (int x = 0; x < Pathfinding.Instance.path.Count - 1; x++)
-                {
-                    m_closestEnemies[j].Move(Pathfinding.Instance.path);
-                }
-
-                m_closestEnemies[j].transform.LookAt(m_Players[m_distance[j].m_playerNumber].transform);
-                m_closestEnemies[j].SpawnAttackTiles(m_attackPrefab);
-            }
-
-
-
+        if (m_gameManager.m_nEnemiesMoves == m_Enemies.Count)
+        {
+            m_gameManager.m_bcontrolsAvailable = true;
         }
     }
 
-    private void FixedUpdate()
+    IEnumerator EnemyAttack()
     {
-        if (!GameManager.Instance.m_bcontrolsAvailable)
+        if(m_gameManager.m_isMoving)
+            yield return new WaitForSeconds(3f);
+
+        m_gameManager.m_isAttacking = true;
+
+        for(int i = 0; i < 5;)
         {
-            m_closestEnemies[0].Attack();
+            m_currentEnemy.transform.Rotate(0.0f, 90.0f, 0.0f);
+            m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
 
-            GameManager.Instance.m_nPlayerMoves = 0;
-            GameManager.Instance.m_bcontrolsAvailable = true;
+            if (i < 4)
+                yield return new WaitForSeconds(0.7f);
 
-            // Assign tiles actors and obstacles are on
-            Map.Instance.UpdateUnitOnTop();
+            GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
+
+            // we want to destroy previous spawned attack tiles
+            for (int j = 0; j < temp.Length; j++)
+            {
+                Destroy(temp[j]);
+            }
+
+            i++;
         }
+
+        m_gameManager.m_nEnemiesMoves++;
+        if (m_currentEnemy.m_whoWasAttacked.Count > 0)
+            m_currentEnemy.Attack();
+
+        m_gameManager.m_isAttacking = false;
     }
 }

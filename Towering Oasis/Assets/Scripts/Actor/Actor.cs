@@ -29,7 +29,8 @@ public class Actor : MonoBehaviour
 	public List<Node> m_currentPath;
 	public bool m_bMoved;
 	public bool m_bAttack;
-	public Direction m_lookingDirec;
+	public bool m_bStartAttack;
+    public Direction m_lookingDirec;
 	public Direction m_prevDirec;
 	public bool m_bLookingDiaganol = false;
 
@@ -235,19 +236,39 @@ public class Actor : MonoBehaviour
     public IEnumerator FollowPath(List<Node> path, Actor a)
     {
 		m_currentPath = path;
-
-		for (int i = 0; i < m_currentPath.Count /*&& i < a.m_nHowManyTiles*/; i++)
+        if (m_currentPath.Count > a.m_nHowManyTiles)
         {
-			GameManager.Instance.m_isMoving = true;
+            for (int i = 0; i < a.m_nHowManyTiles; i++)
+            {
+                GameManager.Instance.m_isMoving = true;
 
-			m_bAttack = false;
-            Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
-            pathNodePos.y = 1.0f;
-            a.transform.position = pathNodePos;
-            a.m_ActorPos = pathNodePos;
-            yield return new WaitForSeconds(1.0f); // skips frames
+                m_bAttack = false;
+                Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
+                pathNodePos.y = 1.0f;
+                a.transform.position = pathNodePos;
+                a.m_ActorPos = pathNodePos;
+                yield return new WaitForSeconds(1.0f); // skips frames
 
-			GameManager.Instance.m_isMoving = false;
-		}
+                this.m_bStartAttack = true;
+                GameManager.Instance.m_isMoving = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < m_currentPath.Count; i++)
+            {
+                GameManager.Instance.m_isMoving = true;
+
+                m_bAttack = false;
+                Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
+                pathNodePos.y = 1.0f;
+                a.transform.position = pathNodePos;
+                a.m_ActorPos = pathNodePos;
+                yield return new WaitForSeconds(1.0f); // skips frames
+
+                this.m_bStartAttack = true;
+                GameManager.Instance.m_isMoving = false;
+            }
+        }
 	}
 }

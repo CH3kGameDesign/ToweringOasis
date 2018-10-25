@@ -20,16 +20,19 @@ public class GameManager : MonoBehaviour
 	public GameStates m_currentState;
 	public Transform MoveableTileHolder; // Empty object to hold moveable tiles
 	public Transform AttackTileHolder; // Empty object to hold attack tiles
+    public EnemyController enemyController;
+    public PlayerController playerController;
 
-	public List<int> m_nLevelsLoaded;
+    public List<int> m_nLevelsLoaded;
 	public int m_nPlayerMoves;
 	public int m_nEnemiesMoves;
 	public bool m_nEnemiesAttacked;
 	public bool m_bcontrolsAvailable;
 	public bool m_isGameOver;
 	public bool m_isMoving;
+	public bool m_isAttacking;
 
-	public GameObject m_MainMenuPanel;
+    public GameObject m_MainMenuPanel;
 	public GameObject m_PauseMenuPanel;
 	public GameObject m_SettingPanel;
 	public GameObject m_GameOverPanel;
@@ -53,7 +56,21 @@ public class GameManager : MonoBehaviour
 			DontDestroyOnLoad(transform.gameObject);
 	}
 
-	private void LateUpdate()
+    private void Start()
+    {
+        enemyController = FindObjectOfType<EnemyController>();
+        playerController = FindObjectOfType<PlayerController>();
+    }
+
+    private void Update()
+    {
+        if (m_bcontrolsAvailable)
+            playerController.myUpdate();
+        else if (!m_bcontrolsAvailable)
+            enemyController.myUpdate();
+    }
+
+    private void LateUpdate()
 	{
 		if (m_nPlayerMoves == UnitManager.Instance.m_Parent[0].childCount && !m_isMoving && m_bcontrolsAvailable)
 		{

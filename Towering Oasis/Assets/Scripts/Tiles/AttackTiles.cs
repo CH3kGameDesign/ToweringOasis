@@ -13,7 +13,7 @@ public class AttackTiles : MonoBehaviour
 				actor = GameObject.FindObjectOfType<PlayerController>().m_Player;
 			else
 			{
-				actor = GameObject.FindObjectOfType<EnemyController>().m_currentEnemy;
+                actor = GameObject.FindObjectOfType<EnemyController>().m_currentEnemy;
 			}
 
 			Actor ObjectToDamage = other.GetComponent<Actor>();

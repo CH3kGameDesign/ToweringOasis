@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+    public virtual void myUpdate()
+    {
 
+    }
 }
