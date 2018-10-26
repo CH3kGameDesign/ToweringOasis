@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Direction
+public enum DirectionEnum
 {
 	UPDOWN,
 	RIGHTLEFT,
@@ -30,8 +30,8 @@ public class Actor : MonoBehaviour
 	public bool m_bMoved;
 	public bool m_bAttack;
 	public bool m_bStartAttack;
-    public Direction m_lookingDirec;
-	public Direction m_prevDirec;
+    public DirectionEnum m_lookingDirec;
+	public DirectionEnum m_prevDirec;
 	public bool m_bLookingDiaganol = false;
 
 
@@ -79,6 +79,8 @@ public class Actor : MonoBehaviour
 				Debug.Log("A Step 4");
 			}
 		}
+
+        this.m_whoWasAttacked.Clear();
     }
 
 
@@ -113,7 +115,7 @@ public class Actor : MonoBehaviour
 
 	//TODO Move this to there respective classes
 	// Returns the attack tiles
-	public List<Node> GetAttackTiles(Node node, Node playerNode, bool getDirection = false, int nHowManyIterations = 1, int nHowManyTiles = 1)
+	public List<Node> GetAttackTiles(Node node, Node playerNode, bool getDirectionEnum = false, int nHowManyIterations = 1, int nHowManyTiles = 1)
 	{
 		List<Node> AttackTiles = new List<Node>();
 
@@ -123,7 +125,7 @@ public class Actor : MonoBehaviour
 		// Player coordinates
 		Vector2 playerCoord = playerNode.m_v2GridCoordinate;
 
-		/// O equals the player, . equals the nodes, | equals the direction this part handles
+		/// O equals the player, . equals the nodes, | equals the DirectionEnum this part handles
 		/// .	.	.
 		///		|
 		///	.	O	.
@@ -131,9 +133,9 @@ public class Actor : MonoBehaviour
 		///	.	.	.
 		if ((attackCoord.y == playerCoord.y + 1 || attackCoord.y == playerCoord.y - 1) && attackCoord.x == playerCoord.x)
 		{
-			m_lookingDirec = Direction.UPDOWN;
+			m_lookingDirec = DirectionEnum.UPDOWN;
 			m_bLookingDiaganol = false;
-			if (!getDirection)
+			if (!getDirectionEnum)
 			{
 				for (int x = -nHowManyIterations; x <= nHowManyIterations; x++)
 				{
@@ -158,7 +160,7 @@ public class Actor : MonoBehaviour
 			}
 		}
 
-		/// O equals the player, . equals the nodes, - equals the direction this part handles
+		/// O equals the player, . equals the nodes, - equals the DirectionEnum this part handles
 		/// .	.	.
 		///		
 		///	. -	O -	.
@@ -166,9 +168,9 @@ public class Actor : MonoBehaviour
 		///	.	.	.
 		else if ((attackCoord.x == playerCoord.x + 1 || attackCoord.x == playerCoord.x - 1) && attackCoord.y == playerCoord.y)
 		{
-			m_lookingDirec = Direction.RIGHTLEFT;
+			m_lookingDirec = DirectionEnum.RIGHTLEFT;
 			m_bLookingDiaganol = false;
-			if (!getDirection)
+			if (!getDirectionEnum)
 			{
 				for (int x = -nHowManyIterations; x <= nHowManyIterations; x++)
 				{
@@ -192,7 +194,7 @@ public class Actor : MonoBehaviour
 			}
 		}
 
-		/// O equals the player, . equals the nodes, | equals the direction this part handles
+		/// O equals the player, . equals the nodes, | equals the DirectionEnum this part handles
 		/// .	.	.
 		///	  \   /
 		///	.	O	.
@@ -203,12 +205,12 @@ public class Actor : MonoBehaviour
 					(attackCoord.y == playerCoord.y - 1 && attackCoord.x == playerCoord.x + 1) ||
 					(attackCoord.y == playerCoord.y - 1 && attackCoord.x == playerCoord.x - 1))
 		{
-			m_lookingDirec = Direction.DIAGNOL;
+			m_lookingDirec = DirectionEnum.DIAGNOL;
 			m_bLookingDiaganol = true;
 		}
 
 
-		if (m_prevDirec != m_lookingDirec && !getDirection)
+		if (m_prevDirec != m_lookingDirec && !getDirectionEnum)
 		{
 			GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
 			m_prevDirec = m_lookingDirec;
@@ -222,7 +224,7 @@ public class Actor : MonoBehaviour
 		return AttackTiles;
 	}
 
-	public void GetDirection()
+	public void GetDirectionEnum()
 	{
 
 	}
@@ -252,6 +254,11 @@ public class Actor : MonoBehaviour
                 this.m_bStartAttack = true;
                 GameManager.Instance.m_isMoving = false;
             }
+        }
+        else if(m_currentPath.Count == 0)
+        {
+            this.m_bStartAttack = true;
+            GameManager.Instance.m_isMoving = false;
         }
         else
         {

@@ -64,6 +64,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+            m_bcontrolsAvailable = !m_bcontrolsAvailable;
+
         if (m_bcontrolsAvailable)
             playerController.myUpdate();
         else if (!m_bcontrolsAvailable)
