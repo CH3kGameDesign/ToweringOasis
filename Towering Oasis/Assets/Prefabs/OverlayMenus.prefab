@@ -1552,13 +1552,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ee6f60303cc4d4ea32a7877e0785c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stateName: 0
   m_ResolutionDropdownMenu: {fileID: 114430109068556186}
   m_FullscreenToggle: {fileID: 114747728311207124}
   m_QualityDropdownMenu: {fileID: 114041296033626798}
   m_AudioSlider: {fileID: 114109029424136434}
   m_AudioInputField: {fileID: 114986037052030442}
   m_ThisMenu: {fileID: 1300744158961738}
-  m_PrevMenu: {fileID: 1237760251040622}
 --- !u!114 &114081255823045222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1570,6 +1570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089b263449937eb4a8c7504ba9dc7405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stateName: 0
 --- !u!114 &114083090812126176
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2141,6 +2142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e9d4e4ce3798a49ae2f8a17270fa54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stateName: 0
 --- !u!114 &114277981364022836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3104,6 +3106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad858048aeb1f3545a4ff415916ea2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stateName: 0
 --- !u!114 &114636003253812934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3571,13 +3574,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b9fcd557c76ef4aad63415ce6a8c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_currentState: 0
+  MoveableTileHolder: {fileID: 0}
+  AttackTileHolder: {fileID: 0}
+  enemyController: {fileID: 0}
+  playerController: {fileID: 0}
   m_nLevelsLoaded: 
+  m_nPlayerMoves: 0
+  m_nEnemiesMoves: 0
+  m_nEnemiesAttacked: 0
   m_bcontrolsAvailable: 0
+  m_isGameOver: 0
+  m_isMoving: 0
+  m_isAttacking: 0
   m_MainMenuPanel: {fileID: 1207905832859108, guid: e33172841cbe9d0468b9f540b0365c3f,
     type: 2}
   m_PauseMenuPanel: {fileID: 1237760251040622}
   m_SettingPanel: {fileID: 1300744158961738}
   m_GameOverPanel: {fileID: 1597936353221294}
+  m_PrevMenu: {fileID: 0}
 --- !u!114 &114784883297851888
 MonoBehaviour:
   m_ObjectHideFlags: 1

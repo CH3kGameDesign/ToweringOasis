@@ -82,8 +82,8 @@ public class GameManager : MonoBehaviour
 			for (int i = 0; i < Player.childCount; i++)
 			{
 				Actor p = Player.GetChild(i).GetComponent<Actor>();
-				p.m_bAttack = false;
-				p.m_bMoved = false;
+
+                StartCoroutine(Wait(p));
 			}
 
 			m_bcontrolsAvailable = false;
@@ -115,8 +115,11 @@ public class GameManager : MonoBehaviour
 		Instance = null;
 	}
 
-	IEnumerator Wait()
+	IEnumerator Wait(Actor p)
 	{
-		yield return new WaitForSeconds(3.0f);
-	}
+		yield return new WaitForSeconds(0.3f);
+        p.m_bAttack = false;
+        p.m_bMoved = false;
+        p.m_bSkip = false;
+    }
 }

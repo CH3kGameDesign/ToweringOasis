@@ -29,7 +29,8 @@ public class Actor : MonoBehaviour
 	public List<Node> m_currentPath;
 	public bool m_bMoved;
 	public bool m_bAttack;
-	public bool m_bStartAttack;
+	public bool m_bSkip;
+    public bool m_bStartAttack;
     public DirectionEnum m_lookingDirec;
 	public DirectionEnum m_prevDirec;
 	public bool m_bLookingDiaganol = false;

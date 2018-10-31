@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4769392553906996}
+  - component: {fileID: 114604478600060564}
   m_Layer: 0
   m_Name: EnemyCharacters
   m_TagString: Untagged
@@ -198,12 +199,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3090fb37115c6f40971493ebe6fbc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_walkableprefab: {fileID: 4763284376876852, guid: 3d557c1b7083a9948963a0019fd64954,
+  m_walkableprefab: {fileID: 4345783362018700, guid: 4512e2ecd6862db4d9d4ad089baba794,
     type: 2}
-  m_attackprefab: {fileID: 4875640755087758, guid: a698b3bd9214e024b98855005b76deea,
+  m_attackprefab: {fileID: 4345783362018700, guid: 6eb337457ba6eee429d404cfff9deb9f,
     type: 2}
   m_playerMode: 0
   m_fPlayerMovementSpeed: 0.7
+  m_Player: {fileID: 0}
 --- !u!114 &114114629130669156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -224,6 +226,24 @@ MonoBehaviour:
     Material: {fileID: 2100000, guid: dc38fb0e2297b9d49aa601d769ce5245, type: 2}
   - MaterialName: SelectedUnit
     Material: {fileID: 2100000, guid: 65cdc7e451d37f747a8f47eff639a7a8, type: 2}
+--- !u!114 &114604478600060564
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1144375236468830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0949f5a3addf3fb44999aca0913665db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Players: []
+  m_Enemies: []
+  m_currentEnemy: {fileID: 0}
+  m_attackPrefab: {fileID: 4345783362018700, guid: 6eb337457ba6eee429d404cfff9deb9f,
+    type: 2}
+  m_gameManager: {fileID: 0}
+  m_nhasAttacked: 0
 --- !u!114 &114627383473128432
 MonoBehaviour:
   m_ObjectHideFlags: 1

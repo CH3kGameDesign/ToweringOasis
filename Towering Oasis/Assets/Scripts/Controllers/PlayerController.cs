@@ -232,7 +232,19 @@ public class PlayerController : Controller
 					m_nLeftClick++;
 				}
 			}
-		}
+
+            if (!m_Player.m_bSkip)
+            {
+                if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 80, 100, 35), "Skip"))
+                {
+                    m_Player.m_bMoved = true;
+                    m_Player.m_bAttack = true;
+                    m_Player.m_bSkip = true;
+                    m_bshowUI = false;
+                    GameManager.Instance.m_nPlayerMoves++;
+                }
+            }
+        }
 	}
 }
 
