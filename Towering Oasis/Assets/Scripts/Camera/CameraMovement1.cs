@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class CameraMovement1 : MonoBehaviour
 {
 
     public float m_nPanSpeed = 1;
@@ -12,31 +12,27 @@ public class CameraMovement : MonoBehaviour
     public float m_fCameraXmax = 2;
     public float m_fCameraXmin = -2;
 
+    private Vector3 cursorPosition;
+    private Vector3 cursorPositionPast;
+
 	// Use this for initialization
 	void Start ()
     {
         c_Cam = GetComponent<Camera>();
+        cursorPosition = Input.mousePosition;
+        cursorPositionPast = cursorPosition;
 	}
 
     // Update is called once per frame
     void Update()
     {
-        RaycastHit Hit;
-        Ray Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        if (Physics.Raycast(Ray, out Hit))
+        cursorPosition = Input.mousePosition;
+        if (Input.GetMouseButton(1))
         {
-            if (Input.GetMouseButton(1))
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                float mouseInputX = Input.GetAxis("Mouse X");
-                transform.localPosition = new Vector3(transform.localPosition.x - mouseInputX * m_nPanSpeed, transform.localPosition.y);
-                float mouseInputY = Input.GetAxis("Mouse Y");
-                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - mouseInputY * m_nPanSpeed);
-            }
+            Vector3 mouseMovement = new Vector3((cursorPosition.x - cursorPositionPast.x) * m_nPanSpeed, (cursorPosition.y - cursorPositionPast.y) * m_nPanSpeed, (cursorPosition.z - cursorPositionPast.z) * m_nPanSpeed);
+            transform.localPosition = new Vector3(transform.localPosition.x - mouseMovement.x, transform.localPosition.y - mouseMovement.y, transform.localPosition.z - mouseMovement.z);
         }
+        cursorPositionPast = cursorPosition;
         SetCameraBounds();
     }
 
