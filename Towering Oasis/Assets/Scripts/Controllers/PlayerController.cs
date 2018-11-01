@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // For knowing which state is player in
 public enum PLAYERMODE {
@@ -52,6 +53,9 @@ public class PlayerController : Controller
             }
         }
 
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         // Cast a ray and assign a hit variable
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -62,8 +66,13 @@ public class PlayerController : Controller
             // If its a player and leftclick is performed while m_nleftclick is 0
             if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0 && !GameManager.Instance.m_isMoving)
             {
-                // Get its actor component, initialise its actorpos
-                m_Player = hit.transform.GetComponent<Actor>();
+				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
+				{
+					GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(true);
+				}
+
+				// Get its actor component, initialise its actorpos
+				m_Player = hit.transform.GetComponent<Actor>();
                 m_v3PlayerTilePos = m_Player.m_ActorPos;
                 m_v3PlayerTilePos.y = 0.1f;
 
@@ -185,66 +194,90 @@ public class PlayerController : Controller
                 }
             }
         }
-    }
-
-    private void OnGUI()
-	{
-		// If showUI is true
-		if (m_bshowUI)
+        
+        if (m_bshowUI)
 		{
-			if (!m_Player.m_bMoved)
+			if(m_Player.m_bMoved)
+				GameManager.Instance.m_actions.transform.GetChild(0).gameObject.SetActive(false);
+			if(m_Player.m_bAttack)
+				GameManager.Instance.m_actions.transform.GetChild(1).gameObject.SetActive(false);
+			if(m_Player.m_bSkip)
 			{
-				// Creates button and waits for input
-				if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y, 100, 35), "Move"))
+				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
 				{
-					// Get the neighbours out player can move on
-					List<Node> tiles = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(m_v3PlayerTilePos), m_Player.m_nHowManyTiles);
-
-					// Spawn a moveable tile on each node
-					foreach (Node n in tiles)
-					{
-						Vector3 tempPos = n.m_v3WorldPosition;
-						tempPos.y = 0.1f;
-						Transform tempWalkableTile = Instantiate(
-							m_walkableprefab,
-							tempPos,
-							Quaternion.Euler(Vector3.zero));
-						tempWalkableTile.parent = GameManager.Instance.MoveableTileHolder.transform;
-					}
-
-					// Set mode to move and turn of the UI and m_nLeftCLick to 1
-					m_playerMode = PLAYERMODE.MOVE;
-					m_bshowUI = false;
-					m_nLeftClick++;
+					GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(false);
 				}
 			}
 
-			if (!m_Player.m_bAttack)
-			{
-				if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 40, 100, 35), "Attack"))
-				{
-					m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
-
-					// Set mode to attack and turn of the UI and m_nLeftCLick to 1
-					// Also calls the players attack
-					m_playerMode = PLAYERMODE.ATTACK;
-					m_bshowUI = false;
-					m_nLeftClick++;
-				}
-			}
-
-            if (!m_Player.m_bSkip)
+			if (!m_Player.m_bAttack || !m_Player.m_bMoved)
             {
-                if (GUI.Button(new Rect(m_v2UiPosition.x, m_v2UiPosition.y + 80, 100, 35), "Skip"))
-                {
-                    m_Player.m_bMoved = true;
-                    m_Player.m_bAttack = true;
-                    m_Player.m_bSkip = true;
-                    m_bshowUI = false;
-                    GameManager.Instance.m_nPlayerMoves++;
-                }
+                GameManager.Instance.m_actions.SetActive(true);
+                Vector3 pos = m_Player.transform.position;
+                pos.y += 1.0f;
+                pos.x -= 0.5f;
+                pos.z += 0.5f;
+                GameManager.Instance.m_actions.transform.position = pos;
             }
         }
 	}
+
+    public void Skip()
+    {
+        if (!m_Player.m_bSkip || (!m_Player.m_bAttack && !m_Player.m_bMoved))
+        {
+            m_Player.m_bMoved = true;
+            m_Player.m_bAttack = true;
+            m_Player.m_bSkip = true;
+            m_bshowUI = false;
+            GameManager.Instance.m_nPlayerMoves++;
+        }
+        GameManager.Instance.m_actions.SetActive(false);
+        m_bshowUI = false;
+    }
+
+    public void Attack()
+    {
+        if (!m_Player.m_bAttack)
+        {
+            m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
+
+            // Set mode to attack and turn of the UI and m_nLeftCLick to 1
+            // Also calls the players attack
+            m_playerMode = PLAYERMODE.ATTACK;
+            m_bshowUI = false;
+            m_nLeftClick++;
+        }
+        GameManager.Instance.m_actions.SetActive(false);
+        m_bshowUI = false;
+    }
+
+    public void Move()
+    {
+        if (!m_Player.m_bMoved)
+        {
+            // Get the neighbours out player can move on
+            List<Node> tiles = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(m_v3PlayerTilePos), m_Player.m_nHowManyTiles);
+
+            // Spawn a moveable tile on each node
+            foreach (Node n in tiles)
+            {
+                Vector3 tempPos = n.m_v3WorldPosition;
+                tempPos.y = 0.1f;
+                Transform tempWalkableTile = Instantiate(
+                    m_walkableprefab,
+                    tempPos,
+                    Quaternion.Euler(Vector3.zero));
+                tempWalkableTile.parent = GameManager.Instance.MoveableTileHolder.transform;
+            }
+
+            // Set mode to move and turn of the UI and m_nLeftCLick to 1
+            m_playerMode = PLAYERMODE.MOVE;
+            m_bshowUI = false;
+            m_nLeftClick++;
+        }
+
+        GameManager.Instance.m_actions.SetActive(false);
+        m_bshowUI = false;
+    }
 }
 

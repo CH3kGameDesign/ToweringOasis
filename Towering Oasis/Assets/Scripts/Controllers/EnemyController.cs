@@ -42,6 +42,7 @@ public class EnemyController : Controller
     public int m_nhasAttacked;
     public List<Direction> m_BestDirection;
     public bool m_bestDirectionFound;
+
     private void Start()
     {
         m_Players = new List<Actor>();
@@ -94,8 +95,6 @@ public class EnemyController : Controller
             Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[m_distance[0].m_playerNumber].m_ActorPos, false);
             
             m_Enemies[m_gameManager.m_nEnemiesMoves].Move(Pathfinding.Instance.path);
-
-            Map.Instance.UpdateUnitOnTop();
         }
 
         if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)

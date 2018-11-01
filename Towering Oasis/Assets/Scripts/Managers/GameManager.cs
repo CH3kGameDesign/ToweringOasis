@@ -36,7 +36,8 @@ public class GameManager : MonoBehaviour
 	public GameObject m_PauseMenuPanel;
 	public GameObject m_SettingPanel;
 	public GameObject m_GameOverPanel;
-	public GameObject m_PrevMenu;
+	public GameObject m_actions;
+    public GameObject m_PrevMenu;
 
 	private void Awake()
     {
@@ -44,6 +45,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
         else if (Instance != this)
             Destroy(gameObject);
+
+        m_actions.SetActive(false);
 
 		// Initalise defaults
 		MoveableTileHolder = new GameObject("MoveableTileHolder").transform;

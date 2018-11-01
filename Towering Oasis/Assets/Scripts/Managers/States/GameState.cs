@@ -45,7 +45,6 @@ public class GameState : BaseState
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     GameManager.Instance.m_PauseMenuPanel.SetActive(true);
-                    GameManager.Instance.m_bcontrolsAvailable = false;
                 }
             }
         }

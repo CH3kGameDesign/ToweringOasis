@@ -254,13 +254,17 @@ public class Actor : MonoBehaviour
 
                 this.m_bStartAttack = true;
                 GameManager.Instance.m_isMoving = false;
-            }
+
+				Map.Instance.UpdateUnitOnTop();
+			}
         }
         else if(m_currentPath.Count == 0)
         {
             this.m_bStartAttack = true;
             GameManager.Instance.m_isMoving = false;
-        }
+
+			Map.Instance.UpdateUnitOnTop();
+		}
         else
         {
             for (int i = 0; i < m_currentPath.Count; i++)
@@ -276,7 +280,9 @@ public class Actor : MonoBehaviour
 
                 this.m_bStartAttack = true;
                 GameManager.Instance.m_isMoving = false;
-            }
+
+				Map.Instance.UpdateUnitOnTop();
+			}
         }
 	}
 }
