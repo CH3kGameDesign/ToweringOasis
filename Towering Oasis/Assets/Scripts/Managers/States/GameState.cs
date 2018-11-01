@@ -17,34 +17,37 @@ public class GameState : BaseState
 
 	private void FixedUpdate()
 	{
-		if (!GameManager.Instance.m_isGameOver)
-		{
-			if (UnitManager.Instance.m_nPlayersAtExit == 4)
-			{
-				while (!islevelLoaded)
-				{
-					int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
-					if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
-					{
-						GameManager.Instance.m_nLevelsLoaded.Add(level);
-						SceneManager.LoadScene(level);
-						islevelLoaded = true;
-						continue;
-					}
-					islevelLoaded = false;
-				}
-			}
-			else if (UnitManager.Instance.m_nPlayersAlive <= 0)
-			{
-				GameManager.Instance.m_GameOverPanel.SetActive(true);
-				GameManager.Instance.m_isGameOver = true;
-			}
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        { 
+            if (!GameManager.Instance.m_isGameOver)
+            {
+                if (UnitManager.Instance.m_nPlayersAtExit == 4)
+                {
+                    while (!islevelLoaded)
+                    {
+                        int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+                        if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
+                        {
+                            GameManager.Instance.m_nLevelsLoaded.Add(level);
+                            SceneManager.LoadScene(level);
+                            islevelLoaded = true;
+                            continue;
+                        }
+                        islevelLoaded = false;
+                    }
+                }
+                else if (UnitManager.Instance.m_nPlayersAlive <= 0)
+                {
+                    GameManager.Instance.m_GameOverPanel.SetActive(true);
+                    GameManager.Instance.m_isGameOver = true;
+                }
 
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				GameManager.Instance.m_PauseMenuPanel.SetActive(true);
-				GameManager.Instance.m_bcontrolsAvailable = false;
-			}
-		}
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    GameManager.Instance.m_PauseMenuPanel.SetActive(true);
+                    GameManager.Instance.m_bcontrolsAvailable = false;
+                }
+            }
+        }
 	}
 }

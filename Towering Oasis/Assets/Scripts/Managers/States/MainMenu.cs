@@ -11,7 +11,15 @@ public class MainMenu : BaseState
 		m_stateName = GameStates.MAINMENU;
 	}
 
-	private void FixedUpdate()
+    private void Update()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            GameManager.Instance.m_MainMenuPanel.SetActive(false);
+        }
+    }
+
+    private void FixedUpdate()
 	{
 		
 	}

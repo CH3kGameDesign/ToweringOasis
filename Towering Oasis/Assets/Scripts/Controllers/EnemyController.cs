@@ -41,7 +41,7 @@ public class EnemyController : Controller
     public GameManager m_gameManager;
     public int m_nhasAttacked;
     public List<Direction> m_BestDirection;
-
+    public bool m_bestDirectionFound;
     private void Start()
     {
         m_Players = new List<Actor>();
@@ -73,9 +73,6 @@ public class EnemyController : Controller
             m_currentEnemy = m_Enemies[m_gameManager.m_nEnemiesMoves];
 
             {
-                // Get the player position from screen
-                Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.position);
-
                 // Draw a line to debug player front
                 Debug.DrawRay(m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.position, m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.forward * 5, Color.red);
             }
@@ -104,6 +101,7 @@ public class EnemyController : Controller
         if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
         {
             m_nhasAttacked++;
+            m_bestDirectionFound = true;
             StartCoroutine(EnemyAttack());
             m_currentEnemy.m_bStartAttack = false;
             m_gameManager.m_nEnemiesMoves++;
@@ -121,51 +119,54 @@ public class EnemyController : Controller
 
         if (m_gameManager.m_isMoving)
             yield return new WaitForSeconds(3f);
-        
-        for(int i = 0; i < 4;)
-        {
-            m_currentEnemy.transform.Rotate(0.0f, 90.0f, 0.0f);
-            
-            Vector3 rot = new Vector3(
-                m_currentEnemy.transform.eulerAngles.x,
-                m_currentEnemy.transform.eulerAngles.y,
-                m_currentEnemy.transform.eulerAngles.z);
 
-            m_BestDirection.Add(new Direction(0, rot));
-            m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
+        if(m_bestDirectionFound)
+        { 
+            for (int i = 0; i < 4;)
+            {
+                m_currentEnemy.transform.Rotate(0.0f, 90.0f, 0.0f);
 
-            if (i < 4)
-                yield return new WaitForSeconds(0.7f);
+                Vector3 rot = m_currentEnemy.transform.eulerAngles;
 
-            m_BestDirection[m_BestDirection.Count - 1].m_whowasattackedPrev = m_currentEnemy.m_whoWasAttacked.Count;
+                m_BestDirection.Add(new Direction(0, rot));
+                m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
 
+                if (i < 4)
+                    yield return new WaitForSeconds(0.7f);
+
+                m_BestDirection[m_BestDirection.Count - 1].m_whowasattackedPrev = m_currentEnemy.m_whoWasAttacked.Count;
+
+                m_currentEnemy.m_whoWasAttacked.Clear();
+
+                GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
+
+                // we want to destroy previous spawned attack tiles
+                for (int j = 0; j < temp.Length; j++)
+                {
+                    Destroy(temp[j]);
+                }
+
+                i++;
+            }
             m_currentEnemy.m_whoWasAttacked.Clear();
 
-            GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
+            m_BestDirection = m_BestDirection.OrderByDescending(o => o.m_whowasattackedPrev).ToList<Direction>();
 
-            // we want to destroy previous spawned attack tiles
-            for (int j = 0; j < temp.Length; j++)
-            {
-                Destroy(temp[j]);
-            }
+            m_currentEnemy.transform.eulerAngles = m_BestDirection[0].m_prevRotation;
 
-            i++;
+            m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
+
+            m_bestDirectionFound = false;
+            m_BestDirection.Clear();
         }
-        m_currentEnemy.m_whoWasAttacked.Clear();
-
-        m_BestDirection = m_BestDirection.OrderByDescending(o => o.m_whowasattackedPrev).ToList<Direction>();
-
-        m_currentEnemy.transform.Rotate(m_BestDirection[0].m_prevRotation);
-
-        m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
-
         yield return new WaitForSeconds(0.7f);
 
         if (m_currentEnemy.m_whoWasAttacked.Count > 0)
             m_currentEnemy.Attack();
 
         yield return new WaitForSeconds(0.2f);
-        
+
+        m_bestDirectionFound = false;
         m_gameManager.m_isAttacking = false;
     }
 }

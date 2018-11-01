@@ -279,7 +279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1219993581248788
 GameObject:
   m_ObjectHideFlags: 1
@@ -1526,6 +1526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e24055371cb041448f08ccc5ad22f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stateName: 0
 --- !u!114 &114331697210138684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2211,12 +2212,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b9fcd557c76ef4aad63415ce6a8c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_currentState: 0
+  MoveableTileHolder: {fileID: 0}
+  AttackTileHolder: {fileID: 0}
+  enemyController: {fileID: 0}
+  playerController: {fileID: 0}
   m_nLevelsLoaded: 
+  m_nPlayerMoves: 0
+  m_nEnemiesMoves: 0
+  m_nEnemiesAttacked: 0
   m_bcontrolsAvailable: 0
+  m_isGameOver: 0
+  m_isMoving: 0
+  m_isAttacking: 0
   m_MainMenuPanel: {fileID: 1207905832859108}
   m_PauseMenuPanel: {fileID: 0}
   m_SettingPanel: {fileID: 1043883683653858}
   m_GameOverPanel: {fileID: 0}
+  m_PrevMenu: {fileID: 0}
 --- !u!114 &114569956340030288
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2475,13 +2488,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ee6f60303cc4d4ea32a7877e0785c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stateName: 0
   m_ResolutionDropdownMenu: {fileID: 114426562217873426}
   m_FullscreenToggle: {fileID: 114845540220249302}
   m_QualityDropdownMenu: {fileID: 114170135330839932}
   m_AudioSlider: {fileID: 114502879861377046}
   m_AudioInputField: {fileID: 114344882107846984}
   m_ThisMenu: {fileID: 1043883683653858}
-  m_PrevMenu: {fileID: 1207905832859108}
 --- !u!114 &114735015225273956
 MonoBehaviour:
   m_ObjectHideFlags: 1

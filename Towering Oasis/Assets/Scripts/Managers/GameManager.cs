@@ -49,65 +49,88 @@ public class GameManager : MonoBehaviour
 		MoveableTileHolder = new GameObject("MoveableTileHolder").transform;
 		AttackTileHolder = new GameObject("AttackTileHolder").transform;
 
-		m_nLevelsLoaded = new List<int>();
-		m_bcontrolsAvailable = true;
+        MoveableTileHolder.parent = transform;
+        AttackTileHolder.parent = transform;
 
-		if (SceneManager.GetActiveScene().buildIndex != 0)
-			DontDestroyOnLoad(transform.gameObject);
+        m_nLevelsLoaded = new List<int>();
+		m_bcontrolsAvailable = true;
+        
+	    DontDestroyOnLoad(transform.gameObject);
 	}
 
     private void Start()
     {
-        enemyController = FindObjectOfType<EnemyController>();
-        playerController = FindObjectOfType<PlayerController>();
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            enemyController = FindObjectOfType<EnemyController>();
+            playerController = FindObjectOfType<PlayerController>();
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-            m_bcontrolsAvailable = !m_bcontrolsAvailable;
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        { 
+            if (Input.GetKeyDown(KeyCode.P))
+                m_bcontrolsAvailable = !m_bcontrolsAvailable;
 
-        if (m_bcontrolsAvailable)
-            playerController.myUpdate();
-        else if (!m_bcontrolsAvailable)
-            enemyController.myUpdate();
+            if(enemyController == null)
+            {
+                enemyController = FindObjectOfType<EnemyController>();
+            }
+            else if (playerController == null)
+            {
+                playerController = FindObjectOfType<PlayerController>();
+            }
+
+            if (m_bcontrolsAvailable && playerController != null)
+                playerController.myUpdate();
+            else if (!m_bcontrolsAvailable && enemyController != null)
+                enemyController.myUpdate();
+        }
     }
 
     private void LateUpdate()
 	{
-		if (m_nPlayerMoves == UnitManager.Instance.m_Parent[0].childCount && !m_isMoving && m_bcontrolsAvailable)
-		{
-			Transform Player = UnitManager.Instance.m_Parent[0];
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            if (UnitManager.Instance.m_Parent.Count == 0)
+                return;
 
-			for (int i = 0; i < Player.childCount; i++)
-			{
-				Actor p = Player.GetChild(i).GetComponent<Actor>();
+            if (m_nPlayerMoves == UnitManager.Instance.m_Parent[0].childCount && !m_isMoving && m_bcontrolsAvailable)
+            {
+                Transform Player = UnitManager.Instance.m_Parent[0];
 
-                StartCoroutine(Wait(p));
-			}
+                for (int i = 0; i < Player.childCount; i++)
+                {
+                    Actor p = Player.GetChild(i).GetComponent<Actor>();
 
-			m_bcontrolsAvailable = false;
-			m_nEnemiesAttacked = false;
-			m_nPlayerMoves = 0;
-			m_nEnemiesMoves = 0;
-		}
-		// this happens before attacktile trigger enter
-		if (m_nEnemiesMoves == UnitManager.Instance.m_Parent[1].childCount && m_nEnemiesAttacked && !m_bcontrolsAvailable)
-		{
-			Transform Enemies = UnitManager.Instance.m_Parent[1];
-			for (int i = 0; i < Enemies.childCount; i++)
-			{
-				Actor e = Enemies.GetChild(i).GetComponent<Actor>();
+                    StartCoroutine(Wait(p));
+                }
 
-				e.m_bAttack = false;
-				e.m_bMoved = false;
-			}
+                m_bcontrolsAvailable = false;
+                m_nEnemiesAttacked = false;
+                m_nPlayerMoves = 0;
+                m_nEnemiesMoves = 0;
+            }
+            // this happens before attacktile trigger enter
+            if (m_nEnemiesMoves == UnitManager.Instance.m_Parent[1].childCount && m_nEnemiesAttacked && !m_bcontrolsAvailable)
+            {
+                Transform Enemies = UnitManager.Instance.m_Parent[1];
+                for (int i = 0; i < Enemies.childCount; i++)
+                {
+                    Actor e = Enemies.GetChild(i).GetComponent<Actor>();
 
-			m_bcontrolsAvailable = true;
-			m_nEnemiesAttacked = false;
-			m_nPlayerMoves = 0;
-			m_nEnemiesMoves = 0;
-		}
+                    e.m_bAttack = false;
+                    e.m_bMoved = false;
+                }
+
+                m_bcontrolsAvailable = true;
+                m_nEnemiesAttacked = false;
+                m_nPlayerMoves = 0;
+                m_nEnemiesMoves = 0;
+            }
+        }
 	}
 
 	public void OnApplicationQuit()
