@@ -7,7 +7,9 @@ public class CharacterSelection : MonoBehaviour {
 
     public Sprite[] m_Sprites;
     public Image m_ThisSprite;
+    public Text m_ClassName;
     int m_selected;
+    public string[] m_ClassNames;
     public static Dictionary<string, int> m_dictionary;
 
     // Use this for initialization
