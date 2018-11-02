@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     public PlayerController playerController;
 
     public List<int> m_nLevelsLoaded;
-	public int m_nPlayerMoves;
+    public Actor m_currentActor;
+    public int m_nPlayerMoves;
 	public int m_nEnemiesMoves;
 	public bool m_nEnemiesAttacked;
 	public bool m_bcontrolsAvailable;
@@ -77,7 +78,27 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.P))
                 m_bcontrolsAvailable = !m_bcontrolsAvailable;
 
-            if(enemyController == null)
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Actor[] players = playerController.GetComponentsInChildren<Actor>();
+                foreach (Actor p in players)
+                {
+                    p.m_nDamage = 100;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                Actor[] players = playerController.GetComponentsInChildren<Actor>();
+                foreach (Actor p in players)
+                {
+                    p.m_nHealth = -10;
+                    UnitManager.Instance.m_nPlayersAlive--;
+                    m_isGameOver = true;
+                }
+            }
+
+            if (enemyController == null)
             {
                 enemyController = FindObjectOfType<EnemyController>();
             }
@@ -88,7 +109,7 @@ public class GameManager : MonoBehaviour
 
             if (m_bcontrolsAvailable && playerController != null)
                 playerController.myUpdate();
-            else if (!m_bcontrolsAvailable && enemyController != null)
+            else if (!m_bcontrolsAvailable && enemyController != null && !m_isGameOver)
                 enemyController.myUpdate();
         }
     }
@@ -135,6 +156,14 @@ public class GameManager : MonoBehaviour
             }
         }
 	}
+
+    public void ResetVariables()
+    {
+        m_bcontrolsAvailable = true;
+        m_nEnemiesAttacked = false;
+        m_nPlayerMoves = 0;
+        m_nEnemiesMoves = 0;
+    }
 
 	public void OnApplicationQuit()
 	{

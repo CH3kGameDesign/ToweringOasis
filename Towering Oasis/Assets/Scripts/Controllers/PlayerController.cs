@@ -43,16 +43,6 @@ public class PlayerController : Controller
     {
         base.myUpdate();
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Actor[] players = GetComponentsInChildren<Actor>();
-            foreach (Actor p in players)
-            {
-                p.m_nHealth = -10;
-                UnitManager.Instance.m_nPlayersAlive--;
-            }
-        }
-
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -73,6 +63,7 @@ public class PlayerController : Controller
 
 				// Get its actor component, initialise its actorpos
 				m_Player = hit.transform.GetComponent<Actor>();
+                GameManager.Instance.m_currentActor = m_Player;
                 m_v3PlayerTilePos = m_Player.m_ActorPos;
                 m_v3PlayerTilePos.y = 0.1f;
 

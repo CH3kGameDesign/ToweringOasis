@@ -29,10 +29,11 @@ public class PauseMenuState : BaseState
 
 		int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
 		GameManager.Instance.m_nLevelsLoaded.Add(level);
-		SceneManager.LoadScene(level);
+
+        GameManager.Instance.ResetVariables();
+        SceneManager.LoadScene(level);
 
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
-		GameManager.Instance.m_bcontrolsAvailable = true;
 	}
 
 	//Switch Panel to Settings Panel

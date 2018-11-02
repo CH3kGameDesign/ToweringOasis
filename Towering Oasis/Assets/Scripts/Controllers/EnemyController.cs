@@ -72,6 +72,7 @@ public class EnemyController : Controller
             }
 
             m_currentEnemy = m_Enemies[m_gameManager.m_nEnemiesMoves];
+            GameManager.Instance.m_currentActor = m_currentEnemy;
 
             {
                 // Draw a line to debug player front

@@ -8,13 +8,7 @@ public class AttackTiles : MonoBehaviour
 	{
 		if (UnitManager.Instance.m_Objects.Contains(other.transform))
 		{
-			Actor actor;
-			if (other.CompareTag("Enemy"))
-				actor = GameObject.FindObjectOfType<PlayerController>().m_Player;
-			else
-			{
-                actor = GameObject.FindObjectOfType<EnemyController>().m_currentEnemy;
-			}
+			Actor actor = GameManager.Instance.m_currentActor;
 
 			Actor ObjectToDamage = other.GetComponent<Actor>();
 

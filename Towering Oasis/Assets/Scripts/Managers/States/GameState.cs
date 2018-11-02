@@ -19,33 +19,34 @@ public class GameState : BaseState
 	{
         if (SceneManager.GetActiveScene().buildIndex != 0)
         { 
-            if (!GameManager.Instance.m_isGameOver)
+            if (UnitManager.Instance.m_nPlayersAtExit == 4)
             {
-                if (UnitManager.Instance.m_nPlayersAtExit == 4)
+                while (!islevelLoaded)
                 {
-                    while (!islevelLoaded)
+                    int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+                    if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
                     {
-                        int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
-                        if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
-                        {
-                            GameManager.Instance.m_nLevelsLoaded.Add(level);
-                            SceneManager.LoadScene(level);
-                            islevelLoaded = true;
-                            continue;
-                        }
-                        islevelLoaded = false;
+                        GameManager.Instance.m_nLevelsLoaded.Add(level);
+                        SceneManager.LoadScene(level);
+                        islevelLoaded = true;
+                        continue;
                     }
-                }
-                else if (UnitManager.Instance.m_nPlayersAlive <= 0)
-                {
-                    GameManager.Instance.m_GameOverPanel.SetActive(true);
-                    GameManager.Instance.m_isGameOver = true;
+                    islevelLoaded = false;
                 }
 
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    GameManager.Instance.m_PauseMenuPanel.SetActive(true);
-                }
+                GameManager.Instance.ResetVariables();
+            }
+            else if (UnitManager.Instance.m_nPlayersAlive <= 0)
+            {
+                GameManager.Instance.m_GameOverPanel.SetActive(true);
+                GameManager.Instance.m_isGameOver = true;
+
+                GameManager.Instance.ResetVariables();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameManager.Instance.m_PauseMenuPanel.SetActive(true);
             }
         }
 	}
