@@ -12,6 +12,9 @@ public class AttackTiles : MonoBehaviour
 
 			Actor ObjectToDamage = other.GetComponent<Actor>();
 
+            if (other.gameObject.CompareTag("Enemy") && actor.gameObject.CompareTag("Enemy"))
+                return;
+
 			actor.m_whoWasAttacked.Add(ObjectToDamage);
 		}
 	}

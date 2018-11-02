@@ -159,10 +159,21 @@ public class EnemyController : Controller
             m_bestDirectionFound = false;
             m_BestDirection.Clear();
         }
+
         yield return new WaitForSeconds(0.7f);
 
         if (m_currentEnemy.m_whoWasAttacked.Count > 0)
             m_currentEnemy.Attack();
+
+        m_currentEnemy.m_whoWasAttacked.Clear();
+
+        GameObject[] temp2 = GameObject.FindGameObjectsWithTag("AttackTile");
+
+        // we want to destroy previous spawned attack tiles
+        for (int j = 0; j < temp2.Length; j++)
+        {
+            Destroy(temp2[j]);
+        }
 
         yield return new WaitForSeconds(0.2f);
 
