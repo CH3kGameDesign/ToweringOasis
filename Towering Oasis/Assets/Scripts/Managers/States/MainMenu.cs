@@ -8,7 +8,7 @@ public class MainMenu : BaseState
 {
 	private void Start()
 	{
-		m_stateName = GameStates.MAINMENU;
+		GameManager.Instance.m_stateName = GameStates.MAINMENU;
 	}
 
     private void Update()
@@ -30,6 +30,7 @@ public class MainMenu : BaseState
 		int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
 		GameManager.Instance.m_nLevelsLoaded.Add(level);
 		SceneManager.LoadScene(level);
+        GameManager.Instance.m_stateName = GameStates.GAME;
     }
 
     //Switch Panel to Settings Panel
@@ -38,7 +39,7 @@ public class MainMenu : BaseState
 		GameManager.Instance.m_PrevMenu = GameManager.Instance.m_MainMenuPanel;
 		GameManager.Instance.m_MainMenuPanel.SetActive(false);
 		GameManager.Instance.m_SettingPanel.SetActive(true);
-	}
+    }
         
     //Quit Game when button is pressed
     public void QuitGameOnClick()

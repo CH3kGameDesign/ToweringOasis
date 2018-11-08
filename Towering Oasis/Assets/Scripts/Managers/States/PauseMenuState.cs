@@ -7,7 +7,7 @@ public class PauseMenuState : BaseState
 {
 	private void Start()
 	{
-		m_stateName = GameStates.PAUSED;
+		GameManager.Instance.m_stateName = GameStates.PAUSED;
 	}
 
 	private void FixedUpdate()
@@ -20,7 +20,8 @@ public class PauseMenuState : BaseState
 	{
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		GameManager.Instance.m_bcontrolsAvailable = true;
-	}
+        GameManager.Instance.m_stateName = GameStates.GAME;
+    }
 
 	//Load Scene "MainScene" when button is pressed
 	public void RestartButtonOnClick()
@@ -34,7 +35,8 @@ public class PauseMenuState : BaseState
         SceneManager.LoadScene(level);
 
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
-	}
+        GameManager.Instance.m_stateName = GameStates.GAME;
+    }
 
 	//Switch Panel to Settings Panel
 	public void SettingsButtonOnClick()
@@ -42,7 +44,7 @@ public class PauseMenuState : BaseState
 		GameManager.Instance.m_PrevMenu = GameManager.Instance.m_PauseMenuPanel;
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		GameManager.Instance.m_SettingPanel.SetActive(true);
-	}
+    }
 
 	//Quit Game when button is pressed
 	public void MenuOnClick()
@@ -50,12 +52,13 @@ public class PauseMenuState : BaseState
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		Destroy(transform.parent.gameObject);
 		SceneManager.LoadScene(0);
-	}
+        GameManager.Instance.m_stateName = GameStates.MAINMENU;
+    }
 
 	//Quit Game when button is pressed
 	public void QuitGameOnClick()
 	{
 		Application.Quit();
-	}
+    }
 }
 

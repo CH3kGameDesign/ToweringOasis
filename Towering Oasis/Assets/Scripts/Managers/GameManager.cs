@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public enum GameStates
@@ -10,6 +11,7 @@ public enum GameStates
 	PAUSED,
 	GAME,
 	GAMEOVER,
+    LEVELWON,
 
 	COUNT
 }
@@ -17,8 +19,8 @@ public enum GameStates
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-	public GameStates m_currentState;
-	public Transform MoveableTileHolder; // Empty object to hold moveable tiles
+    public GameStates m_stateName;
+    public Transform MoveableTileHolder; // Empty object to hold moveable tiles
 	public Transform AttackTileHolder; // Empty object to hold attack tiles
     public EnemyController enemyController;
     public PlayerController playerController;
@@ -32,12 +34,16 @@ public class GameManager : MonoBehaviour
 	public bool m_isGameOver;
 	public bool m_isMoving;
 	public bool m_isAttacking;
+    public HealthBar m_healthGUI;
+    public Text m_healthText;
 
     public GameObject m_MainMenuPanel;
 	public GameObject m_PauseMenuPanel;
 	public GameObject m_SettingPanel;
 	public GameObject m_GameOverPanel;
-	public GameObject m_actions;
+	public GameObject m_LevelWonPanel;
+	public GameObject m_HealthBar;
+    public GameObject m_actions;
     public GameObject m_PrevMenu;
 
 	private void Awake()
@@ -52,6 +58,8 @@ public class GameManager : MonoBehaviour
 		// Initalise defaults
 		MoveableTileHolder = new GameObject("MoveableTileHolder").transform;
 		AttackTileHolder = new GameObject("AttackTileHolder").transform;
+        m_healthGUI = m_HealthBar.GetComponentInChildren<HealthBar>();
+        m_healthText = m_HealthBar.GetComponentInChildren<Text>();
 
         MoveableTileHolder.parent = transform;
         AttackTileHolder.parent = transform;
@@ -84,6 +92,15 @@ public class GameManager : MonoBehaviour
                 foreach (Actor p in players)
                 {
                     p.m_nDamage = 100;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                Actor[] enemies = enemyController.GetComponentsInChildren<Actor>();
+                foreach (Actor e in enemies)
+                {
+                    e.m_nHealth = -10;
                 }
             }
 

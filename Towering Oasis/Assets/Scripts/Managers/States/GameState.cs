@@ -5,11 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameState : BaseState
 {
-	bool islevelLoaded = false;
-
 	private void Start()
 	{
-		m_stateName = GameStates.GAME;
+		GameManager.Instance.m_stateName = GameStates.GAME;
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		GameManager.Instance.m_SettingPanel.SetActive(false);
 		GameManager.Instance.m_GameOverPanel.SetActive(false);
@@ -19,29 +17,27 @@ public class GameState : BaseState
 	{
         if (SceneManager.GetActiveScene().buildIndex != 0)
         { 
-            if (UnitManager.Instance.m_nPlayersAtExit == 4)
+            if (UnitManager.Instance.m_nPlayersAtExit == UnitManager.Instance.m_nPlayersAlive)
             {
-                while (!islevelLoaded)
-                {
-                    int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
-                    if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
-                    {
-                        GameManager.Instance.m_nLevelsLoaded.Add(level);
-                        SceneManager.LoadScene(level);
-                        islevelLoaded = true;
-                        continue;
-                    }
-                    islevelLoaded = false;
-                }
-
+                GameManager.Instance.m_LevelWonPanel.SetActive(true);
                 GameManager.Instance.ResetVariables();
+                GameManager.Instance.m_stateName = GameStates.LEVELWON;
             }
+
             else if (UnitManager.Instance.m_nPlayersAlive <= 0)
             {
                 GameManager.Instance.m_GameOverPanel.SetActive(true);
                 GameManager.Instance.m_isGameOver = true;
+                GameManager.Instance.m_stateName = GameStates.GAMEOVER;
 
                 GameManager.Instance.ResetVariables();
+            }
+
+            else if (UnitManager.Instance.m_Parent[1].childCount <= 0 && GameManager.Instance.m_stateName == GameStates.GAME)
+            {
+                GameManager.Instance.m_LevelWonPanel.SetActive(true);
+                GameManager.Instance.ResetVariables();
+                GameManager.Instance.m_stateName = GameStates.LEVELWON;
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))

@@ -7,7 +7,7 @@ public class GameOverState : BaseState
 {
 	private void Start()
 	{
-		m_stateName = GameStates.GAMEOVER;
+		GameManager.Instance.m_stateName = GameStates.GAMEOVER;
 	}
 
 	private void FixedUpdate()
@@ -27,7 +27,8 @@ public class GameOverState : BaseState
 		GameManager.Instance.m_GameOverPanel.SetActive(false);
 		GameManager.Instance.m_bcontrolsAvailable = true;
 		GameManager.Instance.m_isGameOver = false;
-	}
+        GameManager.Instance.m_stateName = GameStates.GAME;
+    }
 
 	//Switch Panel to Settings Panel
 	public void SettingsButtonOnClick()
@@ -43,11 +44,12 @@ public class GameOverState : BaseState
 		GameManager.Instance.m_GameOverPanel.SetActive(false);
 		Destroy(transform.parent.gameObject);
 		SceneManager.LoadScene(0);
-	}
+        GameManager.Instance.m_stateName = GameStates.MAINMENU;
+    }
 
 	//Quit Game when button is pressed
 	public void QuitGameOnClick()
 	{
 		Application.Quit();
-	}
+    }
 }

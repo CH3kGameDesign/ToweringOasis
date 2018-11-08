@@ -22,7 +22,7 @@ public class Setting : BaseState
 
     private void Awake()
 	{
-		m_stateName = GameStates.SETTINGS;
+		GameManager.Instance.m_stateName = GameStates.SETTINGS;
 		for (int i = 0; i < Screen.resolutions.Length; ++i)
         {
             m_Resolutions.Add(Screen.resolutions[i]);

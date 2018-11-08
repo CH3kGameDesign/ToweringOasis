@@ -18,6 +18,7 @@ public class PlayerController : Controller
 	public Transform m_attackprefab; // Attack Tile
 	public PLAYERMODE m_playerMode; // Current player state
 	public float m_fPlayerMovementSpeed; // Speed at which player moves
+    public bool m_showHealth;
 
 	public Actor m_Player; // current Player
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
@@ -75,6 +76,8 @@ public class PlayerController : Controller
                 // Show UI(attack/move buttons)
                 if (m_Player != null)
                     m_bshowUI = true;
+
+                m_showHealth = true;
             }
 
             // If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
@@ -124,6 +127,9 @@ public class PlayerController : Controller
                 // Set player mode to idle and m_nLeftClick back to 0 
                 m_playerMode = PLAYERMODE.IDLE;
                 m_nLeftClick--;
+
+                m_showHealth = false;
+                GameManager.Instance.m_HealthBar.SetActive(false);
             }
 
             // If player is in attack mode and we left click while m_nLeftClick is 1
@@ -153,6 +159,9 @@ public class PlayerController : Controller
                 // Set player mode to idle and m_nLeftClick back to 0 
                 m_playerMode = PLAYERMODE.IDLE;
                 m_nLeftClick--;
+
+                m_showHealth = false;
+                GameManager.Instance.m_HealthBar.SetActive(false);
             }
 
             // If hold down the right click and m_player is not null
@@ -183,6 +192,13 @@ public class PlayerController : Controller
                 {
                     m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
                 }
+            }
+
+            if (m_showHealth)
+            {
+                GameManager.Instance.m_HealthBar.SetActive(true);
+                GameManager.Instance.m_healthText.text = m_Player.name;
+                GameManager.Instance.m_healthGUI.m_CurrentHP = m_Player.m_nHealth / 10;
             }
         }
         
@@ -224,6 +240,7 @@ public class PlayerController : Controller
         }
         GameManager.Instance.m_actions.SetActive(false);
         m_bshowUI = false;
+        GameManager.Instance.m_HealthBar.SetActive(false);
     }
 
     public void Attack()
