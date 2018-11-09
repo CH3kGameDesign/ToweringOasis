@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 33872765565716032}
   - component: {fileID: 64059196760382852}
   - component: {fileID: 23987011026501592}
+  - component: {fileID: 114758132833874358}
   m_Layer: 2
   m_Name: SPR_Support
   m_TagString: Untagged
@@ -85,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1300078462511634}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.5, y: 1, z: 0.5}
+  m_LocalPosition: {x: 7.5, y: 1, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4200685574117454}
@@ -99,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1858598172761134}
   m_LocalRotation: {x: 0.35355338, y: -0.35355338, z: 0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: 0.6750002, y: 0.06099999, z: -0.675}
+  m_LocalPosition: {x: 0.392, y: 0.06099999, z: -0.361}
   m_LocalScale: {x: 0.30000016, y: 1, z: 0.30000004}
   m_Children: []
   m_Father: {fileID: 4200685574117454}
@@ -244,6 +245,19 @@ MonoBehaviour:
   m_prevDirec: 0
   m_bLookingDiaganol: 0
   m_whoWasAttacked: []
+--- !u!114 &114758132833874358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858598172761134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d299501dd431434c9debb68f1548ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyCameraTransform: {fileID: 0}
+  alignNotLook: 1
 --- !u!136 &136433092191796616
 CapsuleCollider:
   m_ObjectHideFlags: 1

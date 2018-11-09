@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 33483928356316560}
   - component: {fileID: 64529914969732194}
   - component: {fileID: 23457164178216624}
+  - component: {fileID: 114670595530740040}
   m_Layer: 2
   m_Name: SPR_Melee
   m_TagString: Untagged
@@ -117,7 +118,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1354407967531964}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 1, z: -0.5}
+  m_LocalPosition: {x: 7.5, y: 1, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4125108952651108}
@@ -131,8 +132,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1455763833790304}
   m_LocalRotation: {x: 0.35355338, y: -0.35355338, z: 0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: 0.6750002, y: 0.06099999, z: -0.67499995}
-  m_LocalScale: {x: 0.3000001, y: 1, z: 0.30000004}
+  m_LocalPosition: {x: 0.392, y: 0.06099999, z: -0.361}
+  m_LocalScale: {x: 0.30000016, y: 1, z: 0.30000004}
   m_Children: []
   m_Father: {fileID: 4125108952651108}
   m_RootOrder: 0
@@ -265,6 +266,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114670595530740040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1455763833790304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d299501dd431434c9debb68f1548ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyCameraTransform: {fileID: 0}
+  alignNotLook: 1
 --- !u!114 &114688842363873606
 MonoBehaviour:
   m_ObjectHideFlags: 1
