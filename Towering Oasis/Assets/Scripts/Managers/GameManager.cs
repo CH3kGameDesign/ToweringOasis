@@ -34,8 +34,17 @@ public class GameManager : MonoBehaviour
 	public bool m_isGameOver;
 	public bool m_isMoving;
 	public bool m_isAttacking;
+
+    public GameObject m_GameGUI;
     public HealthBar m_healthGUI;
     public Text m_healthText;
+    public Text m_EnemiesNumber;
+    public Text m_Turn;
+
+    public Text Button0;
+    public Text Button1;
+    public Text Button2;
+    public Text Button3;
 
     public GameObject m_MainMenuPanel;
 	public GameObject m_PauseMenuPanel;
@@ -82,7 +91,17 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex != 0)
-        { 
+        {
+            if (m_GameGUI.activeSelf == false)
+                m_GameGUI.SetActive(true);
+
+            m_EnemiesNumber.text = "Enemies: " + UnitManager.Instance.m_Parent[1].childCount;
+
+            if (m_bcontrolsAvailable)
+                m_Turn.text = "Player's Turn";
+            else if(!m_bcontrolsAvailable)
+                m_Turn.text = "Enemies Turn";
+
             if (Input.GetKeyDown(KeyCode.P))
                 m_bcontrolsAvailable = !m_bcontrolsAvailable;
 

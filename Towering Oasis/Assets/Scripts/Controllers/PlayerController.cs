@@ -36,9 +36,14 @@ public class PlayerController : Controller
 	}
 
 	private void Update()
-	{
-
-	}
+    {
+        if (m_showHealth)
+        {
+            GameManager.Instance.m_HealthBar.SetActive(true);
+            GameManager.Instance.m_healthText.text = m_Player.name;
+            GameManager.Instance.m_healthGUI.m_CurrentHP = m_Player.m_nHealth / 10;
+        }
+    }
 
     public override void myUpdate()
     {
@@ -192,13 +197,6 @@ public class PlayerController : Controller
                 {
                     m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
                 }
-            }
-
-            if (m_showHealth)
-            {
-                GameManager.Instance.m_HealthBar.SetActive(true);
-                GameManager.Instance.m_healthText.text = m_Player.name;
-                GameManager.Instance.m_healthGUI.m_CurrentHP = m_Player.m_nHealth / 10;
             }
         }
         
