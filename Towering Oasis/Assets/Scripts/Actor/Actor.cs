@@ -116,11 +116,11 @@ public class Actor : MonoBehaviour
 
 	//TODO Move this to there respective classes
 	// Returns the attack tiles
-	public List<Node> GetAttackTiles(Node node, Node playerNode, bool getDirectionEnum = false, int nHowManyIterations = 1, int nHowManyTiles = 1)
+	public virtual List<Node> GetAttackTiles(Node node, Node playerNode, bool getDirectionEnum = false, int nHowManyIterations = 1, int nHowManyTiles = 1)
 	{
 		List<Node> AttackTiles = new List<Node>();
 
-		// The infront off player and want to attack
+		// The tile infront off player and want to attack
 		Vector2 attackCoord = node.m_v2GridCoordinate;
 
 		// Player coordinates

@@ -195,6 +195,7 @@ public class PlayerController : Controller
                 // If player is in attack mode
                 if (m_playerMode == PLAYERMODE.ATTACK && m_Player.m_prevDirec != m_Player.m_lookingDirec)
                 {
+					m_Player.m_whoWasAttacked.Clear();
                     m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
                 }
             }
