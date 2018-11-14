@@ -88,7 +88,7 @@ public class Actor : MonoBehaviour
     public virtual void SpawnAttackTiles(Transform attackPrefab, Transform holder)
 	{
 		// Gets the tile infront of the actor and get its attack tiles relevant to class(will be added)
-		Vector3 pos = transform.position + transform.forward;
+		Vector3 pos = GetChildObject(transform, "Ring").transform.position + GetChildObject(transform, "Ring").transform.forward;
 		Node attackNode = Map.Instance.GetNodeFromPosition(pos);
 
 		List<Node> attackNodes = GetAttackTiles(attackNode, Map.Instance.GetNodeFromPosition(transform.position));
@@ -284,5 +284,22 @@ public class Actor : MonoBehaviour
 				Map.Instance.UpdateUnitOnTop();
 			}
         }
-	}
+    }
+    public Transform GetChildObject(Transform parent, string _tag)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.tag == _tag)
+            {
+                return parent.GetChild(i);
+            }
+            if (child.childCount > 0)
+            {
+                GetChildObject(child, _tag);
+            }
+        }
+
+        return null;
+    }
 }

@@ -173,7 +173,7 @@ public class PlayerController : Controller
             if (m_Player != null)
             {
                 // Get the player position from screen
-                Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(m_Player.gameObject.transform.position);
+                Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(GetChildObject(m_Player.transform, "Ring").transform.position);
 
                 // and the mose position on the screen
                 Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
@@ -182,13 +182,13 @@ public class PlayerController : Controller
                 float angle = Mathf.Atan2(positionOnScreen.y - mouseOnScreen.y, positionOnScreen.x - mouseOnScreen.x) * Mathf.Rad2Deg;
 
                 // Set players rotation to that angle
-                m_Player.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
+                GetChildObject(m_Player.transform, "Ring").rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
 
                 // Draw a line to debug player front
-                Debug.DrawRay(m_Player.gameObject.transform.position, m_Player.gameObject.transform.forward * 5, Color.red);
+                Debug.DrawRay(GetChildObject(m_Player.transform, "Ring").transform.position, GetChildObject(m_Player.transform, "Ring").transform.forward * 5, Color.red);
 
                 m_Player.GetAttackTiles(
-                    Map.Instance.GetNodeFromPosition(m_Player.transform.position + m_Player.transform.forward),
+                    Map.Instance.GetNodeFromPosition(GetChildObject(m_Player.transform, "Ring").position + GetChildObject(m_Player.transform, "Ring").forward),
                     Map.Instance.GetNodeFromPosition(m_Player.m_ActorPos),
                     true);
 
@@ -285,6 +285,24 @@ public class PlayerController : Controller
 
         GameManager.Instance.m_actions.SetActive(false);
         m_bshowUI = false;
+    }
+
+    public Transform GetChildObject(Transform parent, string _tag)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.tag == _tag)
+            {
+                return parent.GetChild(i);
+            }
+            if (child.childCount > 0)
+            {
+                GetChildObject(child, _tag);
+            }
+        }
+
+        return null;
     }
 }
 
