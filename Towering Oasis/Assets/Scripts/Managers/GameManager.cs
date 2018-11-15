@@ -41,10 +41,7 @@ public class GameManager : MonoBehaviour
     public Text m_EnemiesNumber;
     public Text m_Turn;
 
-    public Text Button0;
-    public Text Button1;
-    public Text Button2;
-    public Text Button3;
+    public ButtonActor[] ButtonActor;
 
     public GameObject m_MainMenuPanel;
 	public GameObject m_PauseMenuPanel;
@@ -90,6 +87,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (m_GameGUI.activeSelf)
+        {
+            for (int i = 0; i < UnitManager.Instance.m_Parent.Count; i++)
+            {
+                ButtonActor[i].m_ActorNumber = i;
+            }
+        }
+
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (m_GameGUI.activeSelf == false)
@@ -132,6 +137,11 @@ public class GameManager : MonoBehaviour
                     UnitManager.Instance.m_nPlayersAlive--;
                     m_isGameOver = true;
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                UnitManager.Instance.m_Parent[0].GetChild(0).GetComponent<Actor>().m_nHealth = 0;
             }
 
             if (enemyController == null)
@@ -212,5 +222,10 @@ public class GameManager : MonoBehaviour
         p.m_bAttack = false;
         p.m_bMoved = false;
         p.m_bSkip = false;
+    }
+
+    public void GUIReset()
+    {
+        ButtonActor[UnitManager.Instance.m_Parent.Count].gameObject.SetActive(false);
     }
 }

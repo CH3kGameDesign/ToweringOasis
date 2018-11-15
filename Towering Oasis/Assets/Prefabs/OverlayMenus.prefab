@@ -480,10 +480,9 @@ GameObject:
   - component: {fileID: 224797744382753900}
   - component: {fileID: 222682371206232378}
   - component: {fileID: 114835073914950456}
-  - component: {fileID: 114716591904477888}
   m_Layer: 0
   m_Name: GameGUI
-  m_TagString: Untagged
+  m_TagString: GUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -665,6 +664,7 @@ GameObject:
   - component: {fileID: 222471572585574898}
   - component: {fileID: 114630034334304336}
   - component: {fileID: 114831382850877018}
+  - component: {fileID: 114739684852068348}
   m_Layer: 0
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1557,6 +1557,7 @@ GameObject:
   - component: {fileID: 222149048825151488}
   - component: {fileID: 114127381885535546}
   - component: {fileID: 114594823655609184}
+  - component: {fileID: 114180198594969984}
   m_Layer: 0
   m_Name: Button (3)
   m_TagString: Untagged
@@ -1747,6 +1748,7 @@ GameObject:
   - component: {fileID: 222394348098395578}
   - component: {fileID: 114494907443846172}
   - component: {fileID: 114055928416997500}
+  - component: {fileID: 114079208225187330}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -1765,6 +1767,7 @@ GameObject:
   - component: {fileID: 222545965680859260}
   - component: {fileID: 114982173899084518}
   - component: {fileID: 114734439417696926}
+  - component: {fileID: 114652035873867352}
   m_Layer: 0
   m_Name: Button (2)
   m_TagString: Untagged
@@ -2442,8 +2445,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114716591904477888}
-        m_MethodName: SelectOne
+      - m_Target: {fileID: 114079208225187330}
+        m_MethodName: SelectActor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2565,6 +2568,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114079208225187330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1853954499102074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76a71c5cf6ed6b4b873cac6bd62465e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttonActor: {fileID: 0}
+  m_ActorNumber: 0
 --- !u!114 &114081129783819388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3078,6 +3094,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114180198594969984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1747654963272162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76a71c5cf6ed6b4b873cac6bd62465e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttonActor: {fileID: 0}
+  m_ActorNumber: 3
 --- !u!114 &114184688819601216
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4786,8 +4815,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114716591904477888}
-        m_MethodName: SelectFour
+      - m_Target: {fileID: 114180198594969984}
+        m_MethodName: SelectActor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5061,6 +5090,19 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114652035873867352
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1859849922185356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76a71c5cf6ed6b4b873cac6bd62465e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttonActor: {fileID: 0}
+  m_ActorNumber: 2
 --- !u!114 &114663553056269730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5440,18 +5482,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114716591904477888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1218304506784560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ce9bbc54ac52543a0af102c26394f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_selected: 0
 --- !u!114 &114734439417696926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5491,8 +5521,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114716591904477888}
-        m_MethodName: SelectThree
+      - m_Target: {fileID: 114652035873867352}
+        m_MethodName: SelectActor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5537,6 +5567,19 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: TOWERING OASIS
+--- !u!114 &114739684852068348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1274096258301098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76a71c5cf6ed6b4b873cac6bd62465e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttonActor: {fileID: 0}
+  m_ActorNumber: 1
 --- !u!114 &114742319836880124
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5762,10 +5805,11 @@ MonoBehaviour:
   m_healthText: {fileID: 0}
   m_EnemiesNumber: {fileID: 114364461376708374}
   m_Turn: {fileID: 114961760289140440}
-  Button0: {fileID: 114211703434142822}
-  Button1: {fileID: 114128853852750028}
-  Button2: {fileID: 114867861146361640}
-  Button3: {fileID: 114891339788557428}
+  ButtonActor:
+  - {fileID: 114079208225187330}
+  - {fileID: 114739684852068348}
+  - {fileID: 114652035873867352}
+  - {fileID: 114180198594969984}
   m_MainMenuPanel: {fileID: 1730301450236438}
   m_PauseMenuPanel: {fileID: 1237760251040622}
   m_SettingPanel: {fileID: 1300744158961738}
@@ -6160,8 +6204,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114716591904477888}
-        m_MethodName: SelectTwo
+      - m_Target: {fileID: 114739684852068348}
+        m_MethodName: SelectActor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

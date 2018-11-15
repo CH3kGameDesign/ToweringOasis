@@ -8,10 +8,7 @@ public class CharacterButton : MonoBehaviour
 
     private void Update()
     {
-        GameManager.Instance.Button0.text = UnitManager.Instance.m_Parent[0].GetChild(0).name;
-        GameManager.Instance.Button1.text = UnitManager.Instance.m_Parent[0].GetChild(1).name;
-        GameManager.Instance.Button2.text = UnitManager.Instance.m_Parent[0].GetChild(2).name;
-        GameManager.Instance.Button3.text = UnitManager.Instance.m_Parent[0].GetChild(3).name;
+        
     }
 
     public void SelectOne()

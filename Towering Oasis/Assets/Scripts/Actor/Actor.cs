@@ -56,7 +56,8 @@ public class Actor : MonoBehaviour
 		if (m_nHealth <= 0)
 		{
 			UnitManager.Instance.m_Objects.Remove(gameObject.transform);
-			Destroy(gameObject);
+            GameManager.Instance.GUIReset();
+            Destroy(gameObject);
 		}
 	}
 
@@ -87,9 +88,14 @@ public class Actor : MonoBehaviour
 
     public virtual void SpawnAttackTiles(Transform attackPrefab, Transform holder)
 	{
-		// Gets the tile infront of the actor and get its attack tiles relevant to class(will be added)
-		Vector3 pos = GetChildObject(transform, "Ring").transform.position + GetChildObject(transform, "Ring").transform.forward;
-		Node attackNode = Map.Instance.GetNodeFromPosition(pos);
+        // Gets the tile infront of the actor and get its attack tiles relevant to class(will be added)
+        Vector3 pos;
+        if (this.CompareTag("Player"))
+		   pos  = GetChildObject(transform, "Ring").transform.position + GetChildObject(transform, "Ring").transform.forward;
+        else
+            pos = transform.position + transform.forward;
+
+        Node attackNode = Map.Instance.GetNodeFromPosition(pos);
 
 		List<Node> attackNodes = GetAttackTiles(attackNode, Map.Instance.GetNodeFromPosition(transform.position));
 
