@@ -26,6 +26,11 @@ public class CameraMovement1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(1))
+
+        {
+            cursorPositionPast = cursorPosition;
+        }
         cursorPosition = Input.mousePosition;
         if (Input.GetMouseButton(1))
         {
