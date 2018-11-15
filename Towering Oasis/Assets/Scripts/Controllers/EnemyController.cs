@@ -124,9 +124,9 @@ public class EnemyController : Controller
         { 
             for (int i = 0; i < 4;)
             {
-                m_currentEnemy.transform.Rotate(0.0f, 90.0f, 0.0f);
+                GetChildObject(m_currentEnemy.transform, "Ring").transform.Rotate(0.0f, 90.0f, 0.0f);
 
-                Vector3 rot = m_currentEnemy.transform.eulerAngles;
+                Vector3 rot = GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles;
 
                 m_BestDirection.Add(new Direction(0, rot));
                 m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
@@ -152,7 +152,7 @@ public class EnemyController : Controller
 
             m_BestDirection = m_BestDirection.OrderByDescending(o => o.m_whowasattackedPrev).ToList<Direction>();
 
-            m_currentEnemy.transform.eulerAngles = m_BestDirection[0].m_prevRotation;
+            GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles = m_BestDirection[0].m_prevRotation;
 
             m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
 
@@ -179,5 +179,23 @@ public class EnemyController : Controller
 
         m_bestDirectionFound = false;
         m_gameManager.m_isAttacking = false;
+    }
+
+    public Transform GetChildObject(Transform parent, string _tag)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.tag == _tag)
+            {
+                return parent.GetChild(i);
+            }
+            if (child.childCount > 0)
+            {
+                GetChildObject(child, _tag);
+            }
+        }
+
+        return null;
     }
 }
