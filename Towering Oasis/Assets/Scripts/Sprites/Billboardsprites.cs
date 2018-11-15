@@ -19,6 +19,7 @@ public class Billboardsprites : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        MyCameraTransform = Camera.main.transform;
         if (alignNotLook)
             MyTransform.forward = MyCameraTransform.forward;
         else
