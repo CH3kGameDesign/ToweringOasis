@@ -19,6 +19,7 @@ public class PlayerController : Controller
 	public PLAYERMODE m_playerMode; // Current player state
 	public float m_fPlayerMovementSpeed; // Speed at which player moves
     public bool m_showHealth;
+    public GameObject m_SelectedPrefab;
 
 	public Actor m_Player; // current Player
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
@@ -68,6 +69,13 @@ public class PlayerController : Controller
 					GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(true);
 				}
 
+                if(m_Player != null)
+                {
+                    Transform temp = m_Player.gameObject.transform.GetChild(2);
+                    if (temp.gameObject.activeSelf == true)
+                        temp.gameObject.SetActive(false);
+                }
+
 				// Get its actor component, initialise its actorpos
 				m_Player = hit.transform.GetComponent<Actor>();
                 GameManager.Instance.m_currentActor = m_Player;
@@ -83,6 +91,7 @@ public class PlayerController : Controller
                 if (m_Player != null)
                     m_bshowUI = true;
 
+                m_SelectedPrefab = m_Player.gameObject.transform.GetChild(2).gameObject;
                 m_showHealth = true;
             }
 
@@ -173,6 +182,9 @@ public class PlayerController : Controller
             // If hold down the right click and m_player is not null
             if (m_Player != null)
             {
+                if (!m_SelectedPrefab.activeSelf)
+                    m_SelectedPrefab.SetActive(true);
+
                 // Get the player position from screen
                 Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(GetChildObject(m_Player.transform, "Ring").transform.position);
 
