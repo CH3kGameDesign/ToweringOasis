@@ -28,7 +28,7 @@ public class EndTurn : MonoBehaviour {
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bMoved = true;
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bAttack = true;
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bSkip = true;
-                GameManager.Instance.m_nPlayerMoves++;
+                GameManager.Instance.m_nPlayerMoves = 4;
             }
             GameManager.Instance.m_actions.SetActive(false);
         }
