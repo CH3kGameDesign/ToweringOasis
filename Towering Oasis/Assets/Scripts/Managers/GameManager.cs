@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject m_GameGUI;
     public HealthBar m_healthGUI;
+	public RawImage m_character;
     public Text m_healthText;
     public Text m_EnemiesNumber;
     public Text m_Turn;

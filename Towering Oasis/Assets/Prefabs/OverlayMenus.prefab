@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1119045969036488
 GameObject:
   m_ObjectHideFlags: 1
@@ -943,7 +943,7 @@ GameObject:
   - component: {fileID: 114249036523696310}
   m_Layer: 5
   m_Name: RawImage
-  m_TagString: Untagged
+  m_TagString: Potrait
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1512,7 +1512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1733930440009222
 GameObject:
   m_ObjectHideFlags: 1
@@ -5950,6 +5950,7 @@ MonoBehaviour:
   m_isAttacking: 0
   m_GameGUI: {fileID: 1218304506784560}
   m_healthGUI: {fileID: 0}
+  m_character: {fileID: 114249036523696310}
   m_healthText: {fileID: 0}
   m_EnemiesNumber: {fileID: 114364461376708374}
   m_Turn: {fileID: 114961760289140440}

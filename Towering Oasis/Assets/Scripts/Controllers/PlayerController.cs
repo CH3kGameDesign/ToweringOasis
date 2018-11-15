@@ -42,6 +42,7 @@ public class PlayerController : Controller
             GameManager.Instance.m_HealthBar.SetActive(true);
             GameManager.Instance.m_healthText.text = m_Player.name;
             GameManager.Instance.m_healthGUI.m_CurrentHP = m_Player.m_nHealth / 10;
+			GameManager.Instance.m_character.texture = m_Player.m_CharacterPotrait;
         }
     }
 
@@ -219,9 +220,9 @@ public class PlayerController : Controller
             {
                 GameManager.Instance.m_actions.SetActive(true);
                 Vector3 pos = m_Player.transform.position;
-                pos.y += 1.0f;
-                pos.x -= 0.5f;
-                pos.z += 0.5f;
+                pos.x -= 2.6f;
+                pos.y += 2.3f;
+                pos.z += 1.0f;
                 GameManager.Instance.m_actions.transform.position = pos;
             }
         }

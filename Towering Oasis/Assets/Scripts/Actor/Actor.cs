@@ -22,9 +22,9 @@ public class Actor : MonoBehaviour
 	public Vector3 m_ActorPos;
 	public string m_classType;
 
-    // How many tiles is this actor allowed to move
-    public int m_nHealth;
-    public int m_nHowManyTiles;
+	// How many tiles is this actor allowed to move
+	public int m_nHowManyTiles;
+	public int m_nHealth;
     public int m_nDamage;
 	public List<Node> m_currentPath;
 	public bool m_bMoved;
@@ -34,6 +34,7 @@ public class Actor : MonoBehaviour
     public DirectionEnum m_lookingDirec;
 	public DirectionEnum m_prevDirec;
 	public bool m_bLookingDiaganol = false;
+	public Texture2D m_CharacterPotrait;
 
 
 	// Character that this character is attacked by
