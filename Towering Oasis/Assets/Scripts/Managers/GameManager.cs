@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 	public Transform AttackTileHolder; // Empty object to hold attack tiles
     public EnemyController enemyController;
     public PlayerController playerController;
+    public Boss m_boss;
 
     public List<int> m_nLevelsLoaded;
     public Actor m_currentActor;
@@ -36,6 +37,9 @@ public class GameManager : MonoBehaviour
 	public bool m_isAttacking;
     public Material m_whiteRing;
     public Material m_redRing;
+    public bool m_bossTurned;
+    public int m_LevelsPerSet;
+    public int m_levelSet;
 
     public GameObject m_GameGUI;
     public HealthBar m_healthGUI;
@@ -57,6 +61,7 @@ public class GameManager : MonoBehaviour
 
 	private void Awake()
     {
+        m_bossTurned = false;
         if (Instance == null)
             Instance = this;
         else if (Instance != this)
@@ -90,6 +95,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        m_boss = FindObjectOfType<Boss>();
+
+        if (enemyController == null)
+        {
+            enemyController = FindObjectOfType<EnemyController>();
+        }
+        else if (playerController == null)
+        {
+            playerController = FindObjectOfType<PlayerController>();
+        }
+
         if (m_GameGUI.activeSelf)
         {
             for (int i = 0; i < UnitManager.Instance.m_Parent.Count; i++)
@@ -97,7 +113,6 @@ public class GameManager : MonoBehaviour
                 ButtonActor[i].m_ActorNumber = i;
             }
         }
-
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (m_GameGUI.activeSelf == false)
@@ -147,19 +162,25 @@ public class GameManager : MonoBehaviour
                 UnitManager.Instance.m_Parent[0].GetChild(0).GetComponent<Actor>().m_nHealth = 0;
             }
 
-            if (enemyController == null)
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                enemyController = FindObjectOfType<EnemyController>();
-            }
-            else if (playerController == null)
-            {
-                playerController = FindObjectOfType<PlayerController>();
+                UnitManager.Instance.m_nPlayersAtExit = 4;
             }
 
             if (m_bcontrolsAvailable && playerController != null)
+            {
+                m_bossTurned = false;
                 playerController.myUpdate();
+            }
             else if (!m_bcontrolsAvailable && enemyController != null && !m_isGameOver)
+            {
+                if (!m_bossTurned && m_boss != null)
+                {
+                    m_boss.myUpdate();
+                    m_bossTurned = true;
+                }
                 enemyController.myUpdate();
+            }
         }
     }
 

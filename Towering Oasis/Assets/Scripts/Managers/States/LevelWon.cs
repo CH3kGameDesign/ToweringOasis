@@ -21,10 +21,30 @@ public class LevelWon : BaseState
     {
         while (!islevelLoaded)
         {
-            int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+            int level;
+
+            if (GameManager.Instance.m_levelSet == 1)
+                level = Random.Range(1, 21);
+            else if (GameManager.Instance.m_levelSet == 2)
+                level = Random.Range(22, 35);
+            else if (GameManager.Instance.m_levelSet == 3)
+                level = Random.Range(36, 49);
+            else if (GameManager.Instance.m_levelSet == 4)
+                level = Random.Range(50, 63);
+            else if (GameManager.Instance.m_levelSet == 5)
+                level = Random.Range(64, 67);
+            else
+                level = 0;
+
             if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
             {
                 GameManager.Instance.m_nLevelsLoaded.Add(level);
+                if(GameManager.Instance.m_nLevelsLoaded.Count == 3)
+                {
+                    GameManager.Instance.m_nLevelsLoaded.Clear();
+                    if(GameManager.Instance.m_levelSet < 5)
+                        GameManager.Instance.m_levelSet++;
+                }
                 SceneManager.LoadScene(level);
                 islevelLoaded = true;
                 continue;

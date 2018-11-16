@@ -13,7 +13,7 @@ public class GameState : BaseState
 		GameManager.Instance.m_GameOverPanel.SetActive(false);
 	}
 
-	private void FixedUpdate()
+	private void LateUpdate()
 	{
         if (SceneManager.GetActiveScene().buildIndex != 0)
         { 

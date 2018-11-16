@@ -27,7 +27,8 @@ public class MainMenu : BaseState
 	//Load Scene "MainScene" when button is pressed
 	public void PlayGameButtonOnClick()
 	{
-		int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+        GameManager.Instance.m_levelSet = 1;
+		int level = Random.Range(1, 21);
 		GameManager.Instance.m_nLevelsLoaded.Add(level);
 		SceneManager.LoadScene(level);
         GameManager.Instance.m_stateName = GameStates.GAME;

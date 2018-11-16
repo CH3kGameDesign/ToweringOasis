@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 136200984126927720}
   - component: {fileID: 23041508581310914}
   - component: {fileID: 54081817770432022}
-  - component: {fileID: 114954807814902460}
+  - component: {fileID: 114814471121600754}
   m_Layer: 10
   m_Name: E_Boss (1)
   m_TagString: Enemy
@@ -1983,6 +1983,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: debc92dc11395ea4a9148db72c42d117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114814471121600754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1633910000477394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7e6fb91d16546c49b6c4b33c0715d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HealthDropPrefab: {fileID: 4524260214706570, guid: b950536ef59bbfa4fb40e852dfea0497,
+    type: 2}
+  m_ActorPrefab: {fileID: 0}
+  m_ActorRenderer: {fileID: 0}
+  m_ActorPos: {x: 0, y: 0, z: 0}
+  m_classType: Boss
+  m_nHowManyTiles: 0
+  m_nHealth: 100
+  m_nDamage: 0
+  m_bMoved: 0
+  m_bAttack: 0
+  m_bSkip: 0
+  m_bStartAttack: 0
+  m_lookingDirec: 0
+  m_prevDirec: 0
+  m_bLookingDiaganol: 0
+  m_CharacterPotrait: {fileID: 0}
+  m_whoWasAttacked: []
+  m_SpawnPerTurn: 1
+  m_enemySpawns:
+  - {fileID: 4637177617635348, guid: 61503c7472640bc4982054d8e8539622, type: 2}
+  - {fileID: 4852285987614186, guid: 2136e2fba37f0af43a16138f9820aa83, type: 2}
+  - {fileID: 4772591102693362, guid: ce63d1b9600985747bf0b04d2124b73c, type: 2}
 --- !u!114 &114864823531904604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2330,35 +2364,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114954807814902460
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1633910000477394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c591861b59d9b478ac7f62ec5a7c1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HealthDropPrefab: {fileID: 4524260214706570, guid: b950536ef59bbfa4fb40e852dfea0497,
-    type: 2}
-  m_ActorPrefab: {fileID: 0}
-  m_ActorRenderer: {fileID: 0}
-  m_ActorPos: {x: 0, y: 0, z: 0}
-  m_classType: 
-  m_nHowManyTiles: 4
-  m_nHealth: 100
-  m_nDamage: 10
-  m_bMoved: 0
-  m_bAttack: 0
-  m_bSkip: 0
-  m_bStartAttack: 0
-  m_lookingDirec: 0
-  m_prevDirec: 0
-  m_bLookingDiaganol: 0
-  m_CharacterPotrait: {fileID: 0}
-  m_whoWasAttacked: []
 --- !u!114 &114973183417092460
 MonoBehaviour:
   m_ObjectHideFlags: 1
