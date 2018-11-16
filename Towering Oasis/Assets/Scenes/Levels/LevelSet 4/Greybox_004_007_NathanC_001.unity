@@ -1409,7 +1409,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-758444
+  m_Name: pb_Mesh-47576
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -13790,6 +13790,16 @@ Prefab:
     - target: {fileID: 1633910000477394, guid: 61503c7472640bc4982054d8e8539622, type: 2}
       propertyPath: m_Name
       value: E_Melee (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 224631399049771298, guid: 61503c7472640bc4982054d8e8539622,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224631399049771298, guid: 61503c7472640bc4982054d8e8539622,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 61503c7472640bc4982054d8e8539622, type: 2}
