@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 	public bool m_isGameOver;
 	public bool m_isMoving;
 	public bool m_isAttacking;
+    public Material m_whiteRing;
+    public Material m_redRing;
 
     public GameObject m_GameGUI;
     public HealthBar m_healthGUI;

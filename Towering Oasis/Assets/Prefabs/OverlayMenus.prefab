@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1119045969036488
 GameObject:
   m_ObjectHideFlags: 1
@@ -1512,7 +1512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1733930440009222
 GameObject:
   m_ObjectHideFlags: 1
@@ -5948,6 +5948,8 @@ MonoBehaviour:
   m_isGameOver: 0
   m_isMoving: 0
   m_isAttacking: 0
+  m_whiteRing: {fileID: 2100000, guid: 04b43b0cb4c843f4983c0ddcc0a2193d, type: 2}
+  m_redRing: {fileID: 2100000, guid: 36c00fd1d1e66af48be4c36fddcf5558, type: 2}
   m_GameGUI: {fileID: 1218304506784560}
   m_healthGUI: {fileID: 0}
   m_character: {fileID: 114249036523696310}
@@ -9577,7 +9579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -125.7135, y: 106}
+  m_AnchoredPosition: {x: -125.71338, y: 106}
   m_SizeDelta: {x: 235.40002, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224778127397262774

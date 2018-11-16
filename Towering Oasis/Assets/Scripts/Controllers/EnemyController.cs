@@ -42,6 +42,7 @@ public class EnemyController : Controller
     public int m_nhasAttacked;
     public List<Direction> m_BestDirection;
     public bool m_bestDirectionFound;
+    public GameObject m_SelectedPrefab;
 
     private void Start()
     {
@@ -73,6 +74,8 @@ public class EnemyController : Controller
 
             m_currentEnemy = m_Enemies[m_gameManager.m_nEnemiesMoves];
             GameManager.Instance.m_currentActor = m_currentEnemy;
+            m_SelectedPrefab = m_currentEnemy.gameObject.transform.GetChild(0).gameObject;
+            m_SelectedPrefab.SetActive(true);
 
             {
                 // Draw a line to debug player front
@@ -166,6 +169,7 @@ public class EnemyController : Controller
             m_currentEnemy.Attack();
 
         m_currentEnemy.m_whoWasAttacked.Clear();
+        m_SelectedPrefab.SetActive(false);
 
         GameObject[] temp2 = GameObject.FindGameObjectsWithTag("AttackTile");
 

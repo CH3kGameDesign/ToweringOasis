@@ -58,23 +58,33 @@ public class PlayerController : Controller
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
+        {
+            GetChildObject(m_Player.transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
+                //.material.SetTexture("RedRing", GameManager.Instance.m_redRing);
+        }
+        else if (m_Player != null)
+        {
+            GetChildObject(m_Player.transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_whiteRing;
+        }
+
         // If ray hits something
         if (Physics.Raycast(ray, out hit))
         {
             // If its a player and leftclick is performed while m_nleftclick is 0
             if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0 && !GameManager.Instance.m_isMoving)
             {
-				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
+                if (m_Player != null)
+                {
+                    GameObject temp = m_Player.gameObject.transform.GetChild(2).gameObject;
+                    if (temp.activeSelf == true)
+                        temp.SetActive(false);
+                }
+
+                for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
 				{
 					GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(true);
 				}
-
-                if(m_Player != null)
-                {
-                    Transform temp = m_Player.gameObject.transform.GetChild(2);
-                    if (temp.gameObject.activeSelf == true)
-                        temp.gameObject.SetActive(false);
-                }
 
 				// Get its actor component, initialise its actorpos
 				m_Player = hit.transform.GetComponent<Actor>();
