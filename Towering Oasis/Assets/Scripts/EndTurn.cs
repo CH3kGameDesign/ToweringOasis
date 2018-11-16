@@ -23,13 +23,13 @@ public class EndTurn : MonoBehaviour {
             //GameManager.Instance.m_nEnemiesAttacked = false;
             //GameManager.Instance.m_nPlayerMoves = 0;
             //GameManager.Instance.m_nEnemiesMoves = 0;
-            for (int x = 0; x < 4; x++)
+            for (int x = 0; x < UnitManager.Instance.m_nPlayersAlive; x++)
             {
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bMoved = true;
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bAttack = true;
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bSkip = true;
-                GameManager.Instance.m_nPlayerMoves = 4;
             }
+            GameManager.Instance.m_nPlayerMoves = UnitManager.Instance.m_nPlayersAlive;
             GameManager.Instance.m_actions.SetActive(false);
         }
     }
