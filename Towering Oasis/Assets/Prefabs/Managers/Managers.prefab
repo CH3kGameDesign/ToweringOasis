@@ -201,10 +201,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_walkableprefab: {fileID: 4345783362018700, guid: 4512e2ecd6862db4d9d4ad089baba794,
     type: 2}
-  m_attackprefab: {fileID: 4345783362018700, guid: 6eb337457ba6eee429d404cfff9deb9f,
+  m_attackprefab: {fileID: 4345783362018700, guid: 0b869dec18a813843a956eed6c000375,
     type: 2}
   m_playerMode: 0
   m_fPlayerMovementSpeed: 0.7
+  m_showHealth: 0
+  m_SelectedPrefab: {fileID: 0}
   m_Player: {fileID: 0}
 --- !u!114 &114114629130669156
 MonoBehaviour:
@@ -244,6 +246,8 @@ MonoBehaviour:
     type: 2}
   m_gameManager: {fileID: 0}
   m_nhasAttacked: 0
+  m_bestDirectionFound: 0
+  m_SelectedPrefab: {fileID: 0}
 --- !u!114 &114627383473128432
 MonoBehaviour:
   m_ObjectHideFlags: 1
