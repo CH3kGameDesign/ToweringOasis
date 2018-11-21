@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
 
         if (m_GameGUI.activeSelf)
         {
-            for (int i = 0; i < UnitManager.Instance.m_Parent.Count; i++)
+            for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
             {
                 ButtonActor[i].m_ActorNumber = i;
             }
@@ -152,7 +152,6 @@ public class GameManager : MonoBehaviour
                 foreach (Actor p in players)
                 {
                     p.m_nHealth = -10;
-                    UnitManager.Instance.m_nPlayersAlive--;
                     m_isGameOver = true;
                 }
             }
@@ -250,6 +249,6 @@ public class GameManager : MonoBehaviour
 
     public void GUIReset()
     {
-        ButtonActor[UnitManager.Instance.m_Parent.Count].gameObject.SetActive(false);
+        ButtonActor[GameManager.Instance.ButtonActor.Length - 1].gameObject.SetActive(false);
     }
 }

@@ -58,9 +58,10 @@ public class Actor : MonoBehaviour
 		{
 			UnitManager.Instance.m_Objects.Remove(gameObject.transform);
             GameManager.Instance.GUIReset();
+            UnitManager.Instance.m_nPlayersAlive--;
             Destroy(gameObject);
-		}
-	}
+        }
+    }
 
 	public virtual void Attack()
 	{
@@ -274,7 +275,7 @@ public class Actor : MonoBehaviour
             {
                 GameManager.Instance.m_isMoving = true;
 
-//m_bAttack = false;
+                //m_bAttack = false;
                 Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
                 pathNodePos.y = 1.0f;
                 a.transform.position = pathNodePos;

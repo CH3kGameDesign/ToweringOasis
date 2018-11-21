@@ -55,64 +55,66 @@ public class EnemyController : Controller
 
     public override void myUpdate()
     {
-        if(!m_gameManager.m_bcontrolsAvailable && !m_gameManager.m_isMoving && !m_gameManager.m_isAttacking)
-        {
-            m_BestDirection.Clear();
-            m_nhasAttacked = 0;
-            m_Players.Clear();
-            m_Enemies.Clear();
-
-            for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
+        if(UnitManager.Instance.m_Parent[0].childCount > 0){ 
+            if (!m_gameManager.m_bcontrolsAvailable && !m_gameManager.m_isMoving && !m_gameManager.m_isAttacking)
             {
-                m_Players.Add(UnitManager.Instance.m_Parent[0].GetChild(i).GetComponent<Actor>());
+                m_BestDirection.Clear();
+                m_nhasAttacked = 0;
+                m_Players.Clear();
+                m_Enemies.Clear();
+
+                for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
+                {
+                    m_Players.Add(UnitManager.Instance.m_Parent[0].GetChild(i).GetComponent<Actor>());
+                }
+
+                for (int i = 0; i < UnitManager.Instance.m_Parent[1].childCount; i++)
+                {
+                    m_Enemies.Add(UnitManager.Instance.m_Parent[1].GetChild(i).GetComponent<Actor>());
+                }
+
+                m_currentEnemy = m_Enemies[m_gameManager.m_nEnemiesMoves];
+                GameManager.Instance.m_currentActor = m_currentEnemy;
+                m_SelectedPrefab = m_currentEnemy.gameObject.transform.GetChild(0).gameObject;
+                m_SelectedPrefab.SetActive(true);
+
+                {
+                    // Draw a line to debug player front
+                    Debug.DrawRay(m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.position, m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.forward * 5, Color.red);
+                }
+
+                m_distance.Clear();
+
+                for (int p = 0; p < m_Players.Count; p++)
+                {
+                    Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[p].m_ActorPos, true);
+
+                    m_distance.Add(new Distance(
+                                            p,
+                                            m_gameManager.m_nEnemiesMoves,
+                                            Pathfinding.Instance.path.Count - 1));
+                }
+
+                m_distance = m_distance.OrderBy(o => o.m_tileCount).ToList<Distance>();
+
+                Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[m_distance[0].m_playerNumber].m_ActorPos, false);
+
+                m_Enemies[m_gameManager.m_nEnemiesMoves].Move(Pathfinding.Instance.path);
             }
 
-            for (int i = 0; i < UnitManager.Instance.m_Parent[1].childCount; i++)
+            if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
             {
-                m_Enemies.Add(UnitManager.Instance.m_Parent[1].GetChild(i).GetComponent<Actor>());
+                m_nhasAttacked++;
+                m_bestDirectionFound = true;
+                StartCoroutine(EnemyAttack());
+                m_currentEnemy.m_bStartAttack = false;
+                m_gameManager.m_nEnemiesMoves++;
             }
 
-            m_currentEnemy = m_Enemies[m_gameManager.m_nEnemiesMoves];
-            GameManager.Instance.m_currentActor = m_currentEnemy;
-            m_SelectedPrefab = m_currentEnemy.gameObject.transform.GetChild(0).gameObject;
-            m_SelectedPrefab.SetActive(true);
-
+            if (m_gameManager.m_nEnemiesMoves == m_Enemies.Count)
             {
-                // Draw a line to debug player front
-                Debug.DrawRay(m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.position, m_Enemies[m_gameManager.m_nEnemiesMoves].gameObject.transform.forward * 5, Color.red);
+                m_gameManager.m_bcontrolsAvailable = true;
             }
-
-            m_distance.Clear();
-
-            for (int p = 0; p < m_Players.Count; p++)
-            {
-                Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[p].m_ActorPos, true);
-
-                m_distance.Add(new Distance(
-                                        p,
-                                        m_gameManager.m_nEnemiesMoves,
-                                        Pathfinding.Instance.path.Count - 1));
-            }
-
-            m_distance = m_distance.OrderBy(o => o.m_tileCount).ToList<Distance>();
-
-            Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[m_distance[0].m_playerNumber].m_ActorPos, false);
-            
-            m_Enemies[m_gameManager.m_nEnemiesMoves].Move(Pathfinding.Instance.path);
-        }
-
-        if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
-        {
-            m_nhasAttacked++;
-            m_bestDirectionFound = true;
-            StartCoroutine(EnemyAttack());
-            m_currentEnemy.m_bStartAttack = false;
-            m_gameManager.m_nEnemiesMoves++;
-        }
-
-        if (m_gameManager.m_nEnemiesMoves == m_Enemies.Count)
-        {
-            m_gameManager.m_bcontrolsAvailable = true;
         }
     }
 

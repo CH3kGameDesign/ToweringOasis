@@ -20,11 +20,13 @@ public class ButtonActor : MonoBehaviour
             {
                 GameManager.Instance.GUIReset();
             }
+            else if (m_ActorNumber <= UnitManager.Instance.m_Parent[0].childCount - 1)
+            {
+                m_buttonActor = UnitManager.Instance.m_Parent[0].GetChild(m_ActorNumber).GetComponent<Actor>();
 
-            m_buttonActor = UnitManager.Instance.m_Parent[0].GetChild(m_ActorNumber).GetComponent<Actor>();
-
-            if(m_buttonActor != null)
-                GetComponentInChildren<Text>().text = m_buttonActor.name;
+                if (m_buttonActor != null)
+                    GetComponentInChildren<Text>().text = m_buttonActor.name;
+            }
         }
     }
 

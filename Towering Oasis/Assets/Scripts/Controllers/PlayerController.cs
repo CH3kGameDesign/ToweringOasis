@@ -192,9 +192,11 @@ public class PlayerController : Controller
             // If hold down the right click and m_player is not null
             if (m_Player != null)
             {
-                if (!m_SelectedPrefab.activeSelf)
-                    m_SelectedPrefab.SetActive(true);
-
+                if (m_SelectedPrefab != null)
+                {
+                    if (!m_SelectedPrefab.activeSelf)
+                        m_SelectedPrefab.SetActive(true);
+                }
                 // Get the player position from screen
                 Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(GetChildObject(m_Player.transform, "Ring").transform.position);
 
