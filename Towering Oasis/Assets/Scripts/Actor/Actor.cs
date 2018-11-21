@@ -58,7 +58,8 @@ public class Actor : MonoBehaviour
 		{
 			UnitManager.Instance.m_Objects.Remove(gameObject.transform);
             GameManager.Instance.GUIReset();
-            UnitManager.Instance.m_nPlayersAlive--;
+            if (this.CompareTag("Player"))
+                UnitManager.Instance.m_nPlayersAlive--;
             Destroy(gameObject);
         }
     }

@@ -33,7 +33,8 @@ public class PlayerController : Controller
 
 		// Assign tiles actors and obstacles are on
 		Map.Instance.UpdateUnitOnTop();
-
+        m_Player = UnitManager.Instance.m_Parent[0].GetChild(0).GetComponent<Actor>();
+        m_showHealth = true;
 	}
 
 	private void Update()
