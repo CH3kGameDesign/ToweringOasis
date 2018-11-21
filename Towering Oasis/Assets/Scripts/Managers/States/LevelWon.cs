@@ -44,6 +44,7 @@ public class LevelWon : BaseState
                     GameManager.Instance.m_nLevelsLoaded.Clear();
                     if(GameManager.Instance.m_levelSet < 5)
                         GameManager.Instance.m_levelSet++;
+
                 }
                 SceneManager.LoadScene(level);
                 islevelLoaded = true;

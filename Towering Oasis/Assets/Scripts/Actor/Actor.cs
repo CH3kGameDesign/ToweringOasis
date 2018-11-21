@@ -199,7 +199,7 @@ public class Actor : MonoBehaviour
 				}
 			}
 		}
-
+        
 		/// O equals the player, . equals the nodes, | equals the DirectionEnum this part handles
 		/// .	.	.
 		///	  \   /
@@ -263,6 +263,7 @@ public class Actor : MonoBehaviour
 				Map.Instance.UpdateUnitOnTop();
 			}
         }
+
         else if(m_currentPath.Count == 0)
         {
             this.m_bStartAttack = true;
@@ -270,6 +271,7 @@ public class Actor : MonoBehaviour
 
 			Map.Instance.UpdateUnitOnTop();
 		}
+
         else
         {
             for (int i = 0; i < m_currentPath.Count; i++)
@@ -304,7 +306,6 @@ public class Actor : MonoBehaviour
                 GetChildObject(child, _tag);
             }
         }
-
         return null;
     }
 }
