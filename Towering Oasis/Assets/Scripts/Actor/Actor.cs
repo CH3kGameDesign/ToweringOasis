@@ -80,7 +80,8 @@ public class Actor : MonoBehaviour
 				Debug.Log("A Step 3");
 				// Create Health popup and set text which is equal to this actor's health
 				Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
-				HealthDrop.GetComponent<TextMesh>().text = actor.m_nHealth.ToString();
+                int tempint = -m_nDamage;
+				HealthDrop.GetComponent<TextMesh>().text = tempint.ToString();
 				Debug.Log("A Step 4");
 			}
 		}
