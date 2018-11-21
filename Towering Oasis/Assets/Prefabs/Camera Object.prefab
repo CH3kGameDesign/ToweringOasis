@@ -71,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1473831915405530}
   m_LocalRotation: {x: 0.14644651, y: 0.85355335, z: -0.35355306, w: 0.35355392}
-  m_LocalPosition: {x: 1.98, y: 7.03, z: 4.57}
+  m_LocalPosition: {x: -1.85, y: 5.62, z: 2.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4879732896138594}
@@ -149,7 +149,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1702099860323928}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -227,10 +227,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_nPanSpeed: 0.0131
-  m_fCameraYmax: 6
-  m_fCameraYmin: -2
-  m_fCameraXmax: 12
-  m_fCameraXmin: -3
+  m_fCameraYmax: 2
+  m_fCameraYmin: -9.5
+  m_fCameraXmax: 3.5
+  m_fCameraXmin: -14
 --- !u!124 &124458077920360394
 Behaviour:
   m_ObjectHideFlags: 1
