@@ -40,9 +40,9 @@ public class CreditCamera : MonoBehaviour {
             rotZ = Random.Range(-rotMax, rotMax);
         }
 
-        rotXPrev = Mathf.Lerp(rotXPrev, rotX, Time.deltaTime * speed);
+        //rotXPrev = Mathf.Lerp(rotXPrev, rotX, Time.deltaTime * speed);
         rotYPrev = Mathf.Lerp(rotYPrev, rotY, Time.deltaTime * speed);
-        rotZPrev = Mathf.Lerp(rotZPrev, rotZ, Time.deltaTime * speed);
+        //rotZPrev = Mathf.Lerp(rotZPrev, rotZ, Time.deltaTime * speed);
         transform.rotation = Quaternion.Euler(rotXPrev, rotYPrev, rotZPrev);
 
         Debug.Log(transform.eulerAngles.x + " == " + rotX);
