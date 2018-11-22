@@ -5049,7 +5049,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6018e7f89b67674439c3e8b72adbc0ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4f14db9aa8aa0bc4d94de7cf8370e93f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5658,9 +5658,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 4cf5c5d7f9b5b0f42a9964eaa9617a54,
+    m_HighlightedSprite: {fileID: 21300000, guid: 9e2f63ec85693b643aef89bbbfe2b5f3,
       type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: ca336411ff51f164ba8ddae2c4c8eece, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 6018e7f89b67674439c3e8b72adbc0ba, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -5957,7 +5957,8 @@ MonoBehaviour:
   m_bossTurned: 0
   m_LevelsPerSet: 0
   m_levelSet: 0
-  m_GameGUI: {fileID: 1218304506784560}
+  m_isLevelLoading: 0
+  m_actionsMenu: {fileID: 0}
   m_healthGUI: {fileID: 0}
   m_character: {fileID: 114249036523696310}
   m_healthText: {fileID: 0}
@@ -5976,6 +5977,7 @@ MonoBehaviour:
   m_HealthBar: {fileID: 1109879654966746}
   m_actions: {fileID: 0}
   m_PrevMenu: {fileID: 0}
+  m_GameGUI: {fileID: 1218304506784560}
 --- !u!114 &114765940176161678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6360,9 +6362,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 9e2f63ec85693b643aef89bbbfe2b5f3,
+    m_HighlightedSprite: {fileID: 21300000, guid: 25e7200df6b72184b859522a54710dd5,
       type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: 6018e7f89b67674439c3e8b72adbc0ba, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 4f14db9aa8aa0bc4d94de7cf8370e93f, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -7086,7 +7088,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ca336411ff51f164ba8ddae2c4c8eece, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6018e7f89b67674439c3e8b72adbc0ba, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
