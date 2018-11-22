@@ -25,7 +25,7 @@ public class PlayerController : Controller
 	public Actor m_Player; // current Player
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
 	private int m_nLeftClick = 0; // To keep track of button inputs
-	private bool m_bshowUI; // Show and hide move/attack buttons
+	public bool m_bshowUI; // Show and hide move/attack buttons
 	Vector2 m_v2UiPosition; // Position Ui will spawn at
 
 	private void Start()

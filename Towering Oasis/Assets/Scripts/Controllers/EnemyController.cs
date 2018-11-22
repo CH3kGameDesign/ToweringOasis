@@ -114,6 +114,8 @@ public class EnemyController : Controller
             if (m_gameManager.m_nEnemiesMoves == m_Enemies.Count)
             {
                 m_gameManager.m_bcontrolsAvailable = true;
+                for(int x = 0; x < UnitManager.Instance.m_nPlayersAlive; x++)
+                GameManager.Instance.playerController.GetChildObject(UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_whiteRing;
             }
         }
     }

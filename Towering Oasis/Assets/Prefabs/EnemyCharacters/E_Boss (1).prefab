@@ -394,7 +394,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1633910000477394}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.6638837, y: 1.2540002, z: -4.6445107}
+  m_LocalPosition: {x: 6.26, y: 1.2540002, z: -4.172}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4642325380685998}
@@ -1995,6 +1995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HealthDropPrefab: {fileID: 4524260214706570, guid: b950536ef59bbfa4fb40e852dfea0497,
+    type: 2}
+  m_HealthDropBorderPrefab: {fileID: 4942452612106422, guid: 533bd5574b7107d47800b79442aef286,
     type: 2}
   m_ActorPrefab: {fileID: 0}
   m_ActorRenderer: {fileID: 0}

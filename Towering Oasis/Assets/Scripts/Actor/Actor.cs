@@ -13,7 +13,7 @@ public class Actor : MonoBehaviour
 {
 	// Health popup text and animation
 	public Transform m_HealthDropPrefab;
-	
+    public Transform m_HealthDropBorderPrefab;
 	[HideInInspector]
 	public Transform m_ActorPrefab;
 	[HideInInspector]
@@ -79,10 +79,15 @@ public class Actor : MonoBehaviour
 
 				Debug.Log("A Step 3");
 				// Create Health popup and set text which is equal to this actor's health
-				Transform HealthDrop = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
+				Transform HealthDrop = Instantiate(m_HealthDropBorderPrefab, actor.transform.position, Quaternion.Euler(40, 140, 0), actor.transform);
+                Transform HealthDrop2 = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(40.02f, 140, 0), actor.transform);
+                Transform HealthDrop3 = Instantiate(m_HealthDropPrefab, actor.transform.position, Quaternion.Euler(39.98f, 140, 0), actor.transform);
+
                 int tempint = -m_nDamage;
 				HealthDrop.GetComponent<TextMesh>().text = tempint.ToString();
-				Debug.Log("A Step 4");
+                HealthDrop3.GetComponent<TextMesh>().text = tempint.ToString();
+                HealthDrop2.GetComponent<TextMesh>().text = tempint.ToString();
+                Debug.Log("A Step 4");
 			}
 		}
 
