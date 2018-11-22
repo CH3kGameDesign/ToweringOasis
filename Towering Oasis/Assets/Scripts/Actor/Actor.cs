@@ -35,6 +35,7 @@ public class Actor : MonoBehaviour
 	public DirectionEnum m_prevDirec;
 	public bool m_bLookingDiaganol = false;
 	public Texture2D m_CharacterPotrait;
+    private float m_nTimer;
 
 
 	// Character that this character is attacked by
@@ -45,7 +46,8 @@ public class Actor : MonoBehaviour
 
 	public virtual void Start()
 	{
-		// Assigning default values
+        // Assigning default values
+        m_nTimer = 0;
 		m_ActorPrefab = this.transform;
 		m_ActorRenderer = GetComponent<Renderer>();
 		m_ActorPos = m_ActorPrefab.position;
@@ -62,6 +64,15 @@ public class Actor : MonoBehaviour
                 UnitManager.Instance.m_nPlayersAlive--;
             Destroy(gameObject);
         }
+        if(m_nTimer <= 0)
+        {
+            Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+            temp.SetFloat("_Animation", 1);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 5);
+            m_nTimer = 1000f;
+        }
+        m_nTimer -= Time.deltaTime;
     }
 
 	public virtual void Attack()
@@ -69,8 +80,12 @@ public class Actor : MonoBehaviour
 		if (m_whoWasAttacked.Count > 0)
 		{
 			Debug.Log("A Step 1");
-			
-			foreach (Actor actor in m_whoWasAttacked)
+            Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+            temp.SetFloat("_Animation", 6);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 5);
+            m_nTimer = 2f;
+            foreach (Actor actor in m_whoWasAttacked)
 			{
 				Debug.Log("A Step 2");
 
@@ -243,6 +258,10 @@ public class Actor : MonoBehaviour
 
     public void Move(List<Node> path)
     {
+        Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+        temp.SetFloat("_Animation", 2);
+        temp.SetFloat("_FrameRate", 24);
+        temp.SetFloat("_Frames", 10);
         StartCoroutine(FollowPath(path, this));
     }
 
@@ -252,10 +271,11 @@ public class Actor : MonoBehaviour
 		m_currentPath = path;
         if (m_currentPath.Count > a.m_nHowManyTiles)
         {
+            //this.transform.GetChild(0).GetChild(1).GetComponent<Animation>();
+
             for (int i = 0; i < a.m_nHowManyTiles; i++)
             {
                 GameManager.Instance.m_isMoving = true;
-
                 m_bAttack = false;
                 Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
                 pathNodePos.y = 1.0f;
@@ -297,6 +317,10 @@ public class Actor : MonoBehaviour
 				Map.Instance.UpdateUnitOnTop();
 			}
         }
+        Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+        temp.SetFloat("_Animation", 1);
+        temp.SetFloat("_FrameRate", 24);
+        temp.SetFloat("_Frames", 5);
     }
     public Transform GetChildObject(Transform parent, string _tag)
     {
