@@ -381,7 +381,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -7852,141 +7852,6 @@ Prefab:
       propertyPath: m_actions
       value: 
       objectReference: {fileID: 1340266345}
-    - target: {fileID: 114690553030263338, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114690553030263338, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114690553030263338, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114761124367523642, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114761124367523642, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114761124367523642, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224481427513959740, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114235796710163250, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_NormalColor.a
-      value: 0.5882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 114640284219665788, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_NormalColor.a
-      value: 0.5882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 114081129783819388, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_NormalColor.a
-      value: 0.5882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 114022870236871660, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_NormalColor.a
-      value: 0.5882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 114235796710163250, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.r
-      value: 0.24313726
-      objectReference: {fileID: 0}
-    - target: {fileID: 114235796710163250, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.g
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114235796710163250, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.b
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114235796710163250, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114640284219665788, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.r
-      value: 0.24313726
-      objectReference: {fileID: 0}
-    - target: {fileID: 114640284219665788, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.g
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114640284219665788, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.b
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114640284219665788, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114081129783819388, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.r
-      value: 0.24313726
-      objectReference: {fileID: 0}
-    - target: {fileID: 114081129783819388, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.g
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114081129783819388, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.b
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114081129783819388, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114022870236871660, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.r
-      value: 0.24313726
-      objectReference: {fileID: 0}
-    - target: {fileID: 114022870236871660, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.g
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114022870236871660, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.b
-      value: 0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 114022870236871660, guid: a042e816f9c53424d9dd861a18e66668,
-        type: 2}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a042e816f9c53424d9dd861a18e66668, type: 2}
   m_IsPrefabParent: 0
@@ -14665,7 +14530,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9264706, g: 0.9264706, b: 0.9264706, a: 1}
+      maxColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -18151,7 +18016,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
