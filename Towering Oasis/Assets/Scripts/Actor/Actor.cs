@@ -77,14 +77,29 @@ public class Actor : MonoBehaviour
 
 	public virtual void Attack()
 	{
-		if (m_whoWasAttacked.Count > 0)
-		{
-			Debug.Log("A Step 1");
-            Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+        Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+        if (m_classType == "melee")
+        {
             temp.SetFloat("_Animation", 6);
             temp.SetFloat("_FrameRate", 24);
             temp.SetFloat("_Frames", 5);
-            m_nTimer = 2f;
+        }
+        else if (m_classType == "support")
+        {
+            temp.SetFloat("_Animation", 2);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 5);
+        }
+        else if (m_classType == "ranged")
+        {
+            temp.SetFloat("_Animation", 6);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 4);
+        }
+        m_nTimer = 2f;
+		if (m_whoWasAttacked.Count > 0)
+		{
+			Debug.Log("A Step 1");
             foreach (Actor actor in m_whoWasAttacked)
 			{
 				Debug.Log("A Step 2");
@@ -259,9 +274,18 @@ public class Actor : MonoBehaviour
     public void Move(List<Node> path)
     {
         Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
-        temp.SetFloat("_Animation", 2);
-        temp.SetFloat("_FrameRate", 24);
-        temp.SetFloat("_Frames", 10);
+        if (m_classType == "support")
+        {
+            temp.SetFloat("_Animation", 6);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 3);
+        }
+        else
+        {
+            temp.SetFloat("_Animation", 2);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 10);
+        }
         StartCoroutine(FollowPath(path, this));
     }
 
