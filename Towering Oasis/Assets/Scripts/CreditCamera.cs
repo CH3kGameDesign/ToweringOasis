@@ -47,6 +47,7 @@ public class CreditCamera : MonoBehaviour {
 
         Debug.Log(transform.eulerAngles.x + " == " + rotX);
 
+        /*
         if (Time.fixedTime > spriteChangeSpeed)
         {
             int targetSprite = Random.Range(0, GameObject.Find("Sprites").transform.childCount);
@@ -61,5 +62,6 @@ public class CreditCamera : MonoBehaviour {
             }
             spriteChangeSpeed += Time.fixedTime;
         }
+        */
     }
 }
