@@ -15,7 +15,7 @@ public class GameState : BaseState
 
 	private void LateUpdate()
 	{
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && GameManager.Instance.m_stateName == GameStates.GAME && !GameManager.Instance.m_isLevelLoading)
         {
             if (UnitManager.Instance.m_nPlayersAlive <= 0)
             {
@@ -34,7 +34,7 @@ public class GameState : BaseState
                 GameManager.Instance.m_GameGUI.SetActive(false);
             }
 
-            else if (UnitManager.Instance.m_Parent[1].childCount <= 0 && GameManager.Instance.m_stateName == GameStates.GAME)
+            else if (UnitManager.Instance.m_Parent[1].childCount <= 0)
             {
                 GameManager.Instance.m_LevelWonPanel.SetActive(true);
                 GameManager.Instance.ResetVariables();

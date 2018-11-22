@@ -15,7 +15,15 @@ public class CameraStartLevel : MonoBehaviour
     {
         m_prevPos = transform.position;
 
-        exit = GameObject.Find("M_TriggerExit (1)").transform.GetChild(0).transform.GetChild(0).gameObject;
+        if (GameManager.Instance.m_levelSet == 5)
+        {
+
+        }
+        else
+        {
+            exit = GameObject.Find("M_TriggerExit (1)").transform.GetChild(0).transform.GetChild(0).gameObject;
+        }
+
         transform.position = exit.transform.position;
         Invoke("StartLerp", m_delay);
     }

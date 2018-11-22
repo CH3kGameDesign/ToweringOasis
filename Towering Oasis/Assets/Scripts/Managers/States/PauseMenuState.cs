@@ -25,13 +25,19 @@ public class PauseMenuState : BaseState
 
 	//Load Scene "MainScene" when button is pressed
 	public void RestartButtonOnClick()
-	{
-		GameManager.Instance.m_nLevelsLoaded.Clear();
+    {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
+        GameManager.Instance.m_nLevelsLoaded.Clear();
 
-		int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+        int level;
+
+        level = Random.Range(1, 21);
+        
 		GameManager.Instance.m_nLevelsLoaded.Add(level);
 
         GameManager.Instance.ResetVariables();
+        GameManager.Instance.m_isLevelLoading = true;
         SceneManager.LoadScene(level);
 
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
@@ -48,10 +54,20 @@ public class PauseMenuState : BaseState
 
 	//Quit Game when button is pressed
 	public void MenuOnClick()
-	{
-		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
+    {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
+
+        if (!GameManager.Instance.m_actions.activeSelf)
+        {
+            GameManager.Instance.m_actions.transform.position = new Vector3(-70, -70, -70);
+            GameManager.Instance.m_actions.SetActive(true);
+        }
+
+        GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		Destroy(transform.parent.gameObject);
-		SceneManager.LoadScene(0);
+        GameManager.Instance.m_isLevelLoading = true;
+        SceneManager.LoadScene(0);
         GameManager.Instance.m_stateName = GameStates.MAINMENU;
     }
 

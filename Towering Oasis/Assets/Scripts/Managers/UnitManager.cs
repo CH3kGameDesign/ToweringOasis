@@ -10,7 +10,7 @@ public class UnitManager : MonoBehaviour
 	public List<Transform> m_Parent; // Player, Enemy and obstacle parent objects
 	public List<Transform> m_Objects; // Player, Enemies and obstacles themselves
 	public int m_nPlayersAtExit;
-	public int m_nPlayersAlive = 4;
+	public int m_nPlayersAlive;
 
 	private void Awake()
 	{
@@ -20,7 +20,10 @@ public class UnitManager : MonoBehaviour
 			Instance = this;
 		else if (Instance != this)
 			Destroy(gameObject);
-	}
+
+        m_nPlayersAtExit = 0;
+        m_nPlayersAlive = 4;
+}
 
 	// Getting all the objects under m_parent objects
 	public void UpdateObject()

@@ -40,8 +40,9 @@ public class GameManager : MonoBehaviour
     public bool m_bossTurned;
     public int m_LevelsPerSet;
     public int m_levelSet;
+    public bool m_isLevelLoading;
+    public GameObject m_actionsMenu;
 
-    public GameObject m_GameGUI;
     public HealthBar m_healthGUI;
 	public RawImage m_character;
     public Text m_healthText;
@@ -58,8 +59,9 @@ public class GameManager : MonoBehaviour
 	public GameObject m_HealthBar;
     public GameObject m_actions;
     public GameObject m_PrevMenu;
+    public GameObject m_GameGUI;
 
-	private void Awake()
+    private void Awake()
     {
         m_bossTurned = false;
         if (Instance == null)
@@ -67,6 +69,7 @@ public class GameManager : MonoBehaviour
         else if (Instance != this)
             Destroy(gameObject);
 
+        m_isLevelLoading = false;
         m_actions.SetActive(false);
 
 		// Initalise defaults
@@ -95,12 +98,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (m_actions == null)
+        {
+            m_actions = GameObject.Find("Actions");
+        }
+
         m_boss = FindObjectOfType<Boss>();
 
         if (enemyController == null)
         {
             enemyController = FindObjectOfType<EnemyController>();
         }
+
         else if (playerController == null)
         {
             playerController = FindObjectOfType<PlayerController>();
@@ -113,6 +122,7 @@ public class GameManager : MonoBehaviour
                 ButtonActor[i].m_ActorNumber = i;
             }
         }
+
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (m_GameGUI.activeSelf == false)
@@ -185,6 +195,7 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
 	{
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             if (UnitManager.Instance.m_Parent.Count == 0)
@@ -226,6 +237,28 @@ public class GameManager : MonoBehaviour
         }
 	}
 
+    public void ResetGame()
+    {
+        m_currentActor = null;
+        m_nPlayerMoves = 0;
+        m_nEnemiesMoves = 0;
+        m_nEnemiesAttacked = false;
+        m_bcontrolsAvailable = true;
+        m_isGameOver = false;
+        m_isMoving = false;
+        m_isAttacking = false;
+        m_levelSet = 1;
+
+    }
+
+    public void ResetGUI()
+    {
+        m_GameGUI.SetActive(false);
+        m_GameOverPanel.SetActive(false);
+        m_LevelWonPanel.SetActive(false);
+        m_HealthBar.SetActive(false);
+    }
+
     public void ResetVariables()
     {
         m_bcontrolsAvailable = true;
@@ -250,5 +283,22 @@ public class GameManager : MonoBehaviour
     public void GUIReset()
     {
         ButtonActor[GameManager.Instance.ButtonActor.Length - 1].gameObject.SetActive(false);
+    }
+
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        List<GameObject> temp = new List<GameObject>();
+        temp.AddRange(GameObject.FindGameObjectsWithTag("AttackTile"));
+        temp.AddRange(GameObject.FindGameObjectsWithTag("MovableTile"));
+
+        // we want to destroy previous spawned attack tiles
+        for (int i = 0; i < temp.Count; i++)
+        {
+            Destroy(temp[i]);
+        }
+
+        ResetGame();
+        ResetGUI();
+        GameManager.Instance.m_isLevelLoading = false;
     }
 }

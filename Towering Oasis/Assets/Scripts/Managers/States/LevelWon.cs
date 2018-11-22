@@ -46,6 +46,7 @@ public class LevelWon : BaseState
                         GameManager.Instance.m_levelSet++;
 
                 }
+                GameManager.Instance.m_isLevelLoading = true;
                 SceneManager.LoadScene(level);
                 islevelLoaded = true;
                 continue;
@@ -56,15 +57,23 @@ public class LevelWon : BaseState
         islevelLoaded = false;
         GameManager.Instance.m_LevelWonPanel.SetActive(false);
         GameManager.Instance.m_stateName = GameStates.GAME;
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
     }
 
     //Load Scene "MainScene" when button is pressed
     public void RestartButtonOnClick()
     {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
         GameManager.Instance.m_nLevelsLoaded.Clear();
 
-        int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
+        int level;
+
+        level = Random.Range(1, 21);
+
         GameManager.Instance.m_nLevelsLoaded.Add(level);
+        GameManager.Instance.m_isLevelLoading = true;
         SceneManager.LoadScene(level);
 
         GameManager.Instance.m_LevelWonPanel.SetActive(false);
@@ -84,8 +93,14 @@ public class LevelWon : BaseState
     //Quit Game when button is pressed
     public void MenuOnClick()
     {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
+
+        Destroy(GameManager.Instance.m_actions);
+
         GameManager.Instance.m_LevelWonPanel.SetActive(false);
         Destroy(transform.parent.gameObject);
+        GameManager.Instance.m_isLevelLoading = true;
         SceneManager.LoadScene(0);
         GameManager.Instance.m_stateName = GameStates.MAINMENU;
     }

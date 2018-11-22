@@ -17,12 +17,20 @@ public class GameOverState : BaseState
 
 	//Load Scene "MainScene" when button is pressed
 	public void RestartButtonOnClick()
-	{
-		GameManager.Instance.m_nLevelsLoaded.Clear();
+    {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
 
-		int level = Random.Range(1, SceneManager.sceneCountInBuildSettings);
-		GameManager.Instance.m_nLevelsLoaded.Add(level);
-		SceneManager.LoadScene(level);
+        GameManager.Instance.m_nLevelsLoaded.Clear();
+
+        int level;
+
+        level = Random.Range(1, 21);
+
+        GameManager.Instance.m_nLevelsLoaded.Add(level);
+        GameManager.Instance.m_isLevelLoading = true;
+
+        SceneManager.LoadScene(level);
 
 		GameManager.Instance.m_GameOverPanel.SetActive(false);
 		GameManager.Instance.m_bcontrolsAvailable = true;
@@ -40,10 +48,16 @@ public class GameOverState : BaseState
 
 	//Quit Game when button is pressed
 	public void MenuOnClick()
-	{
-		GameManager.Instance.m_GameOverPanel.SetActive(false);
+    {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
+
+        Destroy(GameManager.Instance.m_actions);
+
+        GameManager.Instance.m_GameOverPanel.SetActive(false);
 		Destroy(transform.parent.gameObject);
-		SceneManager.LoadScene(0);
+        GameManager.Instance.m_isLevelLoading = true;
+        SceneManager.LoadScene(0);
         GameManager.Instance.m_stateName = GameStates.MAINMENU;
     }
 

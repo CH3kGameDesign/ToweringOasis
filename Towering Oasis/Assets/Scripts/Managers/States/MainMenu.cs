@@ -17,6 +17,11 @@ public class MainMenu : BaseState
         {
             GameManager.Instance.m_MainMenuPanel.SetActive(false);
         }
+
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            
+        }
     }
 
     private void FixedUpdate()
@@ -27,10 +32,13 @@ public class MainMenu : BaseState
 	//Load Scene "MainScene" when button is pressed
 	public void PlayGameButtonOnClick()
 	{
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
         GameManager.Instance.m_levelSet = 1;
 		int level = Random.Range(1, 21);
 		GameManager.Instance.m_nLevelsLoaded.Add(level);
-		SceneManager.LoadScene(level);
+        GameManager.Instance.m_isLevelLoading = true;
+        SceneManager.LoadScene(level);
         GameManager.Instance.m_stateName = GameStates.GAME;
     }
 
