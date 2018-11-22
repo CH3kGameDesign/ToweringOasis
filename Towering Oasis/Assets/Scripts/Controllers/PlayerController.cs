@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 // For knowing which state is player in
@@ -231,8 +232,10 @@ public class PlayerController : Controller
 		{
 			if(m_Player.m_bMoved)
 				GameManager.Instance.m_actions.transform.GetChild(0).gameObject.SetActive(false);
-			if(m_Player.m_bAttack)
-				GameManager.Instance.m_actions.transform.GetChild(1).gameObject.SetActive(false);
+            if (m_Player.m_bAttack)
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.SetActive(false);
+            }
 			if(m_Player.m_bSkip)
 			{
 				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
@@ -243,6 +246,14 @@ public class PlayerController : Controller
 
 			if (!m_Player.m_bAttack || !m_Player.m_bMoved)
             {
+                if (m_Player.m_classType == "support")
+                {
+                    GameManager.Instance.m_actions.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Heal";
+                }
+                if (m_Player.m_classType == "melee" || m_Player.m_classType == "ranged")
+                {
+                    GameManager.Instance.m_actions.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Attack";
+                }
                 GameManager.Instance.m_actions.SetActive(true);
                 Vector3 pos = m_Player.transform.position;
                 pos.x -= 2.6f;
@@ -270,6 +281,7 @@ public class PlayerController : Controller
 
     public void Attack()
     {
+
         if (!m_Player.m_bAttack)
         {
             m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);

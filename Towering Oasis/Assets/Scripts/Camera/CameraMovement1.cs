@@ -6,7 +6,6 @@ public class CameraMovement1 : MonoBehaviour
 {
 
     public float m_nPanSpeed = 1;
-    private Camera c_Cam;
     public float m_fCameraYmax = 2;
     public float m_fCameraYmin = -2;
     public float m_fCameraXmax = 2;
@@ -18,7 +17,6 @@ public class CameraMovement1 : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        c_Cam = GetComponent<Camera>();
         cursorPosition = Input.mousePosition;
         cursorPositionPast = cursorPosition;
 	}
