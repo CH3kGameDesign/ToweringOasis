@@ -230,13 +230,25 @@ public class PlayerController : Controller
         
         if (m_bshowUI)
 		{
-			if(m_Player.m_bMoved)
-				GameManager.Instance.m_actions.transform.GetChild(0).gameObject.SetActive(false);
+            if (m_Player.m_bMoved)
+            {
+                GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+            }
+
             if (m_Player.m_bAttack)
             {
-                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.SetActive(false);
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = false;
             }
-			if(m_Player.m_bSkip)
+            else
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+            }
+
+            if (m_Player.m_bSkip)
 			{
 				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
 				{
