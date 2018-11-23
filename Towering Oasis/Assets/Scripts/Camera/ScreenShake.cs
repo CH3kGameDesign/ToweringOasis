@@ -2,20 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenShake : MonoBehaviour {
-
+public class ScreenShake : MonoBehaviour
+{
+    public static ScreenShake Instance;
     public bool shake = false;
     public float shakeAmount = 1f;
     public float shakeTimer = 0f;
     public float shakeLength = 0.5f;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+    // Use this for initialization
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
+    }
+
+        // Update is called once per frame
+    public void ShakeScreen()
+    {
         if (shake)
             transform.localPosition = Random.insideUnitSphere * shakeAmount;
         else
