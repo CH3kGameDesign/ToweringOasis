@@ -19,46 +19,53 @@ public class LevelWon : BaseState
 
     public void NextLevel()
     {
-        while (!islevelLoaded)
+        try
         {
-            int level;
-
-            if (GameManager.Instance.m_levelSet == 1)
-                level = Random.Range(1, 21);
-            else if (GameManager.Instance.m_levelSet == 2)
-                level = Random.Range(22, 35);
-            else if (GameManager.Instance.m_levelSet == 3)
-                level = Random.Range(36, 49);
-            else if (GameManager.Instance.m_levelSet == 4)
-                level = Random.Range(50, 63);
-            else if (GameManager.Instance.m_levelSet == 5)
-                level = Random.Range(64, 67);
-            else
-                level = 0;
-
-            if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
+            while (!islevelLoaded)
             {
-                GameManager.Instance.m_nLevelsLoaded.Add(level);
-                if(GameManager.Instance.m_nLevelsLoaded.Count == 3)
+                int level;
+
+                if (GameManager.Instance.m_levelSet == 1)
+                    level = Random.Range(1, 21);
+                else if (GameManager.Instance.m_levelSet == 2)
+                    level = Random.Range(22, 35);
+                else if (GameManager.Instance.m_levelSet == 3)
+                    level = Random.Range(36, 49);
+                else if (GameManager.Instance.m_levelSet == 4)
+                    level = Random.Range(50, 63);
+                else if (GameManager.Instance.m_levelSet == 5)
+                    level = Random.Range(64, 67);
+                else
+                    level = 0;
+
+                if (!GameManager.Instance.m_nLevelsLoaded.Contains(level))
                 {
-                    GameManager.Instance.m_nLevelsLoaded.Clear();
-                    if(GameManager.Instance.m_levelSet < 5)
-                        GameManager.Instance.m_levelSet++;
+                    GameManager.Instance.m_nLevelsLoaded.Add(level);
+                    if (GameManager.Instance.m_nLevelsLoaded.Count == 3)
+                    {
+                        GameManager.Instance.m_nLevelsLoaded.Clear();
+                        if (GameManager.Instance.m_levelSet < 5)
+                            GameManager.Instance.m_levelSet++;
 
+                    }
+                    GameManager.Instance.m_isLevelLoading = true;
+                    SceneManager.LoadScene(level);
+                    islevelLoaded = true;
+                    continue;
                 }
-                GameManager.Instance.m_isLevelLoading = true;
-                SceneManager.LoadScene(level);
-                islevelLoaded = true;
-                continue;
+                islevelLoaded = false;
             }
-            islevelLoaded = false;
-        }
 
-        islevelLoaded = false;
-        GameManager.Instance.m_LevelWonPanel.SetActive(false);
-        GameManager.Instance.m_stateName = GameStates.GAME;
-        GameManager.Instance.ResetGame();
-        GameManager.Instance.ResetGUI();
+            islevelLoaded = false;
+            GameManager.Instance.m_LevelWonPanel.SetActive(false);
+            GameManager.Instance.m_stateName = GameStates.GAME;
+            GameManager.Instance.ResetGame();
+            GameManager.Instance.ResetGUI();
+        }
+        catch(System.Exception e)
+        {
+            Debug.Log("Error");
+        }
     }
 
     //Load Scene "MainScene" when button is pressed
@@ -71,6 +78,7 @@ public class LevelWon : BaseState
         int level;
 
         level = Random.Range(1, 21);
+        GameManager.Instance.m_levelSet = 1;
 
         GameManager.Instance.m_nLevelsLoaded.Add(level);
         GameManager.Instance.m_isLevelLoading = true;

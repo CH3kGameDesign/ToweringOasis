@@ -370,5 +370,62 @@ public class PlayerController : Controller
 
         return null;
     }
+
+    public List<Node> GetMovementTiles(Node node, int nHowManyNeighbourIteration = 1)
+    {
+        int i = 0;
+        int gscore = 1;
+        List<Node> moveTiles = new List<Node>();
+
+        Heap<Node> openList = new Heap<Node>((int)Map.Instance.m_nGridSizeX * (int)Map.Instance.m_nGridSizeY);
+        // Nodes we have already searched
+        HashSet<Node> closedList = new HashSet<Node>();
+
+        // Add our starting point on the openlist
+        openList.Add(node);
+        while (openList.Count > 0)
+        {
+            Node currentNode = openList.RemoveFirst();
+
+            closedList.Add(currentNode);
+
+            if (currentNode.m_nGCost > nHowManyNeighbourIteration || currentNode.m_bIsUnitOnTop || !currentNode.m_bWalkable)
+                continue;
+
+            if (i != 0)
+                continue;
+
+            List<Node> Neighbours = Map.Instance.GetNeighbours(currentNode);
+
+            foreach (Node neighbour in Neighbours)
+            {
+                if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
+                    continue;
+
+                int newMovementCostToNeighbour = currentNode.m_nGCost + gscore;
+                if (newMovementCostToNeighbour < neighbour.m_nGCost || !openList.Contains(neighbour))
+                {
+                    neighbour.m_parent = currentNode;
+                    neighbour.m_nGCost = newMovementCostToNeighbour;
+                }
+
+                if (neighbour != null)
+                {
+                    if (currentNode.m_nGCost + gscore > nHowManyNeighbourIteration)
+                        continue;
+
+                    neighbour.m_nGCost = newMovementCostToNeighbour;
+                    neighbour.m_nHCost = currentNode.m_nGCost + gscore;
+                    neighbour.m_parent = currentNode;
+
+                    if (!openList.Contains(neighbour))
+                        openList.Add(neighbour);
+                    else
+                        openList.UpdateItem(neighbour);
+                }
+            }
+        }
+        return moveTiles;
+    }
 }
 

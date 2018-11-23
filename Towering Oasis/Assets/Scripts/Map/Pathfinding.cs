@@ -113,7 +113,7 @@ public class Pathfinding : MonoBehaviour
         path.Reverse();
     }
 
-    public int GetDistance(Node nodeA, Node nodeB, bool isAStar)
+    public int GetDistance(Node nodeA, Node nodeB, bool isAStar = false)
     {
         if (isAStar)
         {

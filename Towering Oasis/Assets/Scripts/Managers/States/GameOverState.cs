@@ -26,6 +26,7 @@ public class GameOverState : BaseState
         int level;
 
         level = Random.Range(1, 21);
+        GameManager.Instance.m_levelSet = 1;
 
         GameManager.Instance.m_nLevelsLoaded.Add(level);
         GameManager.Instance.m_isLevelLoading = true;

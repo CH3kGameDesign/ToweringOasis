@@ -86,8 +86,6 @@ public class GameManager : MonoBehaviour
 
         m_nLevelsLoaded = new List<int>();
 		m_bcontrolsAvailable = true;
-        
-	    DontDestroyOnLoad(transform.gameObject);
 	}
 
     private void Start()
@@ -240,8 +238,6 @@ public class GameManager : MonoBehaviour
         m_isGameOver = false;
         m_isMoving = false;
         m_isAttacking = false;
-        m_levelSet = 1;
-
     }
 
     public void ResetGUI()
