@@ -88,7 +88,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1473831915405530}
   m_LocalRotation: {x: 0.14644651, y: 0.85355335, z: -0.35355306, w: 0.35355392}
-  m_LocalPosition: {x: -1.85, y: 5.62, z: 2.74}
+  m_LocalPosition: {x: -0.23, y: 4.91, z: 5.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4705510111767124}
@@ -115,7 +115,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1629422840623790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4879732896138594}
@@ -129,7 +129,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1518480982325286}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4502276176115898}
@@ -186,7 +186,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4ee10af1b30c2b0419b79a62e0c56c1c, type: 2}
+  - {fileID: 2100000, guid: 75d6da14989bca048aea443035490012, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -270,7 +270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa671c50e97d1dd44a539d278928d5dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shake: 0
   shakeAmount: 0.1
   shakeTimer: 0
   shakeLength: 0.2
@@ -286,10 +285,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_nPanSpeed: 0.0131
-  m_fCameraYmax: 5
-  m_fCameraYmin: -1
-  m_fCameraXmax: 10
-  m_fCameraXmin: -3
+  m_fCameraYmax: 6
+  m_fCameraYmin: -2
+  m_fCameraXmax: 9
+  m_fCameraXmin: -2
 --- !u!124 &124458077920360394
 Behaviour:
   m_ObjectHideFlags: 1
