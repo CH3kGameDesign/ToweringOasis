@@ -65,7 +65,7 @@ public class PauseMenuState : BaseState
         }
 
         GameManager.Instance.m_PauseMenuPanel.SetActive(false);
-		Destroy(transform.parent.gameObject);
+        GameManager.Instance.m_MainMenuPanel.SetActive(true);
         GameManager.Instance.m_isLevelLoading = true;
         SceneManager.LoadScene(0);
         GameManager.Instance.m_stateName = GameStates.MAINMENU;
