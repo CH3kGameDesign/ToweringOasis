@@ -5,50 +5,34 @@ using UnityEngine.UI;
 
 public class ButtonActor : MonoBehaviour
 {
-    public Actor m_buttonActor = null;
+    public Actor m_buttonActor;
     public int m_ActorNumber;
 
     private void Start()
     {
+        GetActor();
     }
 
     private void LateUpdate()
     {
         if (GameObject.FindGameObjectWithTag("GUI").activeSelf)
         {
-            if (m_buttonActor != null && m_buttonActor.m_nHealth <= 0)
+            if (m_buttonActor.m_nHealth <= 0)
             {
-                GameManager.Instance.GUIReset();
-            }
-            else if (m_ActorNumber <= UnitManager.Instance.m_Parent[0].childCount - 1)
-            {
-                m_buttonActor = UnitManager.Instance.m_Parent[0].GetChild(m_ActorNumber).GetComponent<Actor>();
-
-                if (m_buttonActor != null)
-                    GetComponentInChildren<Text>().text = m_buttonActor.name;
+                this.GetComponent<Button>().interactable = false;
             }
         }
     }
-
-    //private void LateUpdate()
-    //{
-    //    if (GameObject.FindGameObjectWithTag("GUI").activeSelf && m_buttonActor != null)
-    //    {
-    //        if (m_buttonActor.m_nHealth <= 0)
-    //        {
-    //            Button thisButton = GetComponent<Button>();
-    //            thisButton.GetComponent<Image>().color = Color.grey;
-    //            thisButton.interactable = false;
-
-    //            GameManager.Instance.GUIReset();
-    //        }
-    //    }
-    //}
 
     public void SelectActor()
     {
         GameManager.Instance.playerController.m_Player = m_buttonActor;
         GameManager.Instance.playerController.m_showHealth = true;
-        //m_selected = true;
+    }
+
+    public void GetActor()
+    {
+        m_buttonActor = UnitManager.Instance.m_Parent[0].GetChild(m_ActorNumber).GetComponent<Actor>();
+        GetComponentInChildren<Text>().text = m_buttonActor.name;
     }
 }

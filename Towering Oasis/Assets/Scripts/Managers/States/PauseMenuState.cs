@@ -21,10 +21,11 @@ public class PauseMenuState : BaseState
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		GameManager.Instance.m_bcontrolsAvailable = true;
         GameManager.Instance.m_stateName = GameStates.GAME;
+        GameManager.Instance.m_GameGUI.SetActive(true);
     }
 
-	//Load Scene "MainScene" when button is pressed
-	public void RestartButtonOnClick()
+    //Load Scene "MainScene" when button is pressed
+    public void RestartButtonOnClick()
     {
         GameManager.Instance.ResetGame();
         GameManager.Instance.ResetGUI();

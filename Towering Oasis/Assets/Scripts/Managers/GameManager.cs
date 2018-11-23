@@ -115,19 +115,8 @@ public class GameManager : MonoBehaviour
             playerController = FindObjectOfType<PlayerController>();
         }
 
-        if (m_GameGUI.activeSelf)
-        {
-            for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
-            {
-                ButtonActor[i].m_ActorNumber = i;
-            }
-        }
-
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
-            if (m_GameGUI.activeSelf == false)
-                m_GameGUI.SetActive(true);
-
             m_EnemiesNumber.text = "Enemies: " + UnitManager.Instance.m_Parent[1].childCount;
 
             if (m_bcontrolsAvailable)
@@ -217,6 +206,7 @@ public class GameManager : MonoBehaviour
                 m_nPlayerMoves = 0;
                 m_nEnemiesMoves = 0;
             }
+
             // this happens before attacktile trigger enter
             if (m_nEnemiesMoves == UnitManager.Instance.m_Parent[1].childCount && m_nEnemiesAttacked && !m_bcontrolsAvailable)
             {
@@ -280,11 +270,6 @@ public class GameManager : MonoBehaviour
         p.m_bSkip = false;
     }
 
-    public void GUIReset()
-    {
-        ButtonActor[GameManager.Instance.ButtonActor.Length - 1].gameObject.SetActive(false);
-    }
-
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         List<GameObject> temp = new List<GameObject>();
@@ -297,8 +282,15 @@ public class GameManager : MonoBehaviour
             Destroy(temp[i]);
         }
 
+        for (int i = 0; i < ButtonActor.Length; i++)
+        {
+            ButtonActor[i].GetComponent<Button>().interactable = true;
+            ButtonActor[i].GetActor();
+        }
+
         ResetGame();
         ResetGUI();
+        m_GameGUI.SetActive(true);
         GameManager.Instance.m_isLevelLoading = false;
     }
 }

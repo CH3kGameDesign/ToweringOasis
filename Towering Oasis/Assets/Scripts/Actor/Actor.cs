@@ -55,11 +55,12 @@ public class Actor : MonoBehaviour
 
 	public virtual void Update()
 	{
+        if (m_nHealth > 100)
+            m_nHealth = 100;
 		// if health is 0 destroy the gameobject
 		if (m_nHealth <= 0)
 		{
 			UnitManager.Instance.m_Objects.Remove(gameObject.transform);
-            GameManager.Instance.GUIReset();
             if (this.CompareTag("Player"))
                 UnitManager.Instance.m_nPlayersAlive--;
             Destroy(gameObject);
@@ -117,6 +118,8 @@ public class Actor : MonoBehaviour
 				HealthDrop.GetComponent<TextMesh>().text = tempint.ToString();
                 HealthDrop3.GetComponent<TextMesh>().text = tempint.ToString();
                 HealthDrop2.GetComponent<TextMesh>().text = tempint.ToString();
+                if(m_classType != "support")
+                    ScreenShake.Instance.shakeTimer = 0f;
                 Debug.Log("A Step 4");
 			}
 		}

@@ -5,14 +5,14 @@ using UnityEngine;
 public class ScreenShake : MonoBehaviour
 {
     public static ScreenShake Instance;
-    public bool shake = false;
     public float shakeAmount = 1f;
-    public float shakeTimer = 0f;
-    public float shakeLength = 0.5f;
+    public float shakeTimer = 0.2f;
+    public float shakeLength = 1.0f;
 
     // Use this for initialization
     private void Awake()
     {
+        shakeTimer = 5;
         if (Instance == null)
             Instance = this;
         else if (Instance != this)
@@ -20,15 +20,12 @@ public class ScreenShake : MonoBehaviour
     }
 
         // Update is called once per frame
-    public void ShakeScreen()
+    public void FixedUpdate()
     {
-        if (shake)
+        if (shakeTimer < shakeLength)
             transform.localPosition = Random.insideUnitSphere * shakeAmount;
         else
             transform.localPosition = Vector3.zero;
-
-        if (shakeTimer >= shakeLength)
-            shake = false;
 
         shakeTimer += Time.deltaTime;
 	}

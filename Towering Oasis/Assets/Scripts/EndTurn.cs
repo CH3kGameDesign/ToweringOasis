@@ -34,6 +34,15 @@ public class EndTurn : MonoBehaviour {
             GameManager.Instance.m_actions.SetActive(false);
             GameManager.Instance.playerController.m_bshowUI = false;
             GameManager.Instance.m_HealthBar.SetActive(false);
+            List<GameObject> temp = new List<GameObject>();
+            temp.AddRange(GameObject.FindGameObjectsWithTag("AttackTile"));
+            temp.AddRange(GameObject.FindGameObjectsWithTag("MovableTile"));
+
+            // we want to destroy previous spawned attack tiles
+            for (int i = 0; i < temp.Count; i++)
+            {
+                Destroy(temp[i]);
+            }
         }
     }
 }
