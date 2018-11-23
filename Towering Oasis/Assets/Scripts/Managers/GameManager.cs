@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour
 
     public ButtonActor[] ButtonActor;
 
+    public Sprite[] AttackButtons;
+    public Sprite[] HealButtons;
+
     public GameObject m_MainMenuPanel;
 	public GameObject m_PauseMenuPanel;
 	public GameObject m_SettingPanel;

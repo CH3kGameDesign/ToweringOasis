@@ -230,6 +230,22 @@ public class PlayerController : Controller
         
         if (m_bshowUI)
 		{
+            SpriteState temp = new SpriteState();
+            if (m_Player.m_classType == "support")
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = GameManager.Instance.HealButtons[0];
+                temp.pressedSprite = GameManager.Instance.HealButtons[0];
+                temp.disabledSprite = GameManager.Instance.HealButtons[1];
+                temp.highlightedSprite = GameManager.Instance.HealButtons[2];
+            }
+            else
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = GameManager.Instance.AttackButtons[0];
+                temp.pressedSprite = GameManager.Instance.AttackButtons[0];
+                temp.disabledSprite = GameManager.Instance.AttackButtons[1];
+                temp.highlightedSprite = GameManager.Instance.AttackButtons[2];
+            }
+            GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().spriteState = temp;
             if (m_Player.m_bMoved)
             {
                 GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
