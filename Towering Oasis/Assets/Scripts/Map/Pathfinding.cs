@@ -64,8 +64,12 @@ public class Pathfinding : MonoBehaviour
 					endNode.m_bIsUnitOnTop = true;
 					m_bunitOnTopChanged = false;
 				}
-
-                return;
+				foreach(Node n in closedList)
+				{
+					n.m_nHCost = 0;
+					n.m_nGCost = 0;
+				}
+				return;
             }
 
             List<Node> Neighbours = Map.Instance.GetNeighbours(currentNode);

@@ -21,14 +21,18 @@ public class Actor : MonoBehaviour
 	[HideInInspector]
 	public Vector3 m_ActorPos;
 	public string m_classType;
+	public bool m_playAnimUP;
+	public bool m_attackAnimPlayed;
 
 	// How many tiles is this actor allowed to move
 	public int m_nHowManyTiles;
 	public int m_nHealth;
     public int m_nDamage;
+	public int m_nSpeed;
 	public List<Node> m_currentPath;
 	public bool m_bMoved;
 	public bool m_bAttack;
+	public bool m_bExecuteMove;
 	public bool m_bSkip;
     public bool m_bStartAttack;
     public DirectionEnum m_lookingDirec;
@@ -36,6 +40,10 @@ public class Actor : MonoBehaviour
 	public bool m_bLookingDiaganol = false;
 	public Texture2D m_CharacterPotrait;
     private float m_nTimer;
+	private float m_calculatedSpeed;
+	private Vector3 m_v3CurrentPosHolder;
+	private Vector3 m_v3StartingPos;
+	private int m_nCurrentNode;
 
 
 	// Character that this character is attacked by
@@ -74,30 +82,79 @@ public class Actor : MonoBehaviour
             m_nTimer = 1000f;
         }
         m_nTimer -= Time.deltaTime;
+		if (m_bExecuteMove)
+		{
+			m_calculatedSpeed += Time.deltaTime * m_nSpeed;
+			if(this.gameObject.transform.position != m_v3CurrentPosHolder)
+			{
+				gameObject.transform.position = Vector3.Lerp(m_v3StartingPos, m_v3CurrentPosHolder, m_calculatedSpeed);
+				m_ActorPos = m_v3CurrentPosHolder;
+			}
+			else
+			{
+				if(m_nCurrentNode < m_currentPath.Count - 1)
+				{
+					m_nCurrentNode++;
+					CheckNode();
+				}
+				else if(m_nCurrentNode == m_currentPath.Count - 1)
+				{
+					m_bExecuteMove = false;
+					m_bStartAttack = true;
+					m_nCurrentNode = 0;
+
+					if(gameObject.CompareTag("Player"))
+						GameManager.Instance.m_isMoving = false;
+
+					Map.Instance.UpdateUnitOnTop();
+
+					Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+					temp.SetFloat("_Animation", 1);
+					temp.SetFloat("_FrameRate", 24);
+					temp.SetFloat("_Frames", 5);
+				}
+			}
+		}
     }
 
 	public virtual void Attack()
 	{
-        Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
-        if (m_classType == "melee")
-        {
-            temp.SetFloat("_Animation", 6);
-            temp.SetFloat("_FrameRate", 24);
-            temp.SetFloat("_Frames", 5);
-        }
-        else if (m_classType == "support")
-        {
-            temp.SetFloat("_Animation", 2);
-            temp.SetFloat("_FrameRate", 24);
-            temp.SetFloat("_Frames", 5);
-        }
-        else if (m_classType == "ranged")
-        {
-            temp.SetFloat("_Animation", 6);
-            temp.SetFloat("_FrameRate", 24);
-            temp.SetFloat("_Frames", 4);
-        }
-        m_nTimer = 2f;
+		Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+		if (!m_attackAnimPlayed)
+		{
+			if (m_classType == "melee")
+			{
+				if (m_playAnimUP)
+					temp.SetFloat("_Animation", 7);
+				else
+					temp.SetFloat("_Animation", 6);
+
+				temp.SetFloat("_FrameRate", 24);
+				temp.SetFloat("_Frames", 5);
+			}
+			else if (m_classType == "support")
+			{
+				if (m_playAnimUP)
+					temp.SetFloat("_Animation", 3);
+				else
+					temp.SetFloat("_Animation", 2);
+				
+				temp.SetFloat("_FrameRate", 24);
+				temp.SetFloat("_Frames", 5);
+			}
+			else if (m_classType == "ranged")
+			{
+				if (m_playAnimUP)
+					temp.SetFloat("_Animation", 5);
+				else
+					temp.SetFloat("_Animation", 4);
+
+				temp.SetFloat("_FrameRate", 24);
+				temp.SetFloat("_Frames", 4);
+			}
+			m_attackAnimPlayed = true;
+		}
+
 		if (m_whoWasAttacked.Count > 0)
 		{
 			Debug.Log("A Step 1");
@@ -123,9 +180,13 @@ public class Actor : MonoBehaviour
                 Debug.Log("A Step 4");
 			}
 		}
+		this.m_whoWasAttacked.Clear();
+		if (m_classType != "ranged")
+			m_nTimer = 0.5f;
+		else
+			m_nTimer = 0.4f;
 
-        this.m_whoWasAttacked.Clear();
-    }
+	}
 
 
     public virtual void SpawnAttackTiles(Transform attackPrefab, Transform holder)
@@ -269,86 +330,103 @@ public class Actor : MonoBehaviour
 		return AttackTiles;
 	}
 
-	public void GetDirectionEnum()
-	{
-
-	}
-
     public void Move(List<Node> path)
     {
         Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
         if (m_classType == "support")
-        {
-            temp.SetFloat("_Animation", 6);
-            temp.SetFloat("_FrameRate", 24);
-            temp.SetFloat("_Frames", 3);
-        }
+		{
+			if (m_playAnimUP)
+				temp.SetFloat("_Animation", 7);
+			else
+				temp.SetFloat("_Animation", 6);
+
+			temp.SetFloat("_FrameRate", 24);
+			temp.SetFloat("_Frames", 3);
+		}
         else
         {
-            temp.SetFloat("_Animation", 2);
-            temp.SetFloat("_FrameRate", 24);
-            temp.SetFloat("_Frames", 10);
-        }
-        StartCoroutine(FollowPath(path, this));
+			if (m_playAnimUP)
+			{
+				if(m_classType == "melee")
+					temp.SetFloat("_Animation", 4);
+
+				if(m_classType == "ranged")
+					temp.SetFloat("_Animation", 3);
+
+				temp.SetFloat("_FrameRate", 24);
+				temp.SetFloat("_Frames", 10);
+			}
+			else
+			{
+				temp.SetFloat("_Animation", 2);
+				temp.SetFloat("_FrameRate", 24);
+				temp.SetFloat("_Frames", 10);
+			}
+		}
+		m_currentPath = path;
+		if (m_currentPath.Count > 0)
+		{
+			GameManager.Instance.m_isMoving = true;
+			m_bExecuteMove = true;
+			CheckNode();
+		}
+		else
+		{
+			m_bStartAttack = true;
+			m_nCurrentNode = 0;
+
+			if (gameObject.CompareTag("Player"))
+				GameManager.Instance.m_isMoving = false;
+
+			Map.Instance.UpdateUnitOnTop();
+
+			Material tempMaterial = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+			tempMaterial.SetFloat("_Animation", 1);
+			tempMaterial.SetFloat("_FrameRate", 24);
+			tempMaterial.SetFloat("_Frames", 5);
+		}
     }
 
     // Is used to move the Actor tile by tile
-    public IEnumerator FollowPath(List<Node> path, Actor a)
-    {
-		m_currentPath = path;
-        if (m_currentPath.Count > a.m_nHowManyTiles)
-        {
-            //this.transform.GetChild(0).GetChild(1).GetComponent<Animation>();
+  //  public IEnumerator FollowPath(List<Node> path, Actor a)
+  //  {
+  //      if (m_currentPath.Count > 0)
+  //      {
+		//	for (int i = 0; i < m_currentPath.Count; )
+		//	{
+		//		GameManager.Instance.m_isMoving = true;
 
-            for (int i = 0; i < a.m_nHowManyTiles; i++)
-            {
-                GameManager.Instance.m_isMoving = true;
-                m_bAttack = false;
-                Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
-                pathNodePos.y = 1.0f;
-                a.transform.position = pathNodePos;
-                a.m_ActorPos = pathNodePos;
-                yield return new WaitForSeconds(1.0f); // skips frames
+		//		Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
+		//		pathNodePos.y = 1.0f;
+		//		a.transform.position = Vector3.Lerp(a.transform.position, pathNodePos, 0.1f);
+		//		if (a.transform.position == pathNodePos)
+		//		{
+		//			i++;
+		//		}
+		//		a.m_ActorPos = pathNodePos;
+		//		yield return new WaitForSeconds(1.0f); // skips frames
 
-                this.m_bStartAttack = true;
-                GameManager.Instance.m_isMoving = false;
+		//		this.m_bStartAttack = true;
+		//		GameManager.Instance.m_isMoving = false;
 
-				Map.Instance.UpdateUnitOnTop();
-			}
-        }
+		//		Map.Instance.UpdateUnitOnTop();
+		//	}
+		//}
 
-        else if(m_currentPath.Count == 0)
-        {
-            this.m_bStartAttack = true;
-            GameManager.Instance.m_isMoving = false;
+  //      Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+  //      temp.SetFloat("_Animation", 1);
+  //      temp.SetFloat("_FrameRate", 24);
+  //      temp.SetFloat("_Frames", 5);
+  //  }
 
-			Map.Instance.UpdateUnitOnTop();
-		}
+	public void CheckNode()
+	{
+		m_calculatedSpeed = 0;
+		m_v3CurrentPosHolder = m_currentPath[m_nCurrentNode].m_v3WorldPosition;
+		m_v3CurrentPosHolder.y = 1.0f;
+		m_v3StartingPos = this.gameObject.transform.position;
+	}
 
-        else
-        {
-            for (int i = 0; i < m_currentPath.Count; i++)
-            {
-                GameManager.Instance.m_isMoving = true;
-
-                //m_bAttack = false;
-                Vector3 pathNodePos = m_currentPath[i].m_v3WorldPosition;
-                pathNodePos.y = 1.0f;
-                a.transform.position = pathNodePos;
-                a.m_ActorPos = pathNodePos;
-                yield return new WaitForSeconds(1.0f); // skips frames
-
-                this.m_bStartAttack = true;
-                GameManager.Instance.m_isMoving = false;
-
-				Map.Instance.UpdateUnitOnTop();
-			}
-        }
-        Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
-        temp.SetFloat("_Animation", 1);
-        temp.SetFloat("_FrameRate", 24);
-        temp.SetFloat("_Frames", 5);
-    }
     public Transform GetChildObject(Transform parent, string _tag)
     {
         for (int i = 0; i < parent.childCount; i++)

@@ -36,6 +36,7 @@ public class MainMenu : BaseState
         GameManager.Instance.ResetGUI();
         GameManager.Instance.m_levelSet = 1;
 		int level = Random.Range(1, 21);
+		//int level = Random.Range(1, SceneManager.sceneCount);
 		GameManager.Instance.m_nLevelsLoaded.Add(level);
         GameManager.Instance.m_isLevelLoading = true;
         SceneManager.LoadScene(level);

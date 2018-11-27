@@ -15,6 +15,7 @@ public enum PLAYERMODE {
 
 public class PlayerController : Controller
 {
+	public bool m_debug;
 	public Transform m_walkableprefab; // Surface that actors are allowed to walk on
 	public Transform m_attackprefab; // Attack Tile
 	public PLAYERMODE m_playerMode; // Current player state
@@ -23,6 +24,7 @@ public class PlayerController : Controller
     public GameObject m_SelectedPrefab;
 
 	public Actor m_Player; // current Player
+	public Transform m_ring = null;
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
 	private int m_nLeftClick = 0; // To keep track of button inputs
 	public bool m_bshowUI; // Show and hide move/attack buttons
@@ -60,18 +62,23 @@ public class PlayerController : Controller
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
-        {
-            GetChildObject(m_Player.transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
-                //.material.SetTexture("RedRing", GameManager.Instance.m_redRing);
-        }
-        else if (m_Player != null)
-        {
-            GetChildObject(m_Player.transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_whiteRing;
-        }
+		if (m_Player != null)
+		{
+			m_ring = GetChildObject(m_Player.transform, "Ring").GetChild(0);
+			m_ring.gameObject.SetActive(true);
+			if (m_Player.m_bMoved && m_Player.m_bAttack)
+			{
+				m_ring.GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
+				//.material.SetTexture("RedRing", GameManager.Instance.m_redRing);
+			}
+			else
+			{
+				m_ring.GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_whiteRing;
+			}
+		}
 
-        // If ray hits something
-        if (Physics.Raycast(ray, out hit))
+		// If ray hits something
+		if (Physics.Raycast(ray, out hit))
         {
             // If its a player and leftclick is performed while m_nleftclick is 0
             if (hit.transform.CompareTag("Player") && Input.GetMouseButtonDown(0) && m_nLeftClick == 0 && !GameManager.Instance.m_isMoving)
@@ -82,8 +89,8 @@ public class PlayerController : Controller
                     if (temp.activeSelf == true)
                         temp.SetActive(false);
                 }
-
-                for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
+				
+				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
 				{
 					GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(true);
 				}
@@ -110,14 +117,22 @@ public class PlayerController : Controller
             // If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
             if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
             {
-                // Find the path from player to the tile that is clicked
-                Pathfinding.Instance.FindPath(m_v3PlayerTilePos, hit.transform.position);
+				// We calculate the angle between mouse position and player position
+				float angle = -Mathf.Atan2(m_v3PlayerTilePos.z - hit.transform.position.z, m_v3PlayerTilePos.x - hit.transform.position.x) * Mathf.Rad2Deg;
+				if (angle < 0)
+					angle += 360;
 
-                // Move to next node after seconds assigned as m_fPlayerMovementSpeed
-                for (int i = 0; i < Pathfinding.Instance.path.Count; i++)
-                {
-                    m_Player.Move(Pathfinding.Instance.path);
-                }
+				Debug.Log(angle);
+
+				if (angle >= 180 && angle <= 350)
+					m_Player.m_playAnimUP = true;
+				else
+					m_Player.m_playAnimUP = false;
+
+				// Find the path from player to the tile that is clicked
+				Pathfinding.Instance.FindPath(m_v3PlayerTilePos, hit.transform.position);
+
+                m_Player.Move(Pathfinding.Instance.path);
 
                 // After we have reached the endTile destroy all moveable tiles
                 for (int i = 0; i < GameManager.Instance.MoveableTileHolder.transform.childCount; i++)
@@ -141,7 +156,8 @@ public class PlayerController : Controller
                     }
                 }
 
-                m_Player.m_bMoved = true;
+				if(!m_debug)
+					m_Player.m_bMoved = true;
 
                 if (m_Player != null && m_Player.m_bMoved && m_Player.m_bAttack)
                 {
@@ -165,6 +181,7 @@ public class PlayerController : Controller
                 if (m_Player.m_whoWasAttacked != null)
                     m_Player.Attack();
 
+				m_Player.m_attackAnimPlayed = false;
                 GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
 
                 // we want to destroy previous spawned attack tiles
@@ -173,7 +190,8 @@ public class PlayerController : Controller
                     Destroy(temp[i]);
                 }
 
-                m_Player.m_bAttack = true;
+				if (!m_debug)
+					m_Player.m_bAttack = true;
 
                 if (m_Player.m_bMoved && m_Player.m_bAttack)
                 {
@@ -214,13 +232,26 @@ public class PlayerController : Controller
                 // Draw a line to debug player front
                 Debug.DrawRay(GetChildObject(m_Player.transform, "Ring").transform.position, GetChildObject(m_Player.transform, "Ring").transform.forward * 5, Color.red);
 
-                m_Player.GetAttackTiles(
-                    Map.Instance.GetNodeFromPosition(GetChildObject(m_Player.transform, "Ring").position + GetChildObject(m_Player.transform, "Ring").forward),
+				Vector3 tempPos = GetChildObject(m_Player.transform, "Ring").position + GetChildObject(m_Player.transform, "Ring").forward;
+
+				m_Player.GetAttackTiles(
+                    Map.Instance.GetNodeFromPosition(tempPos),
                     Map.Instance.GetNodeFromPosition(m_Player.m_ActorPos),
                     true);
 
-                // If player is in attack mode
-                if (m_playerMode == PLAYERMODE.ATTACK && m_Player.m_prevDirec != m_Player.m_lookingDirec)
+				float angleA = -Mathf.Atan2(m_Player.m_ActorPos.z - tempPos.z, m_Player.m_ActorPos.x - tempPos.x) * Mathf.Rad2Deg;
+				if (angleA < 0)
+					angleA += 360;
+
+				Debug.Log(angleA);
+
+				if (angleA >= 180 && angleA <= 350)
+					m_Player.m_playAnimUP = true;
+				else
+					m_Player.m_playAnimUP = false;
+
+				// If player is in attack mode
+				if (m_playerMode == PLAYERMODE.ATTACK && m_Player.m_prevDirec != m_Player.m_lookingDirec)
                 {
 					m_Player.m_whoWasAttacked.Clear();
                     m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
@@ -329,7 +360,7 @@ public class PlayerController : Controller
         if (!m_Player.m_bMoved)
         {
             // Get the neighbours out player can move on
-            List<Node> tiles = Map.Instance.GetNeighbours(Map.Instance.GetNodeFromPosition(m_v3PlayerTilePos), m_Player.m_nHowManyTiles);
+            List<Node> tiles = GetMovementTiles(Map.Instance.GetNodeFromPosition(m_v3PlayerTilePos), m_Player.m_nHowManyTiles);
 
             // Spawn a moveable tile on each node
             foreach (Node n in tiles)
@@ -374,58 +405,100 @@ public class PlayerController : Controller
     public List<Node> GetMovementTiles(Node node, int nHowManyNeighbourIteration = 1)
     {
         int i = 0;
-        int gscore = 1;
+        int gcost = 1;
         List<Node> moveTiles = new List<Node>();
 
         Heap<Node> openList = new Heap<Node>((int)Map.Instance.m_nGridSizeX * (int)Map.Instance.m_nGridSizeY);
+
         // Nodes we have already searched
         HashSet<Node> closedList = new HashSet<Node>();
 
         // Add our starting point on the openlist
         openList.Add(node);
+
         while (openList.Count > 0)
         {
             Node currentNode = openList.RemoveFirst();
 
             closedList.Add(currentNode);
 
-            if (currentNode.m_nGCost > nHowManyNeighbourIteration || currentNode.m_bIsUnitOnTop || !currentNode.m_bWalkable)
+            if (currentNode.m_nGCost > nHowManyNeighbourIteration || !currentNode.m_bWalkable)
                 continue;
 
-            if (i != 0)
-                continue;
+			if(currentNode != node)
+				moveTiles.Add(currentNode);
 
-            List<Node> Neighbours = Map.Instance.GetNeighbours(currentNode);
+			List<Node> Neighbours = Map.Instance.GetNeighbours(currentNode);
 
             foreach (Node neighbour in Neighbours)
             {
-                if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || closedList.Contains(neighbour))
-                    continue;
+				if (!closedList.Contains(neighbour))
+				{
+					if (openList.Contains(neighbour))
+					{
+						if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop)
+							continue;
+						int tempGcost = currentNode.m_nGCost + gcost;
 
-                int newMovementCostToNeighbour = currentNode.m_nGCost + gscore;
-                if (newMovementCostToNeighbour < neighbour.m_nGCost || !openList.Contains(neighbour))
-                {
-                    neighbour.m_parent = currentNode;
-                    neighbour.m_nGCost = newMovementCostToNeighbour;
-                }
+						if (tempGcost < neighbour.m_nGCost)
+						{
+							neighbour.m_parent = currentNode;
+							neighbour.m_nGCost = tempGcost;
+						}
+					}
+					else
+					{
+						if (neighbour != null)
+						{
+							if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop)
+								continue;
+							if (currentNode.m_nGCost + gcost > nHowManyNeighbourIteration)
+								continue;
+							neighbour.m_parent = currentNode;
+							neighbour.m_nGCost = currentNode.m_nGCost + gcost;
+							openList.Add(neighbour);
+						}
+					}
+				}
 
-                if (neighbour != null)
-                {
-                    if (currentNode.m_nGCost + gscore > nHowManyNeighbourIteration)
-                        continue;
+				{
+					//if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || !closedList.Contains(neighbour))
+					//	continue;
 
-                    neighbour.m_nGCost = newMovementCostToNeighbour;
-                    neighbour.m_nHCost = currentNode.m_nGCost + gscore;
-                    neighbour.m_parent = currentNode;
+					//int newMovementCostToNeighbour = currentNode.m_nGCost + gcost;
+					//if (newMovementCostToNeighbour < neighbour.m_nGCost || !openList.Contains(neighbour))
+					//{
+					//	neighbour.m_parent = currentNode;
+					//	neighbour.m_nGCost = newMovementCostToNeighbour;
+					//}
 
-                    if (!openList.Contains(neighbour))
-                        openList.Add(neighbour);
-                    else
-                        openList.UpdateItem(neighbour);
-                }
-            }
-        }
-        return moveTiles;
+					//if (neighbour != null)
+					//{
+					//	if (currentNode.m_nGCost + gcost > nHowManyNeighbourIteration)
+					//		continue;
+
+					//	neighbour.m_nGCost = newMovementCostToNeighbour;
+					//	neighbour.m_nHCost = currentNode.m_nGCost + gcost;
+					//	neighbour.m_parent = currentNode;
+
+					//	if (!openList.Contains(neighbour))
+					//		openList.Add(neighbour);
+					//	else
+					//		openList.UpdateItem(neighbour);
+					//}
+				}
+			}
+		}
+
+		i++;
+
+		foreach (Node n in closedList)
+		{
+			n.m_nHCost = 0;
+			n.m_nGCost = 0;
+		}
+
+		return moveTiles;
     }
 }
 

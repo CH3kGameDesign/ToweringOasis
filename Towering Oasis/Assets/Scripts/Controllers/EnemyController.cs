@@ -55,7 +55,8 @@ public class EnemyController : Controller
 
     public override void myUpdate()
     {
-        if(UnitManager.Instance.m_Parent[0].childCount > 0){ 
+        if(UnitManager.Instance.m_Parent[0].childCount > 0)
+		{ 
             if (!m_gameManager.m_bcontrolsAvailable && !m_gameManager.m_isMoving && !m_gameManager.m_isAttacking)
             {
                 m_BestDirection.Clear();
@@ -98,13 +99,21 @@ public class EnemyController : Controller
                 m_distance = m_distance.OrderBy(o => o.m_tileCount).ToList<Distance>();
 
                 Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[m_distance[0].m_playerNumber].m_ActorPos, false);
-
-                m_Enemies[m_gameManager.m_nEnemiesMoves].Move(Pathfinding.Instance.path);
+				List<Node> path = Pathfinding.Instance.path;
+				if(path.Count > m_Enemies[m_gameManager.m_nEnemiesMoves].m_nHowManyTiles)
+				{
+					for (int i = path.Count - 1; i > m_Enemies[m_gameManager.m_nEnemiesMoves].m_nHowManyTiles - 1; i--)
+					{
+						path.RemoveAt(i);
+					}
+				}
+                m_Enemies[m_gameManager.m_nEnemiesMoves].Move(path);
             }
 
             if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
-            {
-                m_nhasAttacked++;
+			{
+				GameManager.Instance.m_isMoving = false;
+				m_nhasAttacked++;
                 m_bestDirectionFound = true;
                 StartCoroutine(EnemyAttack());
                 m_currentEnemy.m_bStartAttack = false;
@@ -129,17 +138,17 @@ public class EnemyController : Controller
 
         if(m_bestDirectionFound)
         { 
-            for (int i = 0; i < 4;)
+            for (int i = 0; i < 8;)
             {
-                GetChildObject(m_currentEnemy.transform, "Ring").transform.Rotate(0.0f, 90.0f, 0.0f);
+                GetChildObject(m_currentEnemy.transform, "Ring").transform.Rotate(0.0f, 45.0f, 0.0f);
 
                 Vector3 rot = GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles;
 
                 m_BestDirection.Add(new Direction(0, rot));
                 m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
 
-                if (i < 4)
-                    yield return new WaitForSeconds(0.7f);
+                if (i < 8)
+                    yield return new WaitForSeconds(0.2f);
 
                 m_BestDirection[m_BestDirection.Count - 1].m_whowasattackedPrev = m_currentEnemy.m_whoWasAttacked.Count;
 

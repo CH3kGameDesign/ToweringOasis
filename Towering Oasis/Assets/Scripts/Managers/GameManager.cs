@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
     public int m_LevelsPerSet;
     public int m_levelSet;
     public bool m_isLevelLoading;
-    public GameObject m_actionsMenu;
 
     public HealthBar m_healthGUI;
 	public RawImage m_character;
@@ -283,13 +282,19 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < ButtonActor.Length; i++)
         {
-            ButtonActor[i].GetComponent<Button>().interactable = true;
-            ButtonActor[i].GetActor();
+			if (UnitManager.Instance.m_Parent[0] != null)
+			{
+				ButtonActor[i].GetComponent<Button>().interactable = true;
+				ButtonActor[i].GetActor();
+			}
         }
-
+		m_actions.transform.position = new Vector3(-70, -70, -70);
         ResetGame();
         ResetGUI();
-        m_GameGUI.SetActive(true);
-        GameManager.Instance.m_isLevelLoading = false;
+
+		if (UnitManager.Instance.m_Parent[0] != null)
+			m_GameGUI.SetActive(true);
+
+		m_isLevelLoading = false;
     }
 }
