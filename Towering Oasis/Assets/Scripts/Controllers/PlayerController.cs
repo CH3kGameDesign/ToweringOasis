@@ -9,6 +9,7 @@ public enum PLAYERMODE {
 	ATTACK,
 	MOVE,
 	IDLE,
+	MENU,
 
 	COUNT
 }
@@ -110,12 +111,25 @@ public class PlayerController : Controller
                 if (m_Player != null)
                     m_bshowUI = true;
 
-                m_SelectedPrefab = m_Player.gameObject.transform.GetChild(2).gameObject;
+				m_playerMode = PLAYERMODE.MENU;
+
+				m_SelectedPrefab = m_Player.gameObject.transform.GetChild(2).gameObject;
                 m_showHealth = true;
             }
 
-            // If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
-            if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
+			if(!hit.transform.CompareTag("Player") && m_playerMode == PLAYERMODE.MENU && Input.GetMouseButtonDown(0) && m_nLeftClick == 0 && m_bshowUI == true)
+			{
+				m_bshowUI = false;
+
+				m_playerMode = PLAYERMODE.IDLE;
+				GameManager.Instance.m_actions.SetActive(false);
+				m_SelectedPrefab.SetActive(false);
+				m_showHealth = false;
+				m_Player = null;
+			}
+
+			// If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
+			if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
             {
 				// We calculate the angle between mouse position and player position
 				float angle = -Mathf.Atan2(m_v3PlayerTilePos.z - hit.transform.position.z, m_v3PlayerTilePos.x - hit.transform.position.x) * Mathf.Rad2Deg;
@@ -173,10 +187,29 @@ public class PlayerController : Controller
 
                 m_showHealth = false;
                 GameManager.Instance.m_HealthBar.SetActive(false);
-            }
+			}
 
-            // If player is in attack mode and we left click while m_nLeftClick is 1
-            if (m_playerMode == PLAYERMODE.ATTACK && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
+			if (!hit.transform.CompareTag("MovableTile") && m_playerMode == PLAYERMODE.MOVE && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
+			{
+				// After we have reached the endTile destroy all moveable tiles
+				for (int i = 0; i < GameManager.Instance.MoveableTileHolder.transform.childCount; i++)
+				{
+					Destroy(GameManager.Instance.MoveableTileHolder.transform.GetChild(i).gameObject);
+				}
+
+				// Assign tiles actors and obstacles are on
+				Map.Instance.UpdateUnitOnTop();
+
+				// Set player mode to idle and m_nLeftClick back to 0 
+				m_playerMode = PLAYERMODE.IDLE;
+				m_nLeftClick--;
+
+				m_showHealth = false;
+				GameManager.Instance.m_HealthBar.SetActive(false);
+			}
+
+			// If player is in attack mode and we left click while m_nLeftClick is 1
+			if (m_playerMode == PLAYERMODE.ATTACK && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
             {
                 if (m_Player.m_whoWasAttacked != null)
                     m_Player.Attack();

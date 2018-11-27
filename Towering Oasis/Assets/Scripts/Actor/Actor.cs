@@ -69,49 +69,54 @@ public class Actor : MonoBehaviour
 		if (m_nHealth <= 0)
 		{
 			UnitManager.Instance.m_Objects.Remove(gameObject.transform);
+
             if (this.CompareTag("Player"))
                 UnitManager.Instance.m_nPlayersAlive--;
+
             Destroy(gameObject);
         }
-        if(m_nTimer <= 0)
-        {
-            Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
-            temp.SetFloat("_Animation", 1);
-            temp.SetFloat("_FrameRate", 24);
-            temp.SetFloat("_Frames", 5);
-            m_nTimer = 1000f;
-        }
-        m_nTimer -= Time.deltaTime;
-		if (m_bExecuteMove)
+		if (!gameObject.CompareTag("Boss"))
 		{
-			m_calculatedSpeed += Time.deltaTime * m_nSpeed;
-			if(this.gameObject.transform.position != m_v3CurrentPosHolder)
+			if (m_nTimer <= 0)
 			{
-				gameObject.transform.position = Vector3.Lerp(m_v3StartingPos, m_v3CurrentPosHolder, m_calculatedSpeed);
-				m_ActorPos = m_v3CurrentPosHolder;
+				Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+				temp.SetFloat("_Animation", 1);
+				temp.SetFloat("_FrameRate", 24);
+				temp.SetFloat("_Frames", 5);
+				m_nTimer = 1000f;
 			}
-			else
+			m_nTimer -= Time.deltaTime;
+			if (m_bExecuteMove)
 			{
-				if(m_nCurrentNode < m_currentPath.Count - 1)
+				m_calculatedSpeed += Time.deltaTime * m_nSpeed;
+				if (this.gameObject.transform.position != m_v3CurrentPosHolder)
 				{
-					m_nCurrentNode++;
-					CheckNode();
+					gameObject.transform.position = Vector3.Lerp(m_v3StartingPos, m_v3CurrentPosHolder, m_calculatedSpeed);
+					m_ActorPos = m_v3CurrentPosHolder;
 				}
-				else if(m_nCurrentNode == m_currentPath.Count - 1)
+				else
 				{
-					m_bExecuteMove = false;
-					m_bStartAttack = true;
-					m_nCurrentNode = 0;
+					if (m_nCurrentNode < m_currentPath.Count - 1)
+					{
+						m_nCurrentNode++;
+						CheckNode();
+					}
+					else if (m_nCurrentNode == m_currentPath.Count - 1)
+					{
+						m_bExecuteMove = false;
+						m_bStartAttack = true;
+						m_nCurrentNode = 0;
 
-					if(gameObject.CompareTag("Player"))
-						GameManager.Instance.m_isMoving = false;
+						if (gameObject.CompareTag("Player"))
+							GameManager.Instance.m_isMoving = false;
 
-					Map.Instance.UpdateUnitOnTop();
+						Map.Instance.UpdateUnitOnTop();
 
-					Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
-					temp.SetFloat("_Animation", 1);
-					temp.SetFloat("_FrameRate", 24);
-					temp.SetFloat("_Frames", 5);
+						Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+						temp.SetFloat("_Animation", 1);
+						temp.SetFloat("_FrameRate", 24);
+						temp.SetFloat("_Frames", 5);
+					}
 				}
 			}
 		}

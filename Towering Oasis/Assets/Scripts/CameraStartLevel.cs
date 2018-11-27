@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraStartLevel : MonoBehaviour
 {
@@ -15,14 +16,10 @@ public class CameraStartLevel : MonoBehaviour
     {
         m_prevPos = transform.position;
 
-        if (GameManager.Instance.m_levelSet == 5)
-        {
-
-        }
-        else
-        {
-            exit = GameObject.Find("M_TriggerExit (1)").transform.GetChild(0).transform.GetChild(0).gameObject;
-        }
+		if(SceneManager.GetActiveScene().buildIndex > 63)
+			exit = GameObject.Find("E_Boss (1)").transform.GetChild(0).gameObject;
+		else
+			exit = GameObject.Find("M_TriggerExit (1)").transform.GetChild(0).transform.GetChild(0).gameObject;
 
         transform.position = exit.transform.position;
         Invoke("StartLerp", m_delay);

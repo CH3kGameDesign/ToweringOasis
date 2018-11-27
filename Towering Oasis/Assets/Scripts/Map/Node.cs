@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node :IHeapItem<Node>
+public class Node : IHeapItem<Node>
 {
 	public Node m_parent;
 
