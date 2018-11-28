@@ -21,12 +21,12 @@ public class Distance
 
 public class Direction
 {
-    public int m_whowasattackedPrev;
+    public int m_preference;
     public Vector3 m_prevRotation;
 
-    public Direction(int whowasattackedPrev, Vector3 prevRotation)
+    public Direction(int preference, Vector3 prevRotation)
     {
-        m_whowasattackedPrev = whowasattackedPrev;
+        m_preference = preference;
         m_prevRotation = prevRotation;
     }
 }
@@ -43,8 +43,9 @@ public class EnemyController : Controller
     public List<Direction> m_BestDirection;
     public bool m_bestDirectionFound;
     public GameObject m_SelectedPrefab;
+	public List<Actor> m_enemyPreference = new List<Actor>();
 
-    private void Start()
+	private void Start()
     {
         m_Players = new List<Actor>();
         m_Enemies = new List<Actor>();
@@ -54,12 +55,13 @@ public class EnemyController : Controller
     }
 
     public override void myUpdate()
-    {
-        if(UnitManager.Instance.m_Parent[0].childCount > 0)
+	{
+		if (UnitManager.Instance.m_Parent[0].childCount > 0)
 		{ 
             if (!m_gameManager.m_bcontrolsAvailable && !m_gameManager.m_isMoving && !m_gameManager.m_isAttacking)
-            {
-                m_BestDirection.Clear();
+			{
+				m_enemyPreference.Clear();
+				m_BestDirection.Clear();
                 m_nhasAttacked = 0;
                 m_Players.Clear();
                 m_Enemies.Clear();
@@ -130,8 +132,8 @@ public class EnemyController : Controller
     }
 
     IEnumerator EnemyAttack()
-    {
-        m_gameManager.m_isAttacking = true;
+	{
+		m_gameManager.m_isAttacking = true;
 
         if (m_gameManager.m_isMoving)
             yield return new WaitForSeconds(3f);
@@ -150,11 +152,12 @@ public class EnemyController : Controller
                 if (i < 8)
                     yield return new WaitForSeconds(0.2f);
 
-                m_BestDirection[m_BestDirection.Count - 1].m_whowasattackedPrev = m_currentEnemy.m_whoWasAttacked.Count;
+                m_BestDirection[m_BestDirection.Count - 1].m_preference = m_enemyPreference.Count;
 
                 m_currentEnemy.m_whoWasAttacked.Clear();
+				m_enemyPreference.Clear();
 
-                GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
+				GameObject[] temp = GameObject.FindGameObjectsWithTag("AttackTile");
 
                 // we want to destroy previous spawned attack tiles
                 for (int j = 0; j < temp.Length; j++)
@@ -165,8 +168,9 @@ public class EnemyController : Controller
                 i++;
             }
             m_currentEnemy.m_whoWasAttacked.Clear();
+			m_enemyPreference.Clear();
 
-            m_BestDirection = m_BestDirection.OrderByDescending(o => o.m_whowasattackedPrev).ToList<Direction>();
+			m_BestDirection = m_BestDirection.OrderByDescending(o => o.m_preference).ToList<Direction>();
 
             GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles = m_BestDirection[0].m_prevRotation;
 
@@ -182,7 +186,8 @@ public class EnemyController : Controller
             m_currentEnemy.Attack();
 
         m_currentEnemy.m_whoWasAttacked.Clear();
-        m_SelectedPrefab.SetActive(false);
+		m_enemyPreference.Clear();
+		m_SelectedPrefab.SetActive(false);
 
         GameObject[] temp2 = GameObject.FindGameObjectsWithTag("AttackTile");
 
