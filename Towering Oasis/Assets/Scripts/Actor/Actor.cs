@@ -9,6 +9,22 @@ public enum DirectionEnum
 	DIAGNOL
 }
 
+public class ObjectsTransparent
+{
+	public Transform m_object;
+	public Renderer	 m_rend;
+	public Collider  m_col;
+	public Color m_color;
+
+	public ObjectsTransparent(Transform objectTo, Renderer rend, Collider col, Color color)
+	{
+		m_object = objectTo;
+		m_rend = rend;
+		m_col = col;
+		m_color = color;
+	}
+}
+
 public class Actor : MonoBehaviour
 {
 	// Health popup text and animation
@@ -39,6 +55,7 @@ public class Actor : MonoBehaviour
 	public DirectionEnum m_prevDirec;
 	public bool m_bLookingDiaganol = false;
 	public Texture2D m_CharacterPotrait;
+	public List<ObjectsTransparent> m_objectsTransparent;
     private float m_nTimer;
 	private float m_calculatedSpeed;
 	private Vector3 m_v3CurrentPosHolder;
@@ -59,11 +76,14 @@ public class Actor : MonoBehaviour
 		m_ActorPrefab = this.transform;
 		m_ActorRenderer = GetComponent<Renderer>();
 		m_ActorPos = m_ActorPrefab.position;
+		m_objectsTransparent = new List<ObjectsTransparent>();
+		CheckObstructions();
 	}
 
 	public virtual void Update()
 	{
-        if (m_nHealth > 100)
+		Debug.DrawLine(Camera.main.transform.position, transform.gameObject.transform.position, Color.red);
+		if (m_nHealth > 100)
             m_nHealth = 100;
 		// if health is 0 destroy the gameobject
 		if (m_nHealth <= 0)
@@ -116,9 +136,16 @@ public class Actor : MonoBehaviour
 						temp.SetFloat("_Animation", 1);
 						temp.SetFloat("_FrameRate", 24);
 						temp.SetFloat("_Frames", 5);
+
+						CheckObstructions();
 					}
 				}
 			}
+		}
+
+		if(m_objectsTransparent.Count > 0)
+		{
+			Debug.Log("");
 		}
     }
 
@@ -390,6 +417,7 @@ public class Actor : MonoBehaviour
 			tempMaterial.SetFloat("_FrameRate", 24);
 			tempMaterial.SetFloat("_Frames", 5);
 		}
+
     }
 
     // Is used to move the Actor tile by tile
@@ -448,4 +476,44 @@ public class Actor : MonoBehaviour
         }
         return null;
     }
+
+	public void CheckObstructions()
+	{
+		if(m_objectsTransparent.Count > 0)
+		{
+			for (int i = 0; i < m_objectsTransparent.Count; i++)
+			{
+				m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
+				m_objectsTransparent[i].m_col.enabled = true;
+				m_objectsTransparent.RemoveAt(i);
+			}
+		}
+
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(m_ActorPos));
+
+		if (Physics.Raycast(ray, out hit))
+		{
+			if (!hit.transform.CompareTag("Player") && !hit.transform.CompareTag("Enemy"))
+			{
+				MeshRenderer rend;
+				if (hit.transform.GetComponent<MeshRenderer>() != null)
+					rend = hit.transform.GetComponent<MeshRenderer>();
+				else
+					rend = hit.transform.GetComponentInChildren<MeshRenderer>();
+
+				rend.material.shader = Shader.Find("Transparent/Diffuse");
+				Color tmp = rend.material.color;
+				tmp.a = 0.3f;
+				m_objectsTransparent.Add(new ObjectsTransparent(hit.transform, rend, hit.transform.GetComponent<Collider>(), rend.material.color));
+				rend.material.color = tmp;
+				hit.transform.GetComponent<Collider>().enabled = false;
+				Debug.Log(hit.transform.name);
+			}
+			else
+			{
+				Debug.Log(hit.transform.name);
+			}			
+		}
+	}
 }

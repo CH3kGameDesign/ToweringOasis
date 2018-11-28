@@ -56,11 +56,11 @@ public class PlayerController : Controller
     {
         base.myUpdate();
 
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+		if (EventSystem.current.IsPointerOverGameObject())
+			return;
 
-        // Cast a ray and assign a hit variable
-        RaycastHit hit;
+		// Cast a ray and assign a hit variable
+		RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 		if (m_Player != null)
@@ -366,7 +366,6 @@ public class PlayerController : Controller
             m_bshowUI = false;
             GameManager.Instance.m_nPlayerMoves++;
         }
-        m_ring.GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
         GameManager.Instance.m_actions.SetActive(false);
         m_bshowUI = false;
         GameManager.Instance.m_HealthBar.SetActive(false);

@@ -30,7 +30,7 @@ public class HealthBar : MonoBehaviour
             {
                 Transform go = Instantiate(m_HealthBar, new Vector3(-100, -100, 0), new Quaternion(0, 0, 0, 0));
                 go.SetParent(transform.parent);
-                go.position = new Vector3(210 + 52 * i, 85);
+                go.position = new Vector3(100 + 45 * i, 25);
                 HPcount++;
             }
         }
