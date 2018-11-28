@@ -42,7 +42,7 @@ public class GameState : BaseState
                 GameManager.Instance.m_GameGUI.SetActive(false);
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && GameManager.Instance.m_stateName == GameStates.GAME)
             {
                 GameManager.Instance.m_PauseMenuPanel.SetActive(true);
                 GameManager.Instance.m_GameGUI.SetActive(false);

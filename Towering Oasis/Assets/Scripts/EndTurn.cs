@@ -28,7 +28,7 @@ public class EndTurn : MonoBehaviour {
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bMoved = true;
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bAttack = true;
                 UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().m_bSkip = true;
-                GameManager.Instance.playerController.GetChildObject(UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
+                GameManager.Instance.GetChildObject(UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
             }
             GameManager.Instance.m_nPlayerMoves = UnitManager.Instance.m_nPlayersAlive;
             GameManager.Instance.m_actions.SetActive(false);

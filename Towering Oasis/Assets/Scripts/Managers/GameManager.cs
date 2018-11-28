@@ -297,4 +297,18 @@ public class GameManager : MonoBehaviour
 
 		m_isLevelLoading = false;
     }
+
+    public Transform GetChildObject(Transform parent, string _tag)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.tag == _tag)
+            {
+                return parent.GetChild(i);
+            }
+        }
+
+        return null;
+    }
 }

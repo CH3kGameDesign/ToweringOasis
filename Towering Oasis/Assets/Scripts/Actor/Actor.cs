@@ -142,11 +142,6 @@ public class Actor : MonoBehaviour
 				}
 			}
 		}
-
-		if(m_objectsTransparent.Count > 0)
-		{
-			Debug.Log("");
-		}
     }
 
 	public virtual void Attack()
@@ -224,7 +219,7 @@ public class Actor : MonoBehaviour
     public virtual void SpawnAttackTiles(Transform attackPrefab, Transform holder)
 	{
         // Gets the tile infront of the actor and get its attack tiles relevant to class(will be added)
-        Vector3 pos  = GetChildObject(transform, "Ring").transform.position + GetChildObject(transform, "Ring").transform.forward;
+        Vector3 pos  = GameManager.Instance.GetChildObject(transform, "Ring").transform.position + GameManager.Instance.GetChildObject(transform, "Ring").transform.forward;
 
         Node attackNode = Map.Instance.GetNodeFromPosition(pos);
 
@@ -459,23 +454,6 @@ public class Actor : MonoBehaviour
 		m_v3CurrentPosHolder.y = 1.0f;
 		m_v3StartingPos = this.gameObject.transform.position;
 	}
-
-    public Transform GetChildObject(Transform parent, string _tag)
-    {
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-            if (child.tag == _tag)
-            {
-                return parent.GetChild(i);
-            }
-            if (child.childCount > 0)
-            {
-                GetChildObject(child, _tag);
-            }
-        }
-        return null;
-    }
 
 	public void CheckObstructions()
 	{

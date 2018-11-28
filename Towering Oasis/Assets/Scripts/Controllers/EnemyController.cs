@@ -126,7 +126,7 @@ public class EnemyController : Controller
             {
                 m_gameManager.m_bcontrolsAvailable = true;
                 for(int x = 0; x < UnitManager.Instance.m_nPlayersAlive; x++)
-                GameManager.Instance.playerController.GetChildObject(UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_whiteRing;
+                GameManager.Instance.GetChildObject(UnitManager.Instance.m_Parent[0].GetChild(x).GetComponent<Actor>().transform, "Ring").GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_whiteRing;
             }
         }
     }
@@ -142,9 +142,9 @@ public class EnemyController : Controller
         { 
             for (int i = 0; i < 8;)
             {
-                GetChildObject(m_currentEnemy.transform, "Ring").transform.Rotate(0.0f, 45.0f, 0.0f);
+                GameManager.Instance.GetChildObject(m_currentEnemy.transform, "Ring").transform.Rotate(0.0f, 45.0f, 0.0f);
 
-                Vector3 rot = GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles;
+                Vector3 rot = GameManager.Instance.GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles;
 
                 m_BestDirection.Add(new Direction(0, rot));
                 m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
@@ -172,7 +172,7 @@ public class EnemyController : Controller
 
 			m_BestDirection = m_BestDirection.OrderByDescending(o => o.m_preference).ToList<Direction>();
 
-            GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles = m_BestDirection[0].m_prevRotation;
+            GameManager.Instance.GetChildObject(m_currentEnemy.transform, "Ring").transform.eulerAngles = m_BestDirection[0].m_prevRotation;
 
             m_currentEnemy.SpawnAttackTiles(m_attackPrefab, m_gameManager.AttackTileHolder);
 
@@ -201,23 +201,5 @@ public class EnemyController : Controller
 
         m_bestDirectionFound = false;
         m_gameManager.m_isAttacking = false;
-    }
-
-    public Transform GetChildObject(Transform parent, string _tag)
-    {
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-            if (child.tag == _tag)
-            {
-                return parent.GetChild(i);
-            }
-            if (child.childCount > 0)
-            {
-                GetChildObject(child, _tag);
-            }
-        }
-
-        return null;
     }
 }

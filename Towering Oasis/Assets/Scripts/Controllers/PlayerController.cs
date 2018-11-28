@@ -65,7 +65,7 @@ public class PlayerController : Controller
 
 		if (m_Player != null)
 		{
-			m_ring = GetChildObject(m_Player.transform, "Ring").GetChild(0);
+			m_ring = GameManager.Instance.GetChildObject(m_Player.transform, "Ring").GetChild(0);
 			m_ring.gameObject.SetActive(true);
 			if (m_Player.m_bMoved && m_Player.m_bAttack)
 			{
@@ -251,7 +251,7 @@ public class PlayerController : Controller
                         m_SelectedPrefab.SetActive(true);
                 }
                 // Get the player position from screen
-                Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(GetChildObject(m_Player.transform, "Ring").transform.position);
+                Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(GameManager.Instance.GetChildObject(m_Player.transform, "Ring").transform.position);
 
                 // and the mose position on the screen
                 Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
@@ -260,12 +260,12 @@ public class PlayerController : Controller
                 float angle = Mathf.Atan2(positionOnScreen.y - mouseOnScreen.y, positionOnScreen.x - mouseOnScreen.x) * Mathf.Rad2Deg;
 
                 // Set players rotation to that angle
-                GetChildObject(m_Player.transform, "Ring").rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
+                GameManager.Instance.GetChildObject(m_Player.transform, "Ring").rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
 
                 // Draw a line to debug player front
-                Debug.DrawRay(GetChildObject(m_Player.transform, "Ring").transform.position, GetChildObject(m_Player.transform, "Ring").transform.forward * 5, Color.red);
+                Debug.DrawRay(GameManager.Instance.GetChildObject(m_Player.transform, "Ring").transform.position, GameManager.Instance.GetChildObject(m_Player.transform, "Ring").transform.forward * 5, Color.red);
 
-				Vector3 tempPos = GetChildObject(m_Player.transform, "Ring").position + GetChildObject(m_Player.transform, "Ring").forward;
+				Vector3 tempPos = GameManager.Instance.GetChildObject(m_Player.transform, "Ring").position + GameManager.Instance.GetChildObject(m_Player.transform, "Ring").forward;
 
 				m_Player.GetAttackTiles(
                     Map.Instance.GetNodeFromPosition(tempPos),
@@ -415,25 +415,7 @@ public class PlayerController : Controller
 
         GameManager.Instance.m_actions.SetActive(false);
         m_bshowUI = false;
-    }
-
-    public Transform GetChildObject(Transform parent, string _tag)
-    {
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-            if (child.tag == _tag)
-            {
-                return parent.GetChild(i);
-            }
-            if (child.childCount > 0)
-            {
-                GetChildObject(child, _tag);
-            }
-        }
-
-        return null;
-    }
+    }   
 
     public List<Node> GetMovementTiles(Node node, int nHowManyNeighbourIteration = 1)
     {
