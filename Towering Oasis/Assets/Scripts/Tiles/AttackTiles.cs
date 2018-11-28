@@ -18,9 +18,6 @@ public class AttackTiles : MonoBehaviour
 			}
 			else if (actor.gameObject.CompareTag("Enemy"))
 			{
-				if (other.gameObject.CompareTag("Boss") && actor.gameObject.CompareTag("Enemy"))
-					return;
-
 				ObjectToDamage = other.GetComponent<Actor>();
 
 				if(actor.m_classType == "support")
@@ -32,6 +29,9 @@ public class AttackTiles : MonoBehaviour
 				}
 				else if(actor.m_classType == "melee" || actor.m_classType == "ranged")
 				{
+					if (ObjectToDamage.CompareTag("Boss"))
+						return;
+
 					if (ObjectToDamage.CompareTag("Player"))
 					{
 						GameManager.Instance.enemyController.m_enemyPreference.Add(ObjectToDamage);
