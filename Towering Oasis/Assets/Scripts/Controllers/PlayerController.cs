@@ -366,6 +366,7 @@ public class PlayerController : Controller
             m_bshowUI = false;
             GameManager.Instance.m_nPlayerMoves++;
         }
+        m_ring.GetComponent<MeshRenderer>().sharedMaterial = GameManager.Instance.m_redRing;
         GameManager.Instance.m_actions.SetActive(false);
         m_bshowUI = false;
         GameManager.Instance.m_HealthBar.SetActive(false);
