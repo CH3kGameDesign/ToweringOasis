@@ -9,13 +9,13 @@ public class CreditCamera : MonoBehaviour {
 
     public float rotMax;
 
-    private float rotX;
+    //private float rotX;
     private float rotY;
-    private float rotZ;
+    //private float rotZ;
 
-    private float rotXPrev;
+    //private float rotXPrev;
     private float rotYPrev;
-    private float rotZPrev;
+    //private float rotZPrev;
 
     // Use this for initialization
     void Start () {
@@ -24,28 +24,32 @@ public class CreditCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        /*
 		if (rotXPrev < rotX + 0.5f && rotXPrev > rotX - 0.5f)
         {
             Debug.Log("X");
             rotX = Random.Range(-rotMax, rotMax);
         }
+        */
         if (rotYPrev < rotY + 0.5f && rotYPrev > rotY - 0.5f)
         {
-            Debug.Log("Y");
+            //Debug.Log("Y");
             rotY = Random.Range(-rotMax, rotMax);
         }
+        /*
         if (rotZPrev < rotZ + 0.5f && rotZPrev > rotZ - 0.5f)
         {
             Debug.Log("Z");
             rotZ = Random.Range(-rotMax, rotMax);
         }
+        */
 
         //rotXPrev = Mathf.Lerp(rotXPrev, rotX, Time.deltaTime * speed);
         rotYPrev = Mathf.Lerp(rotYPrev, rotY, Time.deltaTime * speed);
         //rotZPrev = Mathf.Lerp(rotZPrev, rotZ, Time.deltaTime * speed);
-        transform.rotation = Quaternion.Euler(rotXPrev, rotYPrev, rotZPrev);
+        transform.rotation = Quaternion.Euler(0, rotYPrev, 0);
 
-        Debug.Log(transform.eulerAngles.x + " == " + rotX);
+        //Debug.Log(transform.eulerAngles.x + " == " + rotX);
 
         /*
         if (Time.fixedTime > spriteChangeSpeed)
