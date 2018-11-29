@@ -363,65 +363,112 @@ public class PlayerController : Controller
 
         if (m_bMoveTransparent)
         {
-            //GameObject parentObject = GameObject.Find("ObstacleModels");
-            //List<MeshRenderer> rend = new List<MeshRenderer>();
+			GameObject parentObject = GameObject.Find("ObstacleModels");
+			List<MeshRenderer> rend = new List<MeshRenderer>();
 
-            //for(int i = 0; i < parentObject.transform.childCount; i++)
-            //{
-            //    MeshRenderer r;
-            //    if (parentObject.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
-            //        r = hit.transform.GetComponent<MeshRenderer>();
-            //    else
-            //        r = hit.transform.GetComponentInChildren<MeshRenderer>();
+			for (int i = 0; i < parentObject.transform.childCount; i++)
+			{
+				MeshRenderer r;
+				if (parentObject.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
+					r = parentObject.transform.GetChild(i).GetComponent<MeshRenderer>();
+				else
+					r = parentObject.transform.GetChild(i).GetComponentInChildren<MeshRenderer>();
 
-            //    rend.Add(r);
+				if (r.gameObject.name != "polySurface1" && r.gameObject.name != "polySurface2")
+				{
+					rend.Add(r);
 
-            //    rend[i].material.shader = Shader.Find("Transparent/Diffuse");
-            //    Color tmp = rend[i].material.color;
-            //    tmp.a = 0.3f;
-            //    m_objectsTransparent.Add(new ObjectsTransparent(temphit.transform, rend, temphit.transform.GetComponent<Collider>(), rend.material.color));
-            //    rend[i].material.color = tmp;
-            //    temphit.transform.GetComponent<Collider>().enabled = false;
-            //}
-            //RaycastHit temphit;
-            //Ray tempRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //if (Physics.Raycast(tempRay, out temphit))
-            //{
-            //    if (m_objectsTransparent.Count > 0 && !hit.transform.CompareTag("MovableTile"))
-            //    {
-            //        for (int i = 0; i < m_objectsTransparent.Count; i++)
-            //        {
-            //            m_objectsTransparent[i].m_rend.material.shader = Shader.Find("Standard");
-            //            m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
-            //            m_objectsTransparent[i].m_col.enabled = true;
-            //            m_objectsTransparent.RemoveAt(i);
-            //        }
-            //    }
-            //}
+					r.material.shader = Shader.Find("Transparent/Diffuse");
+					Color tmp = r.material.color;
+					tmp.a = 0.3f;
+					Collider tempCol;
+					if (r.gameObject.GetComponent<Collider>() != null)
+					{
+						tempCol = r.gameObject.GetComponent<Collider>();
+						tempCol.enabled = false;
+					}
+					else
+						tempCol = null;
 
-            ////int layerMask = 1 << LayerMask.NameToLayer("Walkable");
-            //int layerMask = ~LayerMask.GetMask("Walkable");// & ~LayerMask.GetMask("Walkable");
+					m_objectsTransparent.Add(new ObjectsTransparent(parentObject.transform.GetChild(i).transform, r, tempCol, r.material.color));
+					r.material.color = tmp;
+				}
+			}
 
-            //if (Physics.Raycast(tempRay, out temphit, 1000.0f, layerMask))
-            //{
-            //    Debug.Log(hit.collider.gameObject);
-            //    if (temphit.transform != m_Player.transform && !hit.transform.CompareTag("MovableTile"))
-            //    {
-            //        MeshRenderer rend;
-            //        if (temphit.transform.GetComponent<MeshRenderer>() != null)
-            //            rend = temphit.transform.GetComponent<MeshRenderer>();
-            //        else
-            //            rend = temphit.transform.GetComponentInChildren<MeshRenderer>();
+			for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
+			{
+				UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = false;
+			}
 
-            //        rend.material.shader = Shader.Find("Transparent/Diffuse");
-            //        Color tmp = rend.material.color;
-            //        tmp.a = 0.3f;
-            //        m_objectsTransparent.Add(new ObjectsTransparent(temphit.transform, rend, temphit.transform.GetComponent<Collider>(), rend.material.color));
-            //        rend.material.color = tmp;
-            //        temphit.transform.GetComponent<Collider>().enabled = false;
-            //    }
-            //}
-        }
+			for (int j = 0; j < UnitManager.Instance.m_Parent[1].childCount; j++)
+			{
+				UnitManager.Instance.m_Parent[1].GetChild(j).GetComponent<Collider>().enabled = false;
+			}
+			//RaycastHit temphit;
+			//Ray tempRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			//if (Physics.Raycast(tempRay, out temphit))
+			//{
+			//    if (m_objectsTransparent.Count > 0 && !hit.transform.CompareTag("MovableTile"))
+			//    {
+			//        for (int i = 0; i < m_objectsTransparent.Count; i++)
+			//        {
+			//            m_objectsTransparent[i].m_rend.material.shader = Shader.Find("Standard");
+			//            m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
+			//            m_objectsTransparent[i].m_col.enabled = true;
+			//            m_objectsTransparent.RemoveAt(i);
+			//        }
+			//    }
+			//}
+
+			////int layerMask = 1 << LayerMask.NameToLayer("Walkable");
+			//int layerMask = ~LayerMask.GetMask("Walkable");// & ~LayerMask.GetMask("Walkable");
+
+			//if (Physics.Raycast(tempRay, out temphit, 1000.0f, layerMask))
+			//{
+			//    Debug.Log(hit.collider.gameObject);
+			//    if (temphit.transform != m_Player.transform && !hit.transform.CompareTag("MovableTile"))
+			//    {
+			//        MeshRenderer rend;
+			//        if (temphit.transform.GetComponent<MeshRenderer>() != null)
+			//            rend = temphit.transform.GetComponent<MeshRenderer>();
+			//        else
+			//            rend = temphit.transform.GetComponentInChildren<MeshRenderer>();
+
+			//        rend.material.shader = Shader.Find("Transparent/Diffuse");
+			//        Color tmp = rend.material.color;
+			//        tmp.a = 0.3f;
+			//        m_objectsTransparent.Add(new ObjectsTransparent(temphit.transform, rend, temphit.transform.GetComponent<Collider>(), rend.material.color));
+			//        rend.material.color = tmp;
+			//        temphit.transform.GetComponent<Collider>().enabled = false;
+			//    }
+			//}
+		}
+		else
+		{
+			if(m_objectsTransparent.Count > 0)
+			{
+				for (int i = 0; i < m_objectsTransparent.Count; i++)
+				{
+					m_objectsTransparent[i].m_rend.material.shader = Shader.Find("Standard");
+					m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
+
+					if(m_objectsTransparent[i].m_col != null)
+						m_objectsTransparent[i].m_col.enabled = true;
+
+					m_objectsTransparent.RemoveAt(i);
+				}
+
+				for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
+				{
+					UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = true;
+				}
+
+				for (int j = 0; j < UnitManager.Instance.m_Parent[1].childCount; j++)
+				{
+					UnitManager.Instance.m_Parent[1].GetChild(j).GetComponent<Collider>().enabled = true;
+				}
+			}
+		}
 	}
 
     public void Skip()

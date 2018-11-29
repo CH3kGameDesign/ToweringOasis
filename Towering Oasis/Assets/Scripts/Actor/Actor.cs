@@ -525,7 +525,7 @@ public class Actor : MonoBehaviour
 		RaycastHit hit;
 		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(m_ActorPos));
 
-		if (Physics.Raycast(ray, out hit))
+		if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Walkable")))
 		{
 			if (!hit.transform.CompareTag("Player") && !hit.transform.CompareTag("Enemy"))
 			{
