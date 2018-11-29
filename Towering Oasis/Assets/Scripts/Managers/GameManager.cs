@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
     public int m_LevelsPerSet;
     public int m_levelSet;
     public bool m_isLevelLoading;
+    public Shader transparent;
+    public Shader standard;
 
     public HealthBar m_healthGUI;
 	public RawImage m_character;

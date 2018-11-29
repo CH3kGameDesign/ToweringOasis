@@ -24,7 +24,7 @@ public class PlayerController : Controller
     public bool m_showHealth;
     public GameObject m_SelectedPrefab;
 
-	public Actor m_Player; // current Player
+    public Actor m_Player; // current Player
 	public Transform m_ring = null;
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
 	private int m_nLeftClick = 0; // To keep track of button inputs
@@ -378,7 +378,7 @@ public class PlayerController : Controller
 				{
 					rend.Add(r);
 
-					r.material.shader = Shader.Find("Transparent/Diffuse");
+					r.material.shader = GameManager.Instance.transparent;
 					Color tmp = r.material.color;
 					tmp.a = 0.3f;
 					Collider tempCol;
@@ -449,7 +449,7 @@ public class PlayerController : Controller
 			{
 				for (int i = 0; i < m_objectsTransparent.Count; i++)
 				{
-					m_objectsTransparent[i].m_rend.material.shader = Shader.Find("Standard");
+					m_objectsTransparent[i].m_rend.material.shader = GameManager.Instance.standard;
 					m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
 
 					if(m_objectsTransparent[i].m_col != null)
