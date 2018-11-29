@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public PlayerController playerController;
     public Boss m_boss;
 
+    public List<string> m_charactersInElevator = new List<string>();
     public List<int> m_nLevelsLoaded;
     public Actor m_currentActor;
     public int m_nPlayerMoves;
