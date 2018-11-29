@@ -102,14 +102,21 @@ public class EnemyController : Controller
 
                 Pathfinding.Instance.FindPath(m_Enemies[m_gameManager.m_nEnemiesMoves].m_ActorPos, m_Players[m_distance[0].m_playerNumber].m_ActorPos, false);
 				List<Node> path = Pathfinding.Instance.path;
-				if(path.Count > m_Enemies[m_gameManager.m_nEnemiesMoves].m_nHowManyTiles)
-				{
-					for (int i = path.Count - 1; i > m_Enemies[m_gameManager.m_nEnemiesMoves].m_nHowManyTiles - 1; i--)
-					{
-						path.RemoveAt(i);
-					}
-				}
+                if (path.Count > m_Enemies[m_gameManager.m_nEnemiesMoves].m_nHowManyTiles)
+                {
+                    for (int i = path.Count - 1; i > m_Enemies[m_gameManager.m_nEnemiesMoves].m_nHowManyTiles - 1; i--)
+                    {
+                        path.RemoveAt(i);
+                    }
+                }
+                //Material temp = this.transform.GetComponentInChildren<Renderer>().material;
+                //temp.SetFloat("_Animation", 1);
+                //temp.SetFloat("_FrameRate", 24);
+                //temp.SetFloat("_Frames", 8);
                 m_Enemies[m_gameManager.m_nEnemiesMoves].Move(path);
+                //temp.SetFloat("_Animation", 3);
+                //temp.SetFloat("_FrameRate", 24);
+                //temp.SetFloat("_Frames", 5);
             }
 
             if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
