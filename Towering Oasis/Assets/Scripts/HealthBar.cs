@@ -9,13 +9,14 @@ public class HealthBar : MonoBehaviour
     public int m_CurrentHP;
     public Transform m_HealthBar;
     int HPcount;
-    void Start ()
+    public GameObject[] m_HealthPoints;
+    void Start()
     {
 
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         if (HPcount != m_CurrentHP)
         {
@@ -23,15 +24,12 @@ public class HealthBar : MonoBehaviour
             var HP = GameObject.FindGameObjectsWithTag("HealthPoint");
             foreach (var item in HP)
             {
-                Destroy(item);
+                item.SetActive(false);
             }
 
             for (int i = 0; i < m_CurrentHP && i < m_MaxHP; i++)
             {
-                Transform go = Instantiate(m_HealthBar, new Vector3(-100, -100, 0), new Quaternion(0, 0, 0, 0));
-                go.SetParent(transform);
-                go.localScale = new Vector3 (1, 1, 1);
-                go.position = new Vector3(147 + 25 * i, 25);
+                m_HealthPoints[i].SetActive(true);
                 HPcount++;
             }
         }
