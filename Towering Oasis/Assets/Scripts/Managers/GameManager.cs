@@ -133,47 +133,6 @@ public class GameManager : MonoBehaviour
             else if(!m_bcontrolsAvailable)
                 m_Turn.text = "Enemies Turn";
 
-            if (Input.GetKeyDown(KeyCode.P))
-                m_bcontrolsAvailable = !m_bcontrolsAvailable;
-
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                Actor[] players = playerController.GetComponentsInChildren<Actor>();
-                foreach (Actor p in players)
-                {
-                    p.m_nDamage = 100;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                Actor[] enemies = enemyController.GetComponentsInChildren<Actor>();
-                foreach (Actor e in enemies)
-                {
-                    e.m_nHealth = -10;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                Actor[] players = playerController.GetComponentsInChildren<Actor>();
-                foreach (Actor p in players)
-                {
-                    p.m_nHealth = -10;
-                    m_isGameOver = true;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Y))
-            {
-                UnitManager.Instance.m_Parent[0].GetChild(0).GetComponent<Actor>().m_nHealth = 0;
-            }
-
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                UnitManager.Instance.m_nPlayersAtExit = 4;
-            }
-
             if (m_bcontrolsAvailable && playerController != null)
             {
                 m_bossTurned = false;
