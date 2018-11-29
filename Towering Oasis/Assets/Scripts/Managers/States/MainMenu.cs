@@ -50,9 +50,27 @@ public class MainMenu : BaseState
 		GameManager.Instance.m_MainMenuPanel.SetActive(false);
 		GameManager.Instance.m_SettingPanel.SetActive(true);
     }
-        
-    //Quit Game when button is pressed
-    public void QuitGameOnClick()
+
+    public void CreditsButtonOnClick()
+    {
+        GameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGUI();
+
+        if (!GameManager.Instance.m_actions.activeSelf)
+        {
+            GameManager.Instance.m_actions.transform.position = new Vector3(-70, -70, -70);
+            GameManager.Instance.m_actions.SetActive(true);
+        }
+
+        GameManager.Instance.m_PauseMenuPanel.SetActive(false);
+        GameManager.Instance.m_MainMenuPanel.SetActive(true);
+        GameManager.Instance.m_isLevelLoading = true;
+        SceneManager.LoadScene(68);
+        GameManager.Instance.m_stateName = GameStates.MAINMENU;
+    }
+
+        //Quit Game when button is pressed
+        public void QuitGameOnClick()
     {
         Application.Quit();
     }

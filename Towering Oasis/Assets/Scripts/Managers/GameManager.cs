@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
             playerController = FindObjectOfType<PlayerController>();
         }
 
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 68)
         {
             m_EnemiesNumber.text = "Enemies: " + UnitManager.Instance.m_Parent[1].childCount;
 
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
 	{
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 68)
         {
             if (UnitManager.Instance.m_Parent.Count == 0)
                 return;
@@ -288,30 +288,37 @@ public class GameManager : MonoBehaviour
             Destroy(temp[i]);
         }
 
-        for (int i = 0; i < ButtonActor.Length; i++)
-        {
-			if (UnitManager.Instance.m_Parent[0] != null)
-			{
-				ButtonActor[i].GetComponent<Button>().interactable = true;
-				ButtonActor[i].GetActor();
-			}
-        }
-		m_actions.transform.position = new Vector3(-70, -70, -70);
+        m_actions.transform.position = new Vector3(-70, -70, -70);
         ResetGame();
         ResetGUI();
 
-		if (UnitManager.Instance.m_Parent[0] != null)
-			m_GameGUI.SetActive(true);
-        AudioSource[] aSources = GetComponents<AudioSource>();
-        
-        if (aSources[0].clip != levelMusic[m_levelSet - 1])
+        if (SceneManager.GetActiveScene().buildIndex != 68 && SceneManager.GetActiveScene().buildIndex != 0)
         {
-            aSources[0].clip = levelMusic[m_levelSet - 1];
-            aSources[0].Play();
-            aSources[1].clip = levelAmbience[m_levelSet - 1];
-            aSources[1].Play();
+            for (int i = 0; i < ButtonActor.Length; i++)
+            {
+                if (UnitManager.Instance.m_Parent[0] != null)
+                {
+                    ButtonActor[i].GetComponent<Button>().interactable = true;
+                    ButtonActor[i].GetActor();
+                }
+            }
+            if (UnitManager.Instance.m_Parent[0] != null)
+                m_GameGUI.SetActive(true);
+
+            AudioSource[] aSources = GetComponents<AudioSource>();
+
+            if (aSources[0].clip != levelMusic[m_levelSet - 1])
+            {
+                aSources[0].clip = levelMusic[m_levelSet - 1];
+                aSources[0].Play();
+                aSources[1].clip = levelAmbience[m_levelSet - 1];
+                aSources[1].Play();
+            }
         }
-		m_isLevelLoading = false;
+        else
+            GameManager.Instance.m_MainMenuPanel.SetActive(true);
+
+        m_isLevelLoading = false;
     }
 
     public Transform GetChildObject(Transform parent, string _tag)

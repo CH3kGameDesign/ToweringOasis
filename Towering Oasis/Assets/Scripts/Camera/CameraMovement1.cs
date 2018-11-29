@@ -6,6 +6,7 @@ public class CameraMovement1 : MonoBehaviour
 {
 
     public float m_nPanSpeed = 1;
+    public float m_nKeyPanSpeed = 1;
     public float m_fCameraYmax = 2;
     public float m_fCameraYmin = -2;
     public float m_fCameraXmax = 2;
@@ -34,6 +35,22 @@ public class CameraMovement1 : MonoBehaviour
         {
             Vector3 mouseMovement = new Vector3((cursorPosition.x - cursorPositionPast.x) * m_nPanSpeed, (cursorPosition.y - cursorPositionPast.y) * m_nPanSpeed, (cursorPosition.z - cursorPositionPast.z) * m_nPanSpeed);
             transform.localPosition = new Vector3(transform.localPosition.x - mouseMovement.x, transform.localPosition.y - mouseMovement.y, transform.localPosition.z - mouseMovement.z);
+        }
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            transform.localPosition = new Vector3 (transform.localPosition.x, transform.localPosition.y + (1 * m_nKeyPanSpeed), transform.localPosition.z);
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - (1 * m_nKeyPanSpeed), transform.localPosition.z);
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x + (1 * m_nKeyPanSpeed), transform.localPosition.y, transform.localPosition.z);
+        }
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x - (1 * m_nKeyPanSpeed), transform.localPosition.y, transform.localPosition.z);
         }
         cursorPositionPast = cursorPosition;
         SetCameraBounds();
