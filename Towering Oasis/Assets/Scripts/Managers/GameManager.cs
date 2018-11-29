@@ -254,16 +254,17 @@ public class GameManager : MonoBehaviour
         ResetGame();
         ResetGUI();
 
-        if (UnitManager.Instance.m_Parent[0] != null)
-        {
-            m_GameGUI.SetActive(true);
-            m_HealthBar.SetActive(true);
-        }
-        AudioSource[] aSources = GetComponents<AudioSource>();
         
-        if (aSources[0].clip != levelMusic[m_levelSet - 1])
+        AudioSource[] aSources = GetComponents<AudioSource>();
+
+
         if (SceneManager.GetActiveScene().buildIndex != 68 && SceneManager.GetActiveScene().buildIndex != 0)
         {
+            if (UnitManager.Instance.m_Parent[0] != null)
+            {
+                m_GameGUI.SetActive(true);
+                m_HealthBar.SetActive(true);
+            }
             for (int i = 0; i < ButtonActor.Length; i++)
             {
                 if (UnitManager.Instance.m_Parent[0] != null)
@@ -275,7 +276,7 @@ public class GameManager : MonoBehaviour
             if (UnitManager.Instance.m_Parent[0] != null)
                 m_GameGUI.SetActive(true);
 
-            
+
 
             if (aSources[0].clip != levelMusic[m_levelSet - 1])
             {
@@ -284,10 +285,11 @@ public class GameManager : MonoBehaviour
                 aSources[1].clip = levelAmbience[m_levelSet - 1];
                 aSources[1].Play();
             }
+            
         }
         else
-            GameManager.Instance.m_MainMenuPanel.SetActive(true);
-
+            m_MainMenuPanel.SetActive(true);
+        
         m_isLevelLoading = false;
     }
 
