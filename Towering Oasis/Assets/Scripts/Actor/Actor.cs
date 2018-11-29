@@ -144,7 +144,7 @@ public class Actor : MonoBehaviour
 						temp.SetFloat("_Animation", 1);
 						temp.SetFloat("_FrameRate", 24);
 						temp.SetFloat("_Frames", 5);
-
+                        GameManager.Instance.playerController.m_bMoveTransparent = false;
 						CheckObstructions();
 					}
 				}
@@ -499,12 +499,12 @@ public class Actor : MonoBehaviour
 				m_objectsTransparent.Add(new ObjectsTransparent(hit.transform, rend, hit.transform.GetComponent<Collider>(), rend.material.color));
 				rend.material.color = tmp;
 				hit.transform.GetComponent<Collider>().enabled = false;
-				Debug.Log(hit.transform.name);
+				//Debug.Log(hit.transform.name);
 			}
-			else
-			{
-				Debug.Log(hit.transform.name);
-			}			
+			//else
+			//{
+			//	//Debug.Log(hit.transform.name);
+			//}			
 		}
 	}
 }

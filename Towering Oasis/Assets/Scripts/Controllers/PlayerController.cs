@@ -29,7 +29,10 @@ public class PlayerController : Controller
 	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
 	private int m_nLeftClick = 0; // To keep track of button inputs
 	public bool m_bshowUI; // Show and hide move/attack buttons
-	Vector2 m_v2UiPosition; // Position Ui will spawn at
+    public bool m_bMoveTransparent;
+    public List<ObjectsTransparent> m_objectsTransparent;
+
+    Vector2 m_v2UiPosition; // Position Ui will spawn at
 
 	private void Start()
 	{
@@ -38,6 +41,7 @@ public class PlayerController : Controller
 		// Assign tiles actors and obstacles are on
 		Map.Instance.UpdateUnitOnTop();
         m_Player = UnitManager.Instance.m_Parent[0].GetChild(0).GetComponent<Actor>();
+        m_objectsTransparent = new List<ObjectsTransparent>();
         m_showHealth = true;
 	}
 
@@ -206,7 +210,9 @@ public class PlayerController : Controller
 
 				m_showHealth = false;
 				GameManager.Instance.m_HealthBar.SetActive(false);
-			}
+                m_bMoveTransparent = false;
+
+            }
 
 			// If player is in attack mode and we left click while m_nLeftClick is 1
 			if (m_playerMode == PLAYERMODE.ATTACK && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
@@ -276,7 +282,7 @@ public class PlayerController : Controller
 				if (angleA < 0)
 					angleA += 360;
 
-				Debug.Log(angleA);
+				//Debug.Log(angleA);
 
 				if (angleA >= 180 && angleA <= 350)
 					m_Player.m_playAnimUP = true;
@@ -288,6 +294,48 @@ public class PlayerController : Controller
                 {
 					m_Player.m_whoWasAttacked.Clear();
                     m_Player.SpawnAttackTiles(m_attackprefab, GameManager.Instance.AttackTileHolder);
+                }
+            }
+        }
+
+        if (m_bMoveTransparent)
+        {
+            RaycastHit temphit;
+            Ray tempRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(tempRay, out temphit))
+            {
+                if (m_objectsTransparent.Count > 0 && !hit.transform.CompareTag("MovableTile"))
+                {
+                    for (int i = 0; i < m_objectsTransparent.Count; i++)
+                    {
+                        m_objectsTransparent[i].m_rend.material.shader = Shader.Find("Standard");
+                        m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
+                        m_objectsTransparent[i].m_col.enabled = true;
+                        m_objectsTransparent.RemoveAt(i);
+                    }
+                }
+            }
+
+            //int layerMask = 1 << LayerMask.NameToLayer("Walkable");
+            int layerMask = ~LayerMask.GetMask("Walkable");// & ~LayerMask.GetMask("Walkable");
+
+            if (Physics.Raycast(tempRay, out temphit, 1000.0f, layerMask))
+            {
+                Debug.Log(hit.collider.gameObject);
+                if (temphit.transform != m_Player.transform && !hit.transform.CompareTag("MovableTile"))
+                {
+                    MeshRenderer rend;
+                    if (temphit.transform.GetComponent<MeshRenderer>() != null)
+                        rend = temphit.transform.GetComponent<MeshRenderer>();
+                    else
+                        rend = temphit.transform.GetComponentInChildren<MeshRenderer>();
+
+                    rend.material.shader = Shader.Find("Transparent/Diffuse");
+                    Color tmp = rend.material.color;
+                    tmp.a = 0.3f;
+                    m_objectsTransparent.Add(new ObjectsTransparent(temphit.transform, rend, temphit.transform.GetComponent<Collider>(), rend.material.color));
+                    rend.material.color = tmp;
+                    temphit.transform.GetComponent<Collider>().enabled = false;
                 }
             }
         }
@@ -408,6 +456,7 @@ public class PlayerController : Controller
             }
 
             // Set mode to move and turn of the UI and m_nLeftCLick to 1
+            m_bMoveTransparent = true;
             m_playerMode = PLAYERMODE.MOVE;
             m_bshowUI = false;
             m_nLeftClick++;

@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
                 UnitManager.Instance.m_Parent[0].GetChild(0).GetComponent<Actor>().m_nHealth = 0;
             }
 
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.T))
             {
                 UnitManager.Instance.m_nPlayersAtExit = 4;
             }
