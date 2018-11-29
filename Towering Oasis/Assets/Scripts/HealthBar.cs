@@ -29,8 +29,9 @@ public class HealthBar : MonoBehaviour
             for (int i = 0; i < m_CurrentHP && i < m_MaxHP; i++)
             {
                 Transform go = Instantiate(m_HealthBar, new Vector3(-100, -100, 0), new Quaternion(0, 0, 0, 0));
-                go.SetParent(transform.parent);
-                go.position = new Vector3(100 + 45 * i, 25);
+                go.SetParent(transform);
+                go.localScale = new Vector3 (1, 1, 1);
+                go.position = new Vector3(147 + 25 * i, 25);
                 HPcount++;
             }
         }

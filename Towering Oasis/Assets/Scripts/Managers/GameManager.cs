@@ -63,6 +63,9 @@ public class GameManager : MonoBehaviour
     public GameObject m_PrevMenu;
     public GameObject m_GameGUI;
 
+    public List<AudioClip> levelMusic;
+    public List<AudioClip> levelAmbience;
+
     private void Awake()
     {
         m_bossTurned = false;
@@ -294,7 +297,15 @@ public class GameManager : MonoBehaviour
 
 		if (UnitManager.Instance.m_Parent[0] != null)
 			m_GameGUI.SetActive(true);
-
+        AudioSource[] aSources = GetComponents<AudioSource>();
+        
+        if (aSources[0].clip != levelMusic[m_levelSet - 1])
+        {
+            aSources[0].clip = levelMusic[m_levelSet - 1];
+            aSources[0].Play();
+            aSources[1].clip = levelAmbience[m_levelSet - 1];
+            aSources[1].Play();
+        }
 		m_isLevelLoading = false;
     }
 
