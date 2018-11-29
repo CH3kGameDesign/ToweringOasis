@@ -111,7 +111,8 @@ public class Actor : MonoBehaviour
 				temp.SetFloat("_Animation", 1);
 				temp.SetFloat("_FrameRate", 24);
 				temp.SetFloat("_Frames", 5);
-				m_nTimer = 1000f;
+                IdleAnimation();
+                m_nTimer = 1000f;
 			}
 			m_nTimer -= Time.deltaTime;
 			if (m_bExecuteMove)
@@ -157,7 +158,7 @@ public class Actor : MonoBehaviour
 		Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
 		if (!m_attackAnimPlayed)
 		{
-			if (m_classType == "melee")
+            if (m_classType == "melee")
 			{
 				if (m_playAnimUP)
 					temp.SetFloat("_Animation", 7);
@@ -401,6 +402,23 @@ public class Actor : MonoBehaviour
 				temp.SetFloat("_Frames", 10);
 			}
 		}
+        if (this.tag == "Enemy")
+        {
+            if (m_classType == "support")
+            {
+                Material tempE = this.transform.GetChild(3).GetComponent<Renderer>().material;
+                tempE.SetFloat("_Animation", 1);
+                tempE.SetFloat("_FrameRate", 24);
+                tempE.SetFloat("_Frames", 8);
+            }
+            else
+            {
+                Material tempE = this.transform.GetChild(4).GetComponent<Renderer>().material;
+                tempE.SetFloat("_Animation", 1);
+                tempE.SetFloat("_FrameRate", 24);
+                tempE.SetFloat("_Frames", 8);
+            }
+        }
         GetComponent<AudioSource>().clip = SFX[Random.Range(0, 1)];
         GetComponent<AudioSource>().Play();
         m_currentPath = path;
@@ -424,7 +442,11 @@ public class Actor : MonoBehaviour
 			tempMaterial.SetFloat("_Animation", 1);
 			tempMaterial.SetFloat("_FrameRate", 24);
 			tempMaterial.SetFloat("_Frames", 5);
-		}
+            Material tempMaterialE = this.transform.GetChild(4).GetComponent<Renderer>().material;
+            tempMaterialE.SetFloat("_Animation", 3);
+            tempMaterialE.SetFloat("_FrameRate", 24);
+            tempMaterialE.SetFloat("_Frames", 5);
+        }
 
     }
 
@@ -507,4 +529,47 @@ public class Actor : MonoBehaviour
 			//}			
 		}
 	}
+
+    public void IdleAnimation()
+    {
+        if (this.tag == "Enemy")
+        {
+            if (m_classType == "support")
+            {
+                Material tempE = this.transform.GetChild(3).GetComponent<Renderer>().material;
+                tempE.SetFloat("_Animation", 3);
+                tempE.SetFloat("_FrameRate", 24);
+                tempE.SetFloat("_Frames", 5);
+            }
+            else
+            {
+                Material tempE = this.transform.GetChild(4).GetComponent<Renderer>().material;
+                tempE.SetFloat("_Animation", 3);
+                tempE.SetFloat("_FrameRate", 24);
+                tempE.SetFloat("_Frames", 5);
+            }
+        }
+    }
+
+    public void AttackAnimation()
+    {
+        if (this.tag == "Enemy")
+        {
+            if (m_classType == "support")
+            {
+                Material tempE = this.transform.GetChild(3).GetComponent<Renderer>().material;
+                tempE.SetFloat("_Animation", 4);
+                tempE.SetFloat("_FrameRate", 24);
+                tempE.SetFloat("_Frames", 8);
+            }
+            else
+            {
+                Material tempE = this.transform.GetChild(4).GetComponent<Renderer>().material;
+                tempE.SetFloat("_Animation", 4);
+                tempE.SetFloat("_FrameRate", 24);
+                tempE.SetFloat("_Frames", 8);
+            }
+            m_nTimer = 5f;
+        }
+    }
 }

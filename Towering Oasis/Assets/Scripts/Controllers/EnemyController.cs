@@ -109,10 +109,6 @@ public class EnemyController : Controller
                         path.RemoveAt(i);
                     }
                 }
-                //Material temp = this.transform.GetComponentInChildren<Renderer>().material;
-                //temp.SetFloat("_Animation", 1);
-                //temp.SetFloat("_FrameRate", 24);
-                //temp.SetFloat("_Frames", 8);
                 m_Enemies[m_gameManager.m_nEnemiesMoves].Move(path);
                 //temp.SetFloat("_Animation", 3);
                 //temp.SetFloat("_FrameRate", 24);
@@ -121,6 +117,7 @@ public class EnemyController : Controller
 
             if (m_currentEnemy.m_bStartAttack && m_nhasAttacked == 0)
 			{
+                m_currentEnemy.IdleAnimation();
 				GameManager.Instance.m_isMoving = false;
 				m_nhasAttacked++;
                 m_bestDirectionFound = true;
@@ -140,6 +137,7 @@ public class EnemyController : Controller
 
     IEnumerator EnemyAttack()
 	{
+        m_currentEnemy.AttackAnimation();
 		m_gameManager.m_isAttacking = true;
 
         if (m_gameManager.m_isMoving)
