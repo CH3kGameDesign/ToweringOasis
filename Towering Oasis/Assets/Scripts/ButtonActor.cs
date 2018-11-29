@@ -28,6 +28,8 @@ public class ButtonActor : MonoBehaviour
     {
         GameManager.Instance.playerController.m_Player = m_buttonActor;
         GameManager.Instance.playerController.m_showHealth = true;
+        GameManager.Instance.playerController.m_bshowUI = true;
+        GameManager.Instance.playerController.m_playerMode = PLAYERMODE.MENU;
     }
 
     public void GetActor()

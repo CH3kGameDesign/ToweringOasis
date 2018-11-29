@@ -11,6 +11,7 @@ public class GameState : BaseState
 		GameManager.Instance.m_PauseMenuPanel.SetActive(false);
 		GameManager.Instance.m_SettingPanel.SetActive(false);
 		GameManager.Instance.m_GameOverPanel.SetActive(false);
+        GameManager.Instance.m_HealthBar.SetActive(false);
 	}
 
 	private void LateUpdate()
@@ -44,8 +45,13 @@ public class GameState : BaseState
 
             if (Input.GetKeyDown(KeyCode.Escape) && GameManager.Instance.m_stateName == GameStates.GAME)
             {
-                GameManager.Instance.m_PauseMenuPanel.SetActive(true);
-                GameManager.Instance.m_GameGUI.SetActive(false);
+                if (GameManager.Instance.m_SettingPanel.activeInHierarchy != true)
+                {
+                    GameManager.Instance.m_PauseMenuPanel.SetActive(true);
+                    GameManager.Instance.m_GameGUI.SetActive(false);
+                    GameManager.Instance.m_SettingPanel.SetActive(false);
+                    GameManager.Instance.m_HealthBar.SetActive(false);
+                }
             }
         }
 	}

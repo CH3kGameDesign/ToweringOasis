@@ -293,6 +293,14 @@ public class GameManager : MonoBehaviour
         ResetGame();
         ResetGUI();
 
+        if (UnitManager.Instance.m_Parent[0] != null)
+        {
+            m_GameGUI.SetActive(true);
+            m_HealthBar.SetActive(true);
+        }
+        AudioSource[] aSources = GetComponents<AudioSource>();
+        
+        if (aSources[0].clip != levelMusic[m_levelSet - 1])
         if (SceneManager.GetActiveScene().buildIndex != 68 && SceneManager.GetActiveScene().buildIndex != 0)
         {
             for (int i = 0; i < ButtonActor.Length; i++)
@@ -306,7 +314,7 @@ public class GameManager : MonoBehaviour
             if (UnitManager.Instance.m_Parent[0] != null)
                 m_GameGUI.SetActive(true);
 
-            AudioSource[] aSources = GetComponents<AudioSource>();
+            
 
             if (aSources[0].clip != levelMusic[m_levelSet - 1])
             {

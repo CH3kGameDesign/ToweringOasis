@@ -54,6 +54,68 @@ public class PlayerController : Controller
             GameManager.Instance.m_healthGUI.m_CurrentHP = m_Player.m_nHealth / 10;
 			GameManager.Instance.m_character.texture = m_Player.m_CharacterPotrait;
         }
+        if (m_bshowUI)
+        {
+            SpriteState temp = new SpriteState();
+            if (m_Player.m_classType == "support")
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = GameManager.Instance.HealButtons[0];
+                temp.pressedSprite = GameManager.Instance.HealButtons[0];
+                temp.disabledSprite = GameManager.Instance.HealButtons[1];
+                temp.highlightedSprite = GameManager.Instance.HealButtons[2];
+            }
+            else
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = GameManager.Instance.AttackButtons[0];
+                temp.pressedSprite = GameManager.Instance.AttackButtons[0];
+                temp.disabledSprite = GameManager.Instance.AttackButtons[1];
+                temp.highlightedSprite = GameManager.Instance.AttackButtons[2];
+            }
+            GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().spriteState = temp;
+            if (m_Player.m_bMoved)
+            {
+                GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
+            }
+
+            if (m_Player.m_bAttack)
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
+            }
+
+            if (m_Player.m_bSkip)
+            {
+                for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
+                {
+                    GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+
+            if (!m_Player.m_bAttack || !m_Player.m_bMoved)
+            {
+                if (m_Player.m_classType == "support")
+                {
+                    GameManager.Instance.m_actions.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Heal";
+                }
+                if (m_Player.m_classType == "melee" || m_Player.m_classType == "ranged")
+                {
+                    GameManager.Instance.m_actions.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Attack";
+                }
+                GameManager.Instance.m_actions.SetActive(true);
+                Vector3 pos = m_Player.transform.position;
+                pos.x -= 2.6f;
+                pos.y += 2.3f;
+                pos.z += 1.0f;
+                GameManager.Instance.m_actions.transform.position = pos;
+            }
+        }
     }
 
     public override void myUpdate()
@@ -132,8 +194,8 @@ public class PlayerController : Controller
 				m_Player = null;
 			}
 
-			// If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
-			if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
+            // If the hit is MoveableTile and leftclick is performed and m_nleftclick is 1
+            if (hit.transform.CompareTag("MovableTile") && Input.GetMouseButtonDown(0) && m_nLeftClick == 1)
             {
 				// We calculate the angle between mouse position and player position
 				float angle = -Mathf.Atan2(m_v3PlayerTilePos.z - hit.transform.position.z, m_v3PlayerTilePos.x - hit.transform.position.x) * Mathf.Rad2Deg;
@@ -337,69 +399,6 @@ public class PlayerController : Controller
                     rend.material.color = tmp;
                     temphit.transform.GetComponent<Collider>().enabled = false;
                 }
-            }
-        }
-        
-        if (m_bshowUI)
-		{
-            SpriteState temp = new SpriteState();
-            if (m_Player.m_classType == "support")
-            {
-                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = GameManager.Instance.HealButtons[0];
-                temp.pressedSprite = GameManager.Instance.HealButtons[0];
-                temp.disabledSprite = GameManager.Instance.HealButtons[1];
-                temp.highlightedSprite = GameManager.Instance.HealButtons[2];
-            }
-            else
-            {
-                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = GameManager.Instance.AttackButtons[0];
-                temp.pressedSprite = GameManager.Instance.AttackButtons[0];
-                temp.disabledSprite = GameManager.Instance.AttackButtons[1];
-                temp.highlightedSprite = GameManager.Instance.AttackButtons[2];
-            }
-            GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().spriteState = temp;
-            if (m_Player.m_bMoved)
-            {
-                GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = false;
-            }
-            else
-            {
-                GameManager.Instance.m_actions.transform.GetChild(0).gameObject.GetComponent<Button>().interactable = true;
-            }
-
-            if (m_Player.m_bAttack)
-            {
-                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = false;
-            }
-            else
-            {
-                GameManager.Instance.m_actions.transform.GetChild(1).gameObject.GetComponent<Button>().interactable = true;
-            }
-
-            if (m_Player.m_bSkip)
-			{
-				for (int i = 0; i < GameManager.Instance.m_actions.transform.childCount; i++)
-				{
-					GameManager.Instance.m_actions.transform.GetChild(i).gameObject.SetActive(false);
-				}
-			}
-
-			if (!m_Player.m_bAttack || !m_Player.m_bMoved)
-            {
-                if (m_Player.m_classType == "support")
-                {
-                    GameManager.Instance.m_actions.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Heal";
-                }
-                if (m_Player.m_classType == "melee" || m_Player.m_classType == "ranged")
-                {
-                    GameManager.Instance.m_actions.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Attack";
-                }
-                GameManager.Instance.m_actions.SetActive(true);
-                Vector3 pos = m_Player.transform.position;
-                pos.x -= 2.6f;
-                pos.y += 2.3f;
-                pos.z += 1.0f;
-                GameManager.Instance.m_actions.transform.position = pos;
             }
         }
 	}

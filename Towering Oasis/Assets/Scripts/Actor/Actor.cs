@@ -57,6 +57,7 @@ public class Actor : MonoBehaviour
 	public Texture2D m_CharacterPotrait;
 	public List<ObjectsTransparent> m_objectsTransparent;
     private float m_nTimer;
+    private float m_nDTimer;
 	private float m_calculatedSpeed;
 	private Vector3 m_v3CurrentPosHolder;
 	private Vector3 m_v3StartingPos;
@@ -75,6 +76,7 @@ public class Actor : MonoBehaviour
 	{
         // Assigning default values
         m_nTimer = 0;
+        m_nDTimer = -10;
 		m_ActorPrefab = this.transform;
 		m_ActorRenderer = GetComponent<Renderer>();
 		m_ActorPos = m_ActorPrefab.position;
@@ -92,6 +94,11 @@ public class Actor : MonoBehaviour
 		{
             GetComponent<AudioSource>().clip = SFX[Random.Range(4, 5)];
             GetComponent<AudioSource>().Play();
+            Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+            temp.SetFloat("_Animation", 8);
+            temp.SetFloat("_FrameRate", 24);
+            temp.SetFloat("_Frames", 4);
+            m_nDTimer = 24;
             m_nHealth = 1;
         }
         if (GetComponent<AudioSource>().isPlaying == false && (GetComponent<AudioSource>().clip == SFX[4] || GetComponent<AudioSource>().clip == SFX[5]))
@@ -105,6 +112,15 @@ public class Actor : MonoBehaviour
         }
         if (!gameObject.CompareTag("Boss"))
 		{
+            if (m_nDTimer == 0)
+            {
+                Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+                temp.SetFloat("_Animation", 8);
+                temp.SetFloat("_FrameRate", 24);
+                temp.SetFloat("_Frames", 0);
+            }
+            else
+                m_nDTimer--;
 			if (m_nTimer <= 0)
 			{
 				Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
