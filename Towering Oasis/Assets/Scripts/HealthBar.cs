@@ -10,6 +10,7 @@ public class HealthBar : MonoBehaviour
     public Transform m_HealthBar;
     int HPcount;
     public GameObject[] m_HealthPoints;
+
     void Start()
     {
 

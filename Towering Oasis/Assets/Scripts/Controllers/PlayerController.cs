@@ -50,7 +50,7 @@ public class PlayerController : Controller
         if (m_showHealth && m_Player.m_nHealth > 0)
         {
             GameManager.Instance.m_HealthBar.SetActive(true);
-            GameManager.Instance.m_healthText.text = m_Player.name;
+            GameManager.Instance.m_healthText.text = m_Player.m_classType;
             GameManager.Instance.m_healthGUI.m_CurrentHP = m_Player.m_nHealth / 10;
 			GameManager.Instance.m_character.texture = m_Player.m_CharacterPotrait;
         }

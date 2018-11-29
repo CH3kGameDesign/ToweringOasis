@@ -35,6 +35,6 @@ public class ButtonActor : MonoBehaviour
     public void GetActor()
     {
         m_buttonActor = UnitManager.Instance.m_Parent[0].GetChild(m_ActorNumber).GetComponent<Actor>();
-        GetComponentInChildren<Text>().text = m_buttonActor.name;
+        GetComponentInChildren<Text>().text = m_buttonActor.m_classType;
     }
 }
