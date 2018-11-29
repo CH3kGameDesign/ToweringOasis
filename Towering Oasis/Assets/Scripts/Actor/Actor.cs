@@ -212,15 +212,15 @@ public class Actor : MonoBehaviour
 
 		if (m_whoWasAttacked.Count > 0)
 		{
-			Debug.Log("A Step 1");
+			//Debug.Log("A Step 1");
             foreach (Actor actor in m_whoWasAttacked)
 			{
-				Debug.Log("A Step 2");
+				//Debug.Log("A Step 2");
 
 				// Deduct health by the damage of the attacker
 				actor.m_nHealth -= this.m_nDamage;
 
-				Debug.Log("A Step 3");
+				//Debug.Log("A Step 3");
                 // Create Health popup and set text which is equal to this actor's health
                 if (actor != null)
                 {
@@ -236,7 +236,7 @@ public class Actor : MonoBehaviour
                         ScreenShake.Instance.shakeTimer = 0f;
                 }
 
-                Debug.Log("A Step 4");
+                //Debug.Log("A Step 4");
 			}
 		}
 		this.m_whoWasAttacked.Clear();

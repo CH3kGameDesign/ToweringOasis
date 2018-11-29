@@ -47,7 +47,7 @@ public class CharacterSelection : MonoBehaviour {
 
     public void LoadButtonClick()
     {
-        Debug.Log(m_dictionary[m_ThisSprite.name]);
+        //Debug.Log(m_dictionary[m_ThisSprite.name]);
         m_selected = m_dictionary[m_ThisSprite.name];
         m_ThisSprite.sprite = m_Sprites[m_selected];
     }

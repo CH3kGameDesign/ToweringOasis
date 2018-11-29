@@ -6,7 +6,7 @@ public class TriggerExit : MonoBehaviour
 {
     private void Update()
     {
-        Debug.Log(UnitManager.Instance.m_nPlayersAtExit);
+        //Debug.Log(UnitManager.Instance.m_nPlayersAtExit);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -21,7 +21,7 @@ public class TriggerExit : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(UnitManager.Instance.m_nPlayersAtExit);
+        //Debug.Log(UnitManager.Instance.m_nPlayersAtExit);
     }
     private void OnTriggerExit(Collider other)
     {

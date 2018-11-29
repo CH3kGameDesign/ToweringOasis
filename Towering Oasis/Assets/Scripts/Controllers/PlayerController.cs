@@ -203,7 +203,7 @@ public class PlayerController : Controller
 				if (angle < 0)
 					angle += 360;
 
-				Debug.Log(angle);
+				//Debug.Log(angle);
 
 				if (angle >= 180 && angle <= 350)
 					m_Player.m_playAnimUP = true;
