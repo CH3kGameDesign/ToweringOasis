@@ -97,6 +97,11 @@ public class GameManager : MonoBehaviour
             enemyController = FindObjectOfType<EnemyController>();
             playerController = FindObjectOfType<PlayerController>();
         }
+        else
+        {
+            GetComponent<AudioSource>().clip = levelMusic[Random.Range(0, 4)];
+            GetComponent<AudioSource>().Play();
+        }
     }
 
     private void Update()
