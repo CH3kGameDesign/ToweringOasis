@@ -68,6 +68,8 @@ public class Actor : MonoBehaviour
 	public List<Actor> m_whoWasAttacked = new List<Actor>();
     public List<Node> individualPath = new List<Node>();
 
+    public List<AudioClip> SFX = new List<AudioClip>();
+
 
 	public virtual void Start()
 	{
@@ -88,14 +90,20 @@ public class Actor : MonoBehaviour
 		// if health is 0 destroy the gameobject
 		if (m_nHealth <= 0)
 		{
-			UnitManager.Instance.m_Objects.Remove(gameObject.transform);
+            GetComponent<AudioSource>().clip = SFX[Random.Range(4, 5)];
+            GetComponent<AudioSource>().Play();
+            m_nHealth = 1;
+        }
+        if (GetComponent<AudioSource>().isPlaying == false && (GetComponent<AudioSource>().clip == SFX[4] || GetComponent<AudioSource>().clip == SFX[5]))
+        {
+            UnitManager.Instance.m_Objects.Remove(gameObject.transform);
 
             if (this.CompareTag("Player"))
                 UnitManager.Instance.m_nPlayersAlive--;
 
             Destroy(gameObject);
         }
-		if (!gameObject.CompareTag("Boss"))
+        if (!gameObject.CompareTag("Boss"))
 		{
 			if (m_nTimer <= 0)
 			{
@@ -158,6 +166,7 @@ public class Actor : MonoBehaviour
 
 				temp.SetFloat("_FrameRate", 24);
 				temp.SetFloat("_Frames", 5);
+                
 			}
 			else if (m_classType == "support")
 			{
@@ -180,7 +189,9 @@ public class Actor : MonoBehaviour
 				temp.SetFloat("_Frames", 4);
 			}
 			m_attackAnimPlayed = true;
-		}
+            GetComponent<AudioSource>().clip = SFX[Random.Range(2, 3)];
+            GetComponent<AudioSource>().Play();
+        }
 
 		if (m_whoWasAttacked.Count > 0)
 		{
@@ -390,7 +401,9 @@ public class Actor : MonoBehaviour
 				temp.SetFloat("_Frames", 10);
 			}
 		}
-		m_currentPath = path;
+        GetComponent<AudioSource>().clip = SFX[Random.Range(0, 1)];
+        GetComponent<AudioSource>().Play();
+        m_currentPath = path;
 		if (m_currentPath.Count > 0)
 		{
 			GameManager.Instance.m_isMoving = true;

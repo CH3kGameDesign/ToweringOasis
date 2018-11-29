@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 23472392310981066}
   - component: {fileID: 114487530075487520}
   - component: {fileID: 54897361599654736}
+  - component: {fileID: 82274800404640544}
   m_Layer: 10
   m_Name: P_Support (1)
   m_TagString: Player
@@ -504,6 +505,86 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &82274800404640544
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1300078462511634}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &114006513362561336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -647,6 +728,13 @@ MonoBehaviour:
   m_bLookingDiaganol: 0
   m_CharacterPotrait: {fileID: 2800000, guid: 44c0b3add5344a54197c40e18d019b4f, type: 3}
   m_whoWasAttacked: []
+  SFX:
+  - {fileID: 8300000, guid: 85b2cc211d7376c45badde852d54252b, type: 3}
+  - {fileID: 8300000, guid: cdabc554de717c54ba1afa7f6cb7188e, type: 3}
+  - {fileID: 8300000, guid: 7149da3207451644e9b672432d9ce533, type: 3}
+  - {fileID: 8300000, guid: 3e8ad64d4a514374f9b9d7de6dbf63fd, type: 3}
+  - {fileID: 8300000, guid: 9231f6395b4fdf2498a39ae68e3ae6e6, type: 3}
+  - {fileID: 8300000, guid: ee9455e4bde318e43921b787e969b585, type: 3}
 --- !u!114 &114725359952061250
 MonoBehaviour:
   m_ObjectHideFlags: 1
