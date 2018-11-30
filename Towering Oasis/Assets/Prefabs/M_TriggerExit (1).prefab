@@ -59,7 +59,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1248261308123410
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +72,6 @@ GameObject:
   - component: {fileID: 65743468853935276}
   - component: {fileID: 23054781764854466}
   - component: {fileID: 54923580479113092}
-  - component: {fileID: 114531637322390122}
   m_Layer: 2
   m_Name: M_TriggerExit (1)
   m_TagString: Untagged
@@ -96,7 +95,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1794841498844702
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +112,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1848906094983102
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1932891482502120
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4058816305871694
 Transform:
   m_ObjectHideFlags: 1
@@ -395,17 +394,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyCameraTransform: {fileID: 0}
   alignNotLook: 1
---- !u!114 &114531637322390122
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1248261308123410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4cb7e3239bee2c429ca442ec6fced89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!198 &198168412588546906
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -466,7 +454,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -424716053
+  randomSeed: -1081440878
   InitialModule:
     serializedVersion: 3
     enabled: 1
