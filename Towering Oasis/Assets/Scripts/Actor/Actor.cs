@@ -461,11 +461,20 @@ public class Actor : MonoBehaviour
 			Material tempMaterial = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
 			tempMaterial.SetFloat("_Animation", 1);
 			tempMaterial.SetFloat("_FrameRate", 24);
-			tempMaterial.SetFloat("_Frames", 5);
-            Material tempMaterialE = this.transform.GetChild(4).GetComponent<Renderer>().material;
-            tempMaterialE.SetFloat("_Animation", 3);
-            tempMaterialE.SetFloat("_FrameRate", 24);
-            tempMaterialE.SetFloat("_Frames", 5);
+			tempMaterial.SetFloat ("_Frames", 5);
+			if (m_classType == "support") {
+				Material tempMaterialE = this.transform.GetChild(3).GetComponent<Renderer>().material;
+                tempMaterialE.SetFloat("_Animation", 3);
+                tempMaterialE.SetFloat("_FrameRate", 24);
+                tempMaterialE.SetFloat("_Frames", 5);
+            } 
+			else 
+			{
+				Material tempMaterialE = this.transform.GetChild(4).GetComponent<Renderer>().material;
+                tempMaterialE.SetFloat("_Animation", 3);
+                tempMaterialE.SetFloat("_FrameRate", 24);
+                tempMaterialE.SetFloat("_Frames", 5);
+            }
         }
 
     }
