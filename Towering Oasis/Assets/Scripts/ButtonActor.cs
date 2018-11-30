@@ -30,6 +30,28 @@ public class ButtonActor : MonoBehaviour
         GameManager.Instance.playerController.m_showHealth = true;
         GameManager.Instance.playerController.m_bshowUI = true;
         GameManager.Instance.playerController.m_playerMode = PLAYERMODE.MENU;
+        
+        GameManager.Instance.m_currentActor = GameManager.Instance.playerController.m_Player;
+        GameManager.Instance.playerController.m_v3PlayerTilePos = GameManager.Instance.playerController.m_Player.m_ActorPos;
+        GameManager.Instance.playerController.m_v3PlayerTilePos.y = 0.1f;
+        Vector2 m_v2UiPosition;
+
+        // Get the Player Pos
+        m_v2UiPosition = Vector2.zero;
+        m_v2UiPosition.x = Input.mousePosition.x;
+        m_v2UiPosition.y = Screen.height - Input.mousePosition.y;
+
+        // Show UI(attack/move buttons)
+        if (GameManager.Instance.playerController.m_Player != null)
+            GameManager.Instance.playerController.m_bshowUI = true;
+
+        GameManager.Instance.playerController.m_SelectedPrefab = GameManager.Instance.playerController.m_Player.gameObject.transform.GetChild(2).gameObject;
+        GameManager.Instance.playerController.m_showHealth = true;
+
+        for (int i = 0; i < GameManager.Instance.MoveableTileHolder.transform.childCount; i++)
+        {
+            Destroy(GameManager.Instance.MoveableTileHolder.transform.GetChild(i).gameObject);
+        }
     }
 
     public void GetActor()

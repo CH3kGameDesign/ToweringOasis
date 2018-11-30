@@ -26,7 +26,7 @@ public class PlayerController : Controller
 
     public Actor m_Player; // current Player
 	public Transform m_ring = null;
-	private Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
+	public Vector3 m_v3PlayerTilePos; // at what tile player is present specifically its position
 	private int m_nLeftClick = 0; // To keep track of button inputs
 	public bool m_bshowUI; // Show and hide move/attack buttons
     public bool m_bMoveTransparent;
@@ -122,7 +122,7 @@ public class PlayerController : Controller
     public override void myUpdate()
     {
         base.myUpdate();
-
+        Map.Instance.UpdateUnitOnTop();
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
@@ -130,7 +130,7 @@ public class PlayerController : Controller
 		RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-		if (m_Player != null)
+        if (m_Player != null)
 		{
 			m_ring = GameManager.Instance.GetChildObject(m_Player.transform, "Ring").GetChild(0);
 			m_ring.gameObject.SetActive(true);
@@ -404,6 +404,7 @@ public class PlayerController : Controller
 			{
 				UnitManager.Instance.m_Parent[1].GetChild(j).GetComponent<Collider>().enabled = false;
 			}
+
 			//RaycastHit temphit;
 			//Ray tempRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			//if (Physics.Raycast(tempRay, out temphit))
@@ -591,44 +592,16 @@ public class PlayerController : Controller
 						}
 					}
 				}
-
-				{
-					//if (!neighbour.m_bWalkable || neighbour.m_bIsUnitOnTop || !closedList.Contains(neighbour))
-					//	continue;
-
-					//int newMovementCostToNeighbour = currentNode.m_nGCost + gcost;
-					//if (newMovementCostToNeighbour < neighbour.m_nGCost || !openList.Contains(neighbour))
-					//{
-					//	neighbour.m_parent = currentNode;
-					//	neighbour.m_nGCost = newMovementCostToNeighbour;
-					//}
-
-					//if (neighbour != null)
-					//{
-					//	if (currentNode.m_nGCost + gcost > nHowManyNeighbourIteration)
-					//		continue;
-
-					//	neighbour.m_nGCost = newMovementCostToNeighbour;
-					//	neighbour.m_nHCost = currentNode.m_nGCost + gcost;
-					//	neighbour.m_parent = currentNode;
-
-					//	if (!openList.Contains(neighbour))
-					//		openList.Add(neighbour);
-					//	else
-					//		openList.UpdateItem(neighbour);
-					//}
-				}
 			}
 		}
 
 		i++;
 
-		foreach (Node n in closedList)
-		{
-			n.m_nHCost = 0;
-			n.m_nGCost = 0;
-		}
-
+        foreach (Node n in closedList)
+        {
+            n.m_nHCost = 0;
+            n.m_nGCost = 0;
+        }
 		return moveTiles;
     }
 }

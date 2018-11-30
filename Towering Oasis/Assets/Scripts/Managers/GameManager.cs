@@ -303,7 +303,6 @@ public class GameManager : MonoBehaviour
                 return parent.GetChild(i);
             }
         }
-
         return null;
     }
 }

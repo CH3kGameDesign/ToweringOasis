@@ -66,6 +66,12 @@ public class EnemyController : Controller
                 m_Players.Clear();
                 m_Enemies.Clear();
 
+                for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
+                {
+                    if (!UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled)
+                        UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = false;
+                }
+
                 for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)
                 {
                     m_Players.Add(UnitManager.Instance.m_Parent[0].GetChild(i).GetComponent<Actor>());
