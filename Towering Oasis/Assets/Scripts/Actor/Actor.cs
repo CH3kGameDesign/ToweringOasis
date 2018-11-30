@@ -423,7 +423,7 @@ public class Actor : MonoBehaviour
 				temp.SetFloat("_Frames", 10);
 			}
 		}
-        if (this.tag == "Enemy")
+        if (gameObject.CompareTag("Enemy"))
         {
             if (m_classType == "support")
             {
@@ -458,23 +458,30 @@ public class Actor : MonoBehaviour
 				GameManager.Instance.m_isMoving = false;
 
 			Map.Instance.UpdateUnitOnTop();
+            if (gameObject.CompareTag("Player"))
+            {
+                Material tempMaterial = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
+                tempMaterial.SetFloat("_Animation", 1);
+                tempMaterial.SetFloat("_FrameRate", 24);
+                tempMaterial.SetFloat("_Frames", 5);
+            }
 
-			Material tempMaterial = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
-			tempMaterial.SetFloat("_Animation", 1);
-			tempMaterial.SetFloat("_FrameRate", 24);
-			tempMaterial.SetFloat ("_Frames", 5);
-			if (m_classType == "support") {
-				Material tempMaterialE = this.transform.GetChild(3).GetComponent<Renderer>().material;
-                tempMaterialE.SetFloat("_Animation", 3);
-                tempMaterialE.SetFloat("_FrameRate", 24);
-                tempMaterialE.SetFloat("_Frames", 5);
-            } 
-			else 
-			{
-				Material tempMaterialE = this.transform.GetChild(4).GetComponent<Renderer>().material;
-                tempMaterialE.SetFloat("_Animation", 3);
-                tempMaterialE.SetFloat("_FrameRate", 24);
-                tempMaterialE.SetFloat("_Frames", 5);
+            if (gameObject.CompareTag("Enemy"))
+            {
+                if (m_classType == "support")
+                {
+                    Material tempMaterialE = this.transform.GetChild(3).GetComponent<Renderer>().material;
+                    tempMaterialE.SetFloat("_Animation", 3);
+                    tempMaterialE.SetFloat("_FrameRate", 24);
+                    tempMaterialE.SetFloat("_Frames", 5);
+                }
+                else
+                {
+                    Material tempMaterialE = this.transform.GetChild(4).GetComponent<Renderer>().material;
+                    tempMaterialE.SetFloat("_Animation", 3);
+                    tempMaterialE.SetFloat("_FrameRate", 24);
+                    tempMaterialE.SetFloat("_Frames", 5);
+                }
             }
         }
 
@@ -557,7 +564,7 @@ public class Actor : MonoBehaviour
 
     public void IdleAnimation()
     {
-        if (this.tag == "Enemy")
+        if (gameObject.CompareTag("Enemy"))
         {
             if (m_classType == "support")
             {
@@ -578,7 +585,7 @@ public class Actor : MonoBehaviour
 
     public void AttackAnimation()
     {
-        if (this.tag == "Enemy")
+        if (gameObject.CompareTag("Enemy"))
         {
             if (m_classType == "support")
             {
