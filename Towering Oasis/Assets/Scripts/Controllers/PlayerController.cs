@@ -126,8 +126,13 @@ public class PlayerController : Controller
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
-		// Cast a ray and assign a hit variable
-		RaycastHit hit;
+        for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
+        {
+            UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = true;
+        }
+
+        // Cast a ray and assign a hit variable
+        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (m_Player != null)

@@ -24,15 +24,15 @@ public class LevelWon : BaseState
             int level;
 
             if (GameManager.Instance.m_levelSet == 1)
-                level = Random.Range(1, 21);
+                level = Random.Range(1, 20);
             else if (GameManager.Instance.m_levelSet == 2)
-                level = Random.Range(22, 35);
+                level = Random.Range(21, 34);
             else if (GameManager.Instance.m_levelSet == 3)
-                level = Random.Range(36, 49);
+                level = Random.Range(35, 48);
             else if (GameManager.Instance.m_levelSet == 4)
-                level = Random.Range(50, 63);
+                level = Random.Range(49, 62);
             else if (GameManager.Instance.m_levelSet == 5)
-                level = Random.Range(64, 67);
+                level = Random.Range(63, 66);
             else
                 level = 0;
 

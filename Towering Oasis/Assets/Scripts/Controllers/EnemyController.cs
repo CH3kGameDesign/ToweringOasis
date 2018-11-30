@@ -68,8 +68,7 @@ public class EnemyController : Controller
 
                 for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
                 {
-                    if (!UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled)
-                        UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = false;
+                    UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = true;
                 }
 
                 for (int i = 0; i < UnitManager.Instance.m_Parent[0].childCount; i++)

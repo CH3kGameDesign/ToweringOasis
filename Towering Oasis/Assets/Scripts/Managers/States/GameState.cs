@@ -23,15 +23,21 @@ public class GameState : BaseState
                 GameManager.Instance.m_GameOverPanel.SetActive(true);
                 GameManager.Instance.m_isGameOver = true;
                 GameManager.Instance.m_stateName = GameStates.GAMEOVER;
+                GameManager.Instance.m_HealthBar.SetActive(false);
                 GameManager.Instance.m_GameGUI.SetActive(false);
                 GameManager.Instance.ResetVariables();
             }
 
             else if (UnitManager.Instance.m_nPlayersAtExit == UnitManager.Instance.m_nPlayersAlive)
             {
-                GameManager.Instance.m_LevelWonPanel.SetActive(true);
+                if (GameManager.Instance.m_levelSet == 5 && GameManager.Instance.m_nLevelsLoaded.Count == 1)
+                    GameManager.Instance.m_GameOverPanel.SetActive(true);
+                else
+                    GameManager.Instance.m_LevelWonPanel.SetActive(true);
+
                 GameManager.Instance.ResetVariables();
                 GameManager.Instance.m_stateName = GameStates.LEVELWON;
+                GameManager.Instance.m_HealthBar.SetActive(false);
                 GameManager.Instance.m_GameGUI.SetActive(false);
             }
 
@@ -40,6 +46,7 @@ public class GameState : BaseState
                 GameManager.Instance.m_LevelWonPanel.SetActive(true);
                 GameManager.Instance.ResetVariables();
                 GameManager.Instance.m_stateName = GameStates.LEVELWON;
+                GameManager.Instance.m_HealthBar.SetActive(false);
                 GameManager.Instance.m_GameGUI.SetActive(false);
             }
 

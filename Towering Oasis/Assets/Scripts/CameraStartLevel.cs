@@ -16,7 +16,7 @@ public class CameraStartLevel : MonoBehaviour
     {
         m_prevPos = transform.position;
 
-		if(SceneManager.GetActiveScene().buildIndex > 63)
+		if(SceneManager.GetActiveScene().buildIndex > 62)
 			exit = GameObject.Find("E_Boss (1)").transform.GetChild(0).gameObject;
 		else
 			exit = GameObject.Find("M_TriggerExit (1)").transform.GetChild(0).transform.GetChild(0).gameObject;

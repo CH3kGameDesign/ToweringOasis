@@ -52,6 +52,12 @@ public class ButtonActor : MonoBehaviour
         {
             Destroy(GameManager.Instance.MoveableTileHolder.transform.GetChild(i).gameObject);
         }
+
+        // After we have reached the endTile destroy all moveable tiles
+        for (int i = 0; i < GameManager.Instance.AttackTileHolder.transform.childCount; i++)
+        {
+            Destroy(GameManager.Instance.AttackTileHolder.transform.GetChild(i).gameObject);
+        }
     }
 
     public void GetActor()

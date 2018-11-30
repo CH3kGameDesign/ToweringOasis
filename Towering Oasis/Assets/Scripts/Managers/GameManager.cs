@@ -109,6 +109,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            UnitManager.Instance.m_nPlayersAtExit = 4;
+        }
+
         if (m_actions == null)
         {
             m_actions = GameObject.Find("Actions");
@@ -126,7 +131,7 @@ public class GameManager : MonoBehaviour
             playerController = FindObjectOfType<PlayerController>();
         }
 
-        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 68)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 67)
         {
             m_EnemiesNumber.text = "Enemies: " + UnitManager.Instance.m_Parent[1].childCount;
 
@@ -155,7 +160,7 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
 	{
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
-        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 68)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 67)
         {
             if (UnitManager.Instance.m_Parent.Count == 0)
                 return;
@@ -258,8 +263,13 @@ public class GameManager : MonoBehaviour
         AudioSource[] aSources = GetComponents<AudioSource>();
 
 
-        if (SceneManager.GetActiveScene().buildIndex != 68 && SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 67 && SceneManager.GetActiveScene().buildIndex != 0)
         {
+            for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
+            {
+                UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = true;
+            }
+
             if (UnitManager.Instance.m_Parent[0] != null)
             {
                 m_GameGUI.SetActive(true);

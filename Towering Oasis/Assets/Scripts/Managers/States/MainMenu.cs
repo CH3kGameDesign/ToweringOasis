@@ -65,7 +65,7 @@ public class MainMenu : BaseState
         GameManager.Instance.m_PauseMenuPanel.SetActive(false);
         GameManager.Instance.m_MainMenuPanel.SetActive(true);
         GameManager.Instance.m_isLevelLoading = true;
-        SceneManager.LoadScene(68);
+        SceneManager.LoadScene(67);
         GameManager.Instance.m_stateName = GameStates.MAINMENU;
     }
 
