@@ -40,6 +40,7 @@ public class Actor : MonoBehaviour
 	public bool m_playAnimUP;
 	public bool m_attackAnimPlayed;
     public bool m_bAtExit;
+    public bool m_obstructions;
 
 	// How many tiles is this actor allowed to move
 	public int m_nHowManyTiles;
@@ -86,7 +87,7 @@ public class Actor : MonoBehaviour
 	}
 
 	public virtual void Update()
-	{
+    {
         if (m_nHealth > 100)
             m_nHealth = 100;
 		// if health is 0 destroy the gameobject
@@ -163,14 +164,13 @@ public class Actor : MonoBehaviour
 						temp.SetFloat("_FrameRate", 24);
 						temp.SetFloat("_Frames", 5);
                         GameManager.Instance.playerController.m_bMoveTransparent = false;
-						CheckObstructions();
-					}
-				}
-			}
+                    }
+                }
+            }
 		}
     }
-
-	public virtual void Attack()
+    
+    public virtual void Attack()
 	{
 		Material temp = this.transform.GetChild(0).GetComponentInChildren<Renderer>().material;
 		if (!m_attackAnimPlayed)
@@ -456,6 +456,13 @@ public class Actor : MonoBehaviour
 
 			if (gameObject.CompareTag("Player"))
 				GameManager.Instance.m_isMoving = false;
+<<<<<<< .mine
+            
+||||||| .r205
+
+			Map.Instance.UpdateUnitOnTop();
+
+=======
 
 			Map.Instance.UpdateUnitOnTop();
             if (gameObject.CompareTag("Player"))
@@ -466,6 +473,7 @@ public class Actor : MonoBehaviour
                 tempMaterial.SetFloat("_Frames", 5);
             }
 
+>>>>>>> .r207
             if (gameObject.CompareTag("Enemy"))
             {
                 if (m_classType == "support")
@@ -483,8 +491,8 @@ public class Actor : MonoBehaviour
                     tempMaterialE.SetFloat("_Frames", 5);
                 }
             }
+            m_ActorPos = m_ActorPrefab.position;
         }
-
     }
 
     // Is used to move the Actor tile by tile
@@ -533,26 +541,30 @@ public class Actor : MonoBehaviour
 		{
 			for (int i = 0; i < m_objectsTransparent.Count; i++)
 			{
-				m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
-				m_objectsTransparent[i].m_col.enabled = true;
-				m_objectsTransparent.RemoveAt(i);
+                if (m_objectsTransparent[i] != null)
+                {
+                    m_objectsTransparent[i].m_rend.material.color = m_objectsTransparent[i].m_color;
+                    m_objectsTransparent[i].m_col.enabled = true;
+                    m_objectsTransparent.RemoveAt(i);
+                }
 			}
 		}
 
 		RaycastHit hit;
 		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(m_ActorPos));
 
-        if (Physics.Raycast(ray, out hit, 200, ~LayerMask.GetMask("Walkable")))
+        if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Walkable")))
         {
             if (!hit.transform.CompareTag("Player") && !hit.transform.CompareTag("Enemy"))
 			{
 				MeshRenderer rend;
+
 				if (hit.transform.GetComponent<MeshRenderer>() != null)
 					rend = hit.transform.GetComponent<MeshRenderer>();
 				else
 					rend = hit.transform.GetComponentInChildren<MeshRenderer>();
 
-				rend.material.shader = Shader.Find("Transparent/Diffuse");
+				rend.material.shader = GameManager.Instance.transparent;
 				Color tmp = rend.material.color;
 				tmp.a = 0.3f;
 				m_objectsTransparent.Add(new ObjectsTransparent(hit.transform, rend, hit.transform.GetComponent<Collider>(), rend.material.color));
