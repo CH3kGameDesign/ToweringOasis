@@ -397,7 +397,7 @@ public class PlayerController : Controller
 
 			for (int j = 0; j < UnitManager.Instance.m_Parent[0].childCount; j++)
 			{
-				UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = false;
+			    UnitManager.Instance.m_Parent[0].GetChild(j).GetComponent<Collider>().enabled = false;
 			}
 
 			for (int j = 0; j < UnitManager.Instance.m_Parent[1].childCount; j++)

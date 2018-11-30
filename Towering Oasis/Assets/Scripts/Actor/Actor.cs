@@ -39,6 +39,7 @@ public class Actor : MonoBehaviour
 	public string m_classType;
 	public bool m_playAnimUP;
 	public bool m_attackAnimPlayed;
+    public bool m_bAtExit;
 
 	// How many tiles is this actor allowed to move
 	public int m_nHowManyTiles;
@@ -86,8 +87,7 @@ public class Actor : MonoBehaviour
 
 	public virtual void Update()
 	{
-		Debug.DrawLine(Camera.main.transform.position, transform.gameObject.transform.position, Color.red);
-		if (m_nHealth > 100)
+        if (m_nHealth > 100)
             m_nHealth = 100;
 		// if health is 0 destroy the gameobject
 		if (m_nHealth <= 0)
@@ -131,6 +131,7 @@ public class Actor : MonoBehaviour
                 m_nTimer = 1000f;
 			}
 			m_nTimer -= Time.deltaTime;
+
 			if (m_bExecuteMove)
 			{
 				m_calculatedSpeed += Time.deltaTime * m_nSpeed;
@@ -534,9 +535,9 @@ public class Actor : MonoBehaviour
 		RaycastHit hit;
 		Ray ray = Camera.main.ScreenPointToRay(Camera.main.WorldToScreenPoint(m_ActorPos));
 
-		if (Physics.Raycast(ray, out hit, 1000, ~LayerMask.GetMask("Walkable")))
-		{
-			if (!hit.transform.CompareTag("Player") && !hit.transform.CompareTag("Enemy"))
+        if (Physics.Raycast(ray, out hit, 200, ~LayerMask.GetMask("Walkable")))
+        {
+            if (!hit.transform.CompareTag("Player") && !hit.transform.CompareTag("Enemy"))
 			{
 				MeshRenderer rend;
 				if (hit.transform.GetComponent<MeshRenderer>() != null)
@@ -550,14 +551,9 @@ public class Actor : MonoBehaviour
 				m_objectsTransparent.Add(new ObjectsTransparent(hit.transform, rend, hit.transform.GetComponent<Collider>(), rend.material.color));
 				rend.material.color = tmp;
 				hit.transform.GetComponent<Collider>().enabled = false;
-				//Debug.Log(hit.transform.name);
-			}
-			//else
-			//{
-			//	//Debug.Log(hit.transform.name);
-			//}			
-		}
-	}
+            }
+        }
+    }
 
     public void IdleAnimation()
     {
