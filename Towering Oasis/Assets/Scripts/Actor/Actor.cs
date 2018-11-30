@@ -456,13 +456,6 @@ public class Actor : MonoBehaviour
 
 			if (gameObject.CompareTag("Player"))
 				GameManager.Instance.m_isMoving = false;
-<<<<<<< .mine
-            
-||||||| .r205
-
-			Map.Instance.UpdateUnitOnTop();
-
-=======
 
 			Map.Instance.UpdateUnitOnTop();
             if (gameObject.CompareTag("Player"))
@@ -473,7 +466,6 @@ public class Actor : MonoBehaviour
                 tempMaterial.SetFloat("_Frames", 5);
             }
 
->>>>>>> .r207
             if (gameObject.CompareTag("Enemy"))
             {
                 if (m_classType == "support")
